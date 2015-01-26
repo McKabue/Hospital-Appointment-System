@@ -1,4 +1,4 @@
-﻿jQuery(document).ready(function ($) {
+﻿//jQuery(document).ready(function ($) {
 
 
 
@@ -57,4 +57,4 @@
     }
     ko.applyBindings(new viewModel());
 
-});
+//});

@@ -40,39 +40,45 @@ namespace Hos.Models
 
 
 
+
     public class OptionsData
     {
         public int OptionsDataID { get; set; }
         public virtual IList<Faculty> Faculties { get; set; }
         public virtual IList<Stream> Streams { get; set; }
-        public virtual IList<Course> Courses { get; set; }
         public virtual IList<Medical_Type> Medical_Types { get; set; }
-        public virtual IList<Available_Doctor> Available_Doctors { get; set; }
     }
-
     public class Faculty
     {
         public int FacultyID { get; set; }
         public string Name { get; set; }
+        public virtual IList<Course> Courses { get; set; }
     }
 
     public class Stream
     {
         public int StreamID { get; set; }
+        public string Name { get; set; }
     }
 
     public class Course
     {
         public int CourseID { get; set; }
+        public string Name { get; set; }
+        public int FacultyID { get; set; }
     }
 
     public class Medical_Type
     {
         public int Medical_TypeID { get; set; }
+        public string Name { get; set; }
+        public virtual IList<Available_Doctor> Available_Doctors { get; set; }
     }
 
     public class Available_Doctor
     {
         public int Available_DoctorID { get; set; }
+        public string Name { get; set; }
+        public int Medical_TypeID { get; set; }
     }
 }

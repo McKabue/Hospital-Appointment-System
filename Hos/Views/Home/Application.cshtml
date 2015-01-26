@@ -1,7 +1,20 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Application";
 }
 
-<h2>Application</h2>
+    <div style="padding-top: 40px;" class="row mainBody">
+        <div id="myTabContent" class="tab-content">
+            @Html.Partial("_Book")
+        </div>
+    </div>
+
+<script src="~/Scripts/jquery-2.1.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/knockout-3.2.0.js"></script>
+<script src="~/Scripts/Hos.Main.js"></script>
+<script>
+		$('.collapse').on('show.bs.collapse', function () {
+			$('.collapse.in').collapse('hide');
+		});
+</script>
 
