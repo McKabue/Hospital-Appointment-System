@@ -16,12 +16,6 @@ body {
 	
 }
 
-select::-ms-expand {
-            width:12px;
-            border:none;
-            background:#fff;
-        }
-
 .clear {
 	clear: both;
 }
