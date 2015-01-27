@@ -9,15 +9,15 @@ using System.Web;
 
 namespace Hos.HELPERS
 {
-    public class HosInitializer : DropCreateDatabaseAlways<HosContext>  //DropCreateDatabaseAlways //DropCreateDatabaseIfModelChanges
+    public class HosInitializer : DropCreateDatabaseIfModelChanges<HosContext>  //DropCreateDatabaseAlways //DropCreateDatabaseIfModelChanges
     {
         protected override void Seed(HosContext context)
         {
             var hasher = new PasswordHasher();
             var user = new UserManager<UserProfile>(new UserStore<UserProfile>(context));
             user.UserValidator = new UserValidator<UserProfile>(user) { AllowOnlyAlphanumericUserNames = false };
-            user.Create(new UserProfile() { UserName = "IN16/20034/13", Email = "jj@gmail.com", PasswordHash = hasher.HashPassword("1234567890") });
-            user.Create(new UserProfile() { UserName = "IN162006413", Email = "kk@gmail.com", PasswordHash = hasher.HashPassword("1234567890") });
+            user.Create(new UserProfile() { FirstName = "kamaa", LastName = "john", UserName = "IN16/20034/13", Email = "jj@gmail.com", PasswordHash = hasher.HashPassword("1234567890") });
+            user.Create(new UserProfile() { FirstName = "kamaa2", LastName = "john2", UserName = "IN162006413", Email = "kk@gmail.com", PasswordHash = hasher.HashPassword("1234567890") });
             
             /////////////////////////////////////////////////////////////////////////////
             var appointments = new List<Appointment> 

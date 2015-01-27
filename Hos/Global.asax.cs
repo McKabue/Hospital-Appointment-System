@@ -15,8 +15,8 @@ namespace Hos
     {
         protected void Application_Start()
         {
-            Database.SetInitializer<HosContext>(new HosInitializer());
-            using (var context = new HosContext()) { context.Database.Initialize(force: true); }
+            //Database.SetInitializer<HosContext>(new HosInitializer());
+            //using (var context = new HosContext()) { context.Database.Initialize(force: true); }
 
             GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();

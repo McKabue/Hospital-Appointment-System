@@ -44,6 +44,7 @@ namespace Hos.Models
     public class OptionsData
     {
         public int OptionsDataID { get; set; }
+        public virtual IList<UserProfile> User { get; set; }
         public virtual IList<Faculty> Faculties { get; set; }
         public virtual IList<Stream> Streams { get; set; }
         public virtual IList<Medical_Type> Medical_Types { get; set; }

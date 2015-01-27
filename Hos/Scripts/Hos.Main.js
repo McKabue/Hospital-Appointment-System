@@ -1,10 +1,71 @@
 ﻿//jQuery(document).ready(function ($) {
 
 
+    function Stream(Name) {
+        var self = this;
+        self.name = ko.observable(Name);
+    }
 
+    function Falcuty(Name, Courses) {
+        var self = this;
+        self.name = ko.observable(Name);
+        self.courses = ko.observable(Courses);
+    }
+
+    function Medical_Types(Name, Available_Doctors) {
+        var self = this;
+        self.name = ko.observable(Name);
+        self.available_Doctors = ko.observable(Available_Doctors);
+    }
 
     var viewModel = function () {
         var self = this;
+        self.stream = ko.observableArray();
+        self.falcuty = ko.observableArray();
+        self.course = ko.observable();
+        self.medical_Type = ko.observableArray();
+        self.available_Doctor = ko.observable();
+        self.loadOptionsData = function () {
+            $.ajax({
+                url: "/api/Appointment/Data",
+                cache: false,
+                type: 'GET',
+                success: function () { },
+                error: function (err) { },
+                statusCode: {
+                    200: function (datas) {
+                        $.each(datas, function (index, data) {
+                            //alert(ko.toJSON(data.User));
+                            $.each(data.User, function (index, user) {
+                                $('#firstName').val(user.FirstName).attr('disabled', true);
+                            });
+
+                            $.each(data.Streams, function (index, stream) {
+                                self.stream.push(new Stream(stream.Name));
+                            });
+
+                            $.each(data.Faculties, function (index, falcuty) {
+                                self.falcuty.push(new Falcuty(falcuty.Name, falcuty.Courses));
+                            });
+
+                            $.each(data.Medical_Types, function (index, medical_Type) {
+                                self.medical_Type.push(new Medical_Types(medical_Type.Name, medical_Type.Available_Doctors));
+                            });
+                        });
+                        
+                       
+                    },
+                    400: function () { alert("400:"); }
+                }
+            });
+        }
+
+
+
+
+
+
+
 
 
         self.GetToken = function (context) {
@@ -45,7 +106,7 @@
                     cache: false,
                     type: 'POST',
                     success: function () { },
-                    error: function (err) { },
+                    error: function (err) { alert(err); },
                     statusCode: {
                         200: function () { alert("200: User has been Added"); },
                         400: function () { alert("400: Bad request"); }
@@ -54,6 +115,10 @@
             }
         }
 
+
+
+
+        self.loadOptionsData();
     }
     ko.applyBindings(new viewModel());
 

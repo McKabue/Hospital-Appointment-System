@@ -21,6 +21,14 @@ namespace Hos.Controllers
             var result =(from optionsData in context.OptionsDatas.ToList()
                           select new
                           {
+                              User = from user in context.Users.Where(c => c.UserName == "IN16/20034/13").ToList()
+                                          select new
+                                          {
+                                              FirstName = user.FirstName,
+                                              LastName = user.LastName,
+                                              National_ID_Number = user.National_ID_Number,
+                                              Registration_Number = user.UserName
+                                          },
                               Faculties = from faculty in context.Faculties.ToList()
                                            select new
                                            {

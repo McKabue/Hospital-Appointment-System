@@ -10,11 +10,27 @@
 
 <script src="~/Scripts/jquery-2.1.1.min.js"></script>
 <script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/select2.min.js"></script>
 <script src="~/Scripts/knockout-3.2.0.js"></script>
 <script src="~/Scripts/Hos.Main.js"></script>
 <script>
-		$('.collapse').on('show.bs.collapse', function () {
-			$('.collapse.in').collapse('hide');
-		});
+    jQuery(document).ready(function ($) {
+        $('.collapse').on('show.bs.collapse', function () {
+            $('.collapse').collapse('hide');
+        });
+          
+        $("#tags1,#tags2").select2({
+            allowClear: true,
+            placeholder: "Write Tags Here...",
+            //createSearchChoice:function(term, data) {return {id:term, text:term};},
+            //createSearchChoice:function(term, data) { if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length===0) {return {id:term, text:term};} },
+            multiple: true,
+            tags: [],
+            tokenSeparators: [","]
+            //maximumInputLength: 15,
+            //maximumSelectionSize: 5
+            //data: [{id: 0, text: 'story', locked: true},{id: 1, text: 'bug'},{id: 2, text: 'task'}]
+        });
+    });
 </script>
 
