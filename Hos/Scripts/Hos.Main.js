@@ -6,7 +6,6 @@ function Program(Name, Years) {
         self.name = ko.observable(Name);
         self.years = ko.observable(Years);
         self.semesters = ko.observable();
-       // self.semester = ko.observable(Years.Semesters);
     }
 
     function Falcuty(Name, Courses) {
@@ -24,8 +23,6 @@ function Program(Name, Years) {
     var viewModel = function () {
         var self = this;
         self.program = ko.observableArray();
-        //self.year = ko.observableArray();
-        //self.Years = ko.observable();
         self.year = ko.observable();
         self.semesters = ko.observable();
         self.falcuty = ko.observableArray();
