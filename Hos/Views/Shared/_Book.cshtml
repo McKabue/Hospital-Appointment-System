@@ -63,12 +63,38 @@
 
         <div class="row form-group">
             <div class="col-md-3">
-                <label style="font-size:1.5em;" class="pull-right">Stream</label>
+                <label style="font-size:1.5em;" class="pull-right">Program</label>
             </div>
             <div class="col-md-9">
                 <div class="">
                     <div class="" style="padding:0px;">
-                        <select id="Faculty" data-bind='options: stream, optionsText: "name", optionsCaption: "Select Stream"' class="form-control" style="width: 300px;"></select>
+                        <select id="Faculty" data-bind='options: program, optionsText: "name", optionsCaption: "Select Program", value: year ' class="form-control" style="width: 300px;"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-bind="with: year" class="row form-group">
+            <div class="col-md-3">
+                <label style="font-size:1.5em;" class="pull-right">Year</label>
+            </div>
+            <div class="col-md-9">
+                <div class="">
+                    <div class="" style="padding:0;">
+                        <select data-bind='options: years, optionsText: "Name", optionsCaption: "Select...", value: $parent.semesters' id="course" class="form-control" style="width: 300px;"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-bind="with: semesters" class="row form-group">
+            <div class="col-md-3">
+                <label style="font-size:1.5em;" class="pull-right">Semester</label>
+            </div>
+            <div class="col-md-9">
+                <div class="">
+                    <div class="" style="padding:0;">
+                        <select data-bind='options: Semesters, optionsText: "Name", optionsCaption: "Select..."' id="course" class="form-control" style="width: 300px;"></select>
                     </div>
                 </div>
             </div>

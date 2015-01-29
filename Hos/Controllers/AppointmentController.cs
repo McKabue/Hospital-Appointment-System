@@ -41,11 +41,23 @@ namespace Hos.Controllers
                                                              Name = course.Name
                                                          }
                                            },
-                              Streams = from stream in context.Streams.ToList()
+                              Programs = from program in context.Programs.ToList()
                                           select new
                                           {
-                                              StreamID = stream.StreamID,
-                                              Name = stream.Name
+                                              ProgramID = program.ProgramID,
+                                              Name = program.Name,
+                                              Years = from year in context.Years.Where(c => c.ProgramID == program.ProgramID).ToList()
+                                                      select new
+                                                      {
+                                                          YearID = year.YearID,
+                                                          Name = year.Name,
+                                                          Semesters = from semester in context.Semesters.Where(c => c.YearID == year.YearID).ToList()
+                                                                      select new
+                                                                      {
+                                                                          SemesterID = semester.SemesterID,
+                                                                          Name = semester.Name
+                                                                      }
+                                                      }
                                           },
                               
                               Medical_Types = from medical_Type in context.Medical_Types.ToList()

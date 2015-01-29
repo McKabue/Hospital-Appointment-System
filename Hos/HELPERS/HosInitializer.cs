@@ -85,6 +85,172 @@ namespace Hos.HELPERS
             };
             optionsData.ForEach(s => context.OptionsDatas.Add(s));
             context.SaveChanges();
+
+            ////////////////////////////////////////////////////////////////////////////1
+            var programs = new List<Program> 
+            { 
+                new Program {
+                    ProgramID = 1,
+                    Name = "JAB"
+                },
+                new Program {
+                    ProgramID = 2,
+                    Name = "SSP"
+                }
+            };
+            programs.ForEach(s => context.Programs.Add(s));
+            context.SaveChanges();
+
+            ////////////////////////////////////////////////////////////////////////////2
+            var years = new List<Year> 
+            { 
+                new Year {
+                    YearID = 1,
+                    Name = "ONE",
+                    ProgramID = 1
+                },
+                new Year {
+                    YearID = 2,
+                    Name = "TWO",
+                    ProgramID = 1
+                },
+                new Year {
+                    YearID = 3,
+                    Name = "THREE",
+                    ProgramID = 1
+                },
+                new Year {
+                    YearID = 4,
+                    Name = "FOUR",
+                    ProgramID = 1
+                },
+                new Year {
+                    YearID = 5,
+                    Name = "FIVE",
+                    ProgramID = 1
+                },
+                new Year {
+                    YearID = 6,
+                    Name = "ONE",
+                    ProgramID = 2
+                },
+                new Year {
+                    YearID = 7,
+                    Name = "TWO",
+                    ProgramID = 2
+                },
+                new Year {
+                    YearID = 8,
+                    Name = "THREE",
+                    ProgramID = 2
+                },
+                new Year {
+                    YearID = 9,
+                    Name = "FOUR",
+                    ProgramID = 2
+                }
+            };
+            years.ForEach(s => context.Years.Add(s));
+            context.SaveChanges();
+
+            ////////////////////////////////////////////////////////////////////////////3
+            var semesters = new List<Semester> 
+            { 
+                new Semester {
+                    Name = "Semester 1",
+                    YearID = 1
+                },
+                new Semester {
+                    Name = "Semester 2",
+                    YearID = 1
+                },
+                new Semester {
+                    Name = "Semester 1",
+                    YearID = 2
+                },
+                new Semester {
+                    Name = "Semester 2",
+                    YearID = 2
+                },
+                new Semester {
+                    Name = "Semester 1",
+                    YearID = 3
+                },
+                new Semester {
+                    Name = "Semester 2",
+                    YearID = 3
+                },
+                new Semester {
+                    Name = "Semester 1",
+                    YearID = 4
+                },
+                new Semester {
+                    Name = "Semester 2",
+                    YearID = 4
+                },
+                new Semester {
+                    Name = "Semester 1",
+                    YearID = 5
+                },
+                new Semester {
+                    Name = "Semester 2",
+                    YearID = 5
+                },
+
+
+
+                new Semester {
+                    Name = "Semester 1",
+                    YearID = 6
+                },
+                new Semester {
+                    Name = "Semester 2",
+                    YearID = 6
+                },
+                new Semester {
+                    Name = "Semester 3",
+                    YearID = 6
+                },
+                new Semester {
+                    Name = "Semester 1",
+                    YearID = 7
+                },
+                new Semester {
+                    Name = "Semester 2",
+                    YearID = 7
+                },
+                new Semester {
+                    Name = "Semester 3",
+                    YearID = 7
+                },
+                new Semester {
+                    Name = "Semester 1",
+                    YearID = 8
+                },
+                new Semester {
+                    Name = "Semester 2",
+                    YearID = 8
+                },
+                new Semester {
+                    Name = "Semester 3",
+                    YearID = 8
+                },
+                new Semester {
+                    Name = "Semester 1",
+                    YearID = 9
+                },
+                new Semester {
+                    Name = "Semester 2",
+                    YearID = 9
+                },
+                new Semester {
+                    Name = "Semester 3",
+                    YearID = 9
+                }
+            };
+            semesters.ForEach(s => context.Semesters.Add(s));
+            context.SaveChanges();
+
             ///////////////////////////////////////////////////////////////////////////////////
             var faculty = new List<Faculty> 
             { 
@@ -108,35 +274,7 @@ namespace Hos.HELPERS
             context.SaveChanges();
 
             ////////////////////////////////////////////////////////////////////////////////
-            var stream = new List<Stream> 
-            { 
-                new Stream {
-                    Name = "Year 1, Semester 1"
-                },
-                new Stream {
-                    Name = "Year 1, Semester 2"
-                },
-                new Stream {
-                    Name = "Year 2, Semester 1"
-                },
-                new Stream {
-                    Name = "Year 2, Semester 2"
-                },
-                new Stream {
-                    Name = "Year 3, Semester 1"
-                },
-                new Stream {
-                    Name = "Year 3, Semester 2"
-                },
-                new Stream {
-                    Name = "Year 4, Semester 1"
-                },
-                new Stream {
-                    Name = "Year 4, Semester 2"
-                }
-            };
-            stream.ForEach(s => context.Streams.Add(s));
-            context.SaveChanges();
+            
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             var course = new List<Course> 

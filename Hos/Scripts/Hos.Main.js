@@ -1,9 +1,12 @@
 ﻿//jQuery(document).ready(function ($) {
 
 
-    function Stream(Name) {
+function Program(Name, Years) {
         var self = this;
         self.name = ko.observable(Name);
+        self.years = ko.observable(Years);
+        self.semesters = ko.observable();
+       // self.semester = ko.observable(Years.Semesters);
     }
 
     function Falcuty(Name, Courses) {
@@ -20,7 +23,11 @@
 
     var viewModel = function () {
         var self = this;
-        self.stream = ko.observableArray();
+        self.program = ko.observableArray();
+        //self.year = ko.observableArray();
+        //self.Years = ko.observable();
+        self.year = ko.observable();
+        self.semesters = ko.observable();
         self.falcuty = ko.observableArray();
         self.course = ko.observable();
         self.medical_Type = ko.observableArray();
@@ -40,8 +47,12 @@
                                 $('#firstName').val(user.FirstName).attr('disabled', true);
                             });
 
-                            $.each(data.Streams, function (index, stream) {
-                                self.stream.push(new Stream(stream.Name));
+                            $.each(data.Programs, function (index, program) {
+                                self.program.push(new Program(program.Name, program.Years));
+
+                                //$.each(program.Years, function (index, year) {
+                                //    self.year.push(new Year(year.Semesters));
+                                //});
                             });
 
                             $.each(data.Faculties, function (index, falcuty) {

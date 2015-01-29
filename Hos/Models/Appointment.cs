@@ -46,20 +46,48 @@ namespace Hos.Models
         public int OptionsDataID { get; set; }
         public virtual IList<UserProfile> User { get; set; }
         public virtual IList<Faculty> Faculties { get; set; }
-        public virtual IList<Stream> Streams { get; set; }
+        public virtual IList<Program> Programs { get; set; }
         public virtual IList<Medical_Type> Medical_Types { get; set; }
     }
+   
+
+    /*public class Stream
+    {
+        public int StreamID { get; set; }
+        public string Name { get; set; }
+    }*/
+
+    public class Program
+    {
+        public int ProgramID { get; set; }
+        public string Name { get; set; }
+        public virtual IList<Year> Years { get; set; }
+    }
+
+    public class Year
+    {
+        public int YearID { get; set; }
+        public string Name { get; set; }
+        public int ProgramID { get; set; }
+        public virtual IList<Semester> Semesters { get; set; }
+    }
+
+    public class Semester
+    {
+        public int SemesterID { get; set; }
+        public string Name { get; set; }
+        public int YearID { get; set; }
+    }
+
+
+
+
+
     public class Faculty
     {
         public int FacultyID { get; set; }
         public string Name { get; set; }
         public virtual IList<Course> Courses { get; set; }
-    }
-
-    public class Stream
-    {
-        public int StreamID { get; set; }
-        public string Name { get; set; }
     }
 
     public class Course
