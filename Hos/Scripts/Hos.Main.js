@@ -65,24 +65,26 @@
             var feelings = ko.toJSON($('#tags1', context).select2("val"));
             var causes = ko.toJSON($('#tags2', context).select2("val"));
         
-            if (!$('#surName', context).val() == "" && !$('#firstName', context).val() == "" && !$('#lastName', context).val() == "" && !$('#National_ID_Number', context).val() == "" && !$('#Registration_Number', context).val() == "" && !$('#Birth_Date', context).val() == "" && !$('#Program option:selected', context).text() == "" && !$('#Year option:selected', context).text() == "" && !$('#Semester option:selected', context).text() == "" && !$('#Faculty option:selected', context).text() == "" && !$('#Course option:selected', context).text() == "" && feelings !== "[]" && causes !== "[]" && !$('#Medical_Type option:selected', context).text() == "" && !$('#Doctor option:selected', context).text() == "") {
-
+           // if (!$('#surName', context).val() == "" && !$('#firstName', context).val() == "" && !$('#lastName', context).val() == "" && !$('#National_ID_Number', context).val() == "" && !$('#Registration_Number', context).val() == "" && !$('#Birth_Date', context).val() == "" && !$('#Program option:selected', context).text() == "" && !$('#Year option:selected', context).text() == "" && !$('#Semester option:selected', context).text() == "" && !$('#Faculty option:selected', context).text() == "" && !$('#Course option:selected', context).text() == "" && feelings !== "[]" && causes !== "[]" && !$('#Medical_Type option:selected', context).text() == "" && !$('#Doctor option:selected', context).text() == "") {
                 var JSONAppointmentData = "\"Surname\":\"" + $('#surName', context).val() + "\", \"FirstName\":\"" + $('#firstName', context).val() + "\", \"LastName\":\"" + $('#lastName', context).val() + "\", \"National_ID_Number\":\"" + $('#National_ID_Number', context).val() + "\", \"Registration_Number\":\"" + $('#Registration_Number', context).val() + "\", \"Birth_Date\":\"" + $('#Birth_Date', context).val() + "\", \"Program\":\"" + $('#Program option:selected', context).text() + "\", \"Year\":\"" + $('#Year option:selected', context).text() + "\", \"Semester\":\"" + $('#Semester option:selected', context).text() + "\", \"Faculty\":\"" + $('#Faculty option:selected', context).text() + "\", \"Course\":\"" + $('#Course option:selected', context).text() + "\", \"Medical_Type\":\"" + $('#Medical_Type option:selected', context).text() + "\", \"Doctor\":\"" + $('#Doctor option:selected', context).text() + "\", \"Feelings\":" + feelings + "\, \"Causes\":" + causes;
-                alert([JSONAppointmentData]);
+                //alert([JSONAppointmentData]);
                 $.ajax({
-                    url: "/api/account/register",
-                    data: [JSONAppointmentData],
+                    url: "/api/Appointment/AppointmentData",
+                    data: "Feelings=feelings",
                     ContentType: "application/x-www-form-urlencoded",
                     cache: false,
                     type: 'POST',
-                    success: function () { },
-                    error: function (err) { alert(err); },
+                    success: function () { $('#loginModal').modal('hide'); },
+                    error: function (err) { alert(ko.toJSON(err)); },
                     statusCode: {
-                        200: function () { alert("200: User has been Added"); },
-                        400: function () { alert("400: Bad request"); }
+                        200: function (data) { alert(ko.toJSON(data)); },
+                        401: function () {
+                            $('#loginModal').modal('show');
+                            $('#mustLogin').text('You need to First Login / Register');
+                        }
                     }
                 });
-            }
+           // }
         }
 
 

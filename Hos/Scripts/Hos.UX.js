@@ -36,4 +36,8 @@ var progress = setInterval(function () {
 
 ////////////////BOOTSTRAP SELECT///////////////////$('.selectpicker').selectpicker();
 
+////////////////LOGIN MODAL///////////////////
+$('.close').click(function(){
+    $('#mustLogin').text('');
+});
 //});

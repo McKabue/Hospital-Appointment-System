@@ -1,4 +1,6 @@
 ﻿using Hos.HELPERS;
+using Hos.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,13 +82,14 @@ namespace Hos.Controllers
 
         [Authorize]
         [Route("AppointmentData")]
-        public HttpResponseMessage Post()
+        public HttpResponseMessage PostAppointment(Appointment data)
         {
+           
 
+                HttpResponseMessage responseMessage = Request.CreateResponse(HttpStatusCode.OK, data);
+                return responseMessage;
+            
 
-
-            HttpResponseMessage responseMessage = Request.CreateResponse(HttpStatusCode.OK);
-            return responseMessage;
         }
     }
 }

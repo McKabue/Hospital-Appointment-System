@@ -59,14 +59,15 @@
     </div>
     <!-- END OF ROGRESS BAR -->
     <!--login modal-->
-    <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div id="loginModal" class="modal fade" role="dialog" aria-hidden="true">
         <div style="width:500px;" class="modal-dialog">
-            <div id="headshot" class="modal-content">
+            <div id="" class="modal-content">
                 <div class="modal-header" style="padding-bottom:0px;">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                    <ul id="myTab3" class="nav nav-tabs" style="margin-top:30px;">
-                        <li class="active"><a href="#login" data-toggle="tab">Login</a></li>
-                        <li><a href="#register" data-toggle="tab">Register</a></li>
+                    <button type="button" class="close mustLogin" data-dismiss="modal" aria-hidden="true">X</button>
+                    <span id="mustLogin" style="font-size:1.5em;" class="text-danger mustLogin"></span>
+                    <ul id="myLoginTab" class="nav nav-tabs" style="margin-top:30px;">
+                        <li class="active"><a href="#login" data-parent="myTabContentLogin" data-toggle="tab">Login</a></li>
+                        <li><a href="#register" data-parent="myTabContentLogin" data-toggle="tab">Register</a></li>
                     </ul>
                 </div>
                 <div style="padding-left:5px;padding-right:5px;" class="modal-body">
