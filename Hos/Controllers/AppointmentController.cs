@@ -80,13 +80,14 @@ namespace Hos.Controllers
             return responseMessage;
         }
 
-        [Authorize]
+        //[Authorize]
         [Route("AppointmentData")]
-        public HttpResponseMessage PostAppointment(Appointment data)
+        public HttpResponseMessage PostAppointment(JObject data)
         {
-           
+            dynamic json = data;
 
-                HttpResponseMessage responseMessage = Request.CreateResponse(HttpStatusCode.OK, data);
+            
+            HttpResponseMessage responseMessage = Request.CreateResponse(HttpStatusCode.OK, data);
                 return responseMessage;
             
 
