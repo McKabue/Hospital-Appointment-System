@@ -22,8 +22,16 @@ namespace Hos
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/otherScripts").Include(
+                     // "~/Scripts/bootstrap-select.js",
+                      "~/Scripts/select2.min.js",
+                      "~/Scripts/knockout-3.2.0.js",
+                      "~/Scripts/Hos.Main.js",
+                      "~/Scripts/Hos.UX.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                     // "~/Content/bootstrap-select.css",
                       "~/Content/css/select2.css",
                       "~/Content/site.css"));
         }

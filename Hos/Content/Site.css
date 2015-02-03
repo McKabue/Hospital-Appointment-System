@@ -49,22 +49,23 @@ input.largerCheckbox
 	color: #999;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-.modal-content{
-	background: #eee;
+.progress-bar.animate {
+	width: 100%;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .modal-dialog {
  width: 350px;

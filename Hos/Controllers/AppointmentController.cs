@@ -77,5 +77,16 @@ namespace Hos.Controllers
             responseMessage = Request.CreateResponse(HttpStatusCode.OK, result);
             return responseMessage;
         }
+
+        [Authorize]
+        [Route("AppointmentData")]
+        public HttpResponseMessage Post()
+        {
+
+
+
+            HttpResponseMessage responseMessage = Request.CreateResponse(HttpStatusCode.OK);
+            return responseMessage;
+        }
     }
 }
