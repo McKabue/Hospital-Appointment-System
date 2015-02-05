@@ -59,12 +59,12 @@
     </div>
     <!-- END OF ROGRESS BAR -->
     <!--login modal-->
-    <div id="loginModal" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="loginModal" class="modal" role="dialog" aria-hidden="true">
         <div style="width:500px;" class="modal-dialog">
             <div id="" class="modal-content">
                 <div class="modal-header" style="padding-bottom:0px;">
-                    <button type="button" class="close mustLogin" data-dismiss="modal" aria-hidden="true">X</button>
-                    <span id="mustLogin" style="font-size:1.5em;" class="text-danger mustLogin"></span>
+                    <button type="button" class="close mustLogin" data-dismiss="modal" aria-hidden="true"><i class="glyphicon glyphicon-remove-circle"></i></button>
+                    <br/><span id="mustLogin" style="font-size:1.5em;" class="text-danger mustLogin"></span>
                     <ul id="myLoginTab" class="nav nav-tabs" style="margin-top:30px;">
                         <li class="active"><a href="#login" data-parent="myTabContentLogin" data-toggle="tab">Login</a></li>
                         <li><a href="#register" data-parent="myTabContentLogin" data-toggle="tab">Register</a></li>
@@ -77,14 +77,14 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span style="width:200px;" class="input-group-addon">Reg. Number</span>
-                                        <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="firstname">
+                                        <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="loginRegistrationNumber">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span style="width:200px;" class="input-group-addon">Password</span>
-                                        <input style="width: 300px;" ffpdm="4j1x06h10f6jxmd6j6urs" id="passwordInput" placeholder="Password" class="form-control" type="password" name="password">
+                                        <input style="width: 300px;" ffpdm="4j1x06h10f6jxmd6j6urs" placeholder="Password" class="form-control" type="password" name="loginPassword">
                                     </div>
                                 </div>
 
@@ -100,7 +100,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span style="width:200px;" class="input-group-addon">SurName</span>
-                                        <input style="width: 300px;" placeholder="SurName" class="form-control" name="firstname">
+                                        <input style="width: 300px;" placeholder="SurName" class="form-control" name="surname">
                                     </div>
                                 </div>
 
@@ -121,7 +121,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span style="width:200px;" class="input-group-addon">Reg. Number</span>
-                                        <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="lastname">
+                                        <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="registration_number">
                                     </div>
                                 </div>
 

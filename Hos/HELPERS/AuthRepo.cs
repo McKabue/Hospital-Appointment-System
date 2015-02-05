@@ -25,7 +25,7 @@ namespace Hos.HELPERS
 
         public async Task<IdentityResult> RegisterUser(UserModel userModel)
         {
-            var result = _userManager.Create(new UserProfile() { UserName = userModel.UserName, PasswordHash = hasher.HashPassword(userModel.Password) });
+            var result = _userManager.Create(new UserProfile() { FirstName = userModel.FirstName, LastName = userModel.LastName, National_ID_Number = userModel.National_ID_Number, UserName = userModel.UserName, PasswordHash = hasher.HashPassword(userModel.Password) });
             return result;
         }
 

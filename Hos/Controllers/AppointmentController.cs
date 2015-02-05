@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Hos.Controllers
@@ -80,16 +81,73 @@ namespace Hos.Controllers
             return responseMessage;
         }
 
-        //[Authorize]
+        [Authorize]
         [Route("AppointmentData")]
-        public HttpResponseMessage PostAppointment(JObject data)
+        public async Task<IHttpActionResult> PostAppointment(JObject data)
         {
             dynamic json = data;
 
+            var appointment = 
+                new Appointment {
+                    Registration_Number = json.Registration_Number,
+                    Birth_Date = DateTime.Parse("1992-09-03"),
+                    Program = json.Program,
+                    Year = json.Year,
+                    Semester = json.Semester,
+                    Faculty = json.Faculty,
+                    Course = json.Course,
+                    Medical_Type = json.Medical_Type,
+                    Available_Doctor = json.Doctor
+                    //Birth_Date = DateTime.Parse(json.Birth_Date),
+                    //Program = json.Program,
+                    //Year = json.Year,
+                    //Semester = json.Semester,
+                    //Faculty = json.Faculty,
+                    //Course = json.Course,
+                    //Medical_Type = json.Medical_Type,
+                    //Available_Doctor = json.Doctor
+                
+            };
+            context.Appointments.Add(appointment);
+            context.SaveChanges();
+
+            if (json.Feelings != null)
+            {
+                foreach (var feeling in json.Feelings)
+                {
+                    var feelings =
+                            new Feeling
+                            {
+                                FeelingBody = feeling,
+                                AppointmentID = appointment.AppointmentID
+                            };
+                    context.Feelings.Add(feelings);
+                    context.SaveChanges();
+                }
+            }
+
+            if (json.Possible_Causes != null)
+            {
+                foreach (var cause in json.Possible_Causes)
+                {
+                    var causes =
+                            new Possible_Cause
+                            {
+                                Possible_CauseBody = cause,
+                                AppointmentID = appointment.AppointmentID
+                            };
+                    context.Possible_Causes.Add(causes);
+                    context.SaveChanges();
+                }
+            }
             
-            HttpResponseMessage responseMessage = Request.CreateResponse(HttpStatusCode.OK, data);
-                return responseMessage;
-            
+
+
+
+
+
+
+            return Ok(appointment.AppointmentID);
 
         }
     }

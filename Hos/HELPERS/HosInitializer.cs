@@ -27,7 +27,6 @@ namespace Hos.HELPERS
                     Registration_Number = "IN17/2004/37",
                     Birth_Date = DateTime.Parse("1992-09-03"),
                     Faculty = "FIST",
-                    Stream  = "Year 3, Semester 2",
                     Course = "Applied Computer Science",
                     Medical_Type = "General",
                     Available_Doctor = "Dr. Kamau"

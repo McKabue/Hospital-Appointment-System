@@ -12,8 +12,12 @@ namespace Hos.Models
         public int AppointmentID { get; set; }
         public string Registration_Number { get; set; }
         public DateTime Birth_Date { get; set; }
+
+        public string Program { get; set; }
+        public string Year { get; set; }
+        public string Semester { get; set; }
+
         public string Faculty { get; set; }
-        public string Stream { get; set; }
         public string Course { get; set; }
         public string Medical_Type { get; set; }
         public string Available_Doctor { get; set; }
