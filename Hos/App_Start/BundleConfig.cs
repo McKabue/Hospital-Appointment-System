@@ -27,7 +27,8 @@ namespace Hos
                       "~/Scripts/select2.min.js",
                       "~/Scripts/knockout-3.2.0.js",
                       "~/Scripts/Hos.Main.js",
-                      "~/Scripts/Hos.UX.js"));
+                      "~/Scripts/Hos.UX.js",
+                      "~/Scripts/jquery.cookie.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

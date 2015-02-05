@@ -1,7 +1,5 @@
 ﻿//jQuery(document).ready(function ($) {
 
-var token;
-
 
     function Program(Name, Years) {
         var self = this;
@@ -79,7 +77,7 @@ var token;
                     dataType: 'json',
                     ContentType: "application/json",
                     cache: false,
-                    headers: { authorization: "Bearer   " + token },
+                    headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
                     type: 'POST',
                     success: function () { $('#loginModal').modal('hide'); },
                     error: function (err) { alert(ko.toJSON(err)); },
@@ -125,13 +123,11 @@ var token;
                     cache: false,
                     type: 'POST',
                     success: function (result) {
-                        alert(ko.toJSON(result));
-                        token = result.access_token;
-                        alert(token);
-                        //var kookie = result.access_token;
-                        //$.removeCookie('cookieToken', { path: '/' });
-                        //$.cookie('cookieToken', kookie, { expires: 1, path: '/' });
-                        // $('#token').text(token);
+                       // alert(ko.toJSON(result));
+                        var tokenCookie = result.access_token;
+                        $.removeCookie('cookieToken', { path: '/' });
+                        $.cookie('cookieToken', tokenCookie, { expires: 1, path: '/' });
+                        alert($.cookie('cookieToken'));
                     },
                     error: function () {
                         alert("Error");
