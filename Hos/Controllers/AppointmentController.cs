@@ -16,6 +16,8 @@ namespace Hos.Controllers
     {
         private HosContext context = new HosContext();
 
+        [AllowAnonymous]
+        //[Authorize]
         [Route("Data")]
         public HttpResponseMessage Get()
         {
@@ -24,7 +26,7 @@ namespace Hos.Controllers
             var result =(from optionsData in context.OptionsDatas.ToList()
                           select new
                           {
-                              User = from user in context.Users.Where(c => c.UserName == "IN16/20034/13").ToList()
+                              User = from user in context.Users.Where(c => c.UserName == User.Identity.Name).ToList()
                                           select new
                                           {
                                               FirstName = user.FirstName,

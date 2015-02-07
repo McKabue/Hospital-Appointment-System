@@ -1,4 +1,4 @@
-﻿//jQuery(document).ready(function ($) {
+﻿jQuery(document).ready(function ($) {
 
 
     function Program(Name, Years) {
@@ -28,9 +28,13 @@
         self.available_Doctor = ko.observable();
 
         self.loadOptionsData = function () {
+            self.program([]);
+            self.falcuty([]);
+            self.medical_Type([]);
             $.ajax({
                 url: "/api/Appointment/Data",
                 cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
                 type: 'GET',
                 success: function () { },
                 error: function (err) { },
@@ -46,6 +50,9 @@
                             //alert(ko.toJSON(data.User));
                             $.each(data.User, function (index, user) {
                                 $('#firstName').val(user.FirstName).attr('disabled', true);
+                                $('#lastName').val(user.LastName).attr('disabled', true);
+                                $('#National_ID_Number').val(user.National_ID_Number).attr('disabled', true);
+                                $('#Registration_Number').val(user.Registration_Number).attr('disabled', true);
                             });
                             $.each(data.Programs, function (index, program) {
                                 self.program.push(new Program(program.Name, program.Years));
@@ -58,7 +65,11 @@
                             });
                         });
                     },
-                    400: function () { alert("400:"); }
+                    400: function () { alert("400:"); },
+                    401: function () {
+                        clearInterval(progress);
+                        $('#pleaseWaitDialog').modal('hide');
+                    }
                 }
             });
         }
@@ -135,6 +146,7 @@
                     statusCode: {
                         200: function () {
                             $('#loginModal').modal('hide');
+                            self.loadOptionsData();
                         },
                         400: function () { alert("400: Bad request"); }
                     }
@@ -166,4 +178,6 @@
         self.loadOptionsData();
     }
     ko.applyBindings(new viewModel());
-//});
+
+
+});
