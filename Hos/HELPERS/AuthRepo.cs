@@ -25,16 +25,23 @@ namespace Hos.HELPERS
 
         public async Task<IdentityResult> RegisterUser(UserModel userModel)
         {
-            var result = _userManager.Create(new UserProfile() { FirstName = userModel.FirstName, LastName = userModel.LastName, National_ID_Number = userModel.National_ID_Number, UserName = userModel.UserName, PasswordHash = hasher.HashPassword(userModel.Password) });
+            var result = _userManager.Create(new UserProfile() { SurName = userModel.SurName, FirstName = userModel.FirstName, LastName = userModel.LastName, National_ID_Number = userModel.National_ID_Number, UserName = userModel.UserName, RoleName = userModel.RoleName, PasswordHash = hasher.HashPassword(userModel.Password) });
             return result;
         }
 
-        public async Task<IdentityUser> FindUser(string userName, string password)
+        public async Task<UserProfile> FindUser(string userName, string password)
         {
-            IdentityUser user = await _userManager.FindAsync(userName, password);
+            UserProfile user = await _userManager.FindAsync(userName, password);
 
             return user;
         }
+
+        /*public async Task<UserProfile> FindByName(string userName)
+        {
+            UserProfile user = await _userManager.FindByNameAsync(userName);
+            return user;
+
+        }*/
 
         public async Task<IdentityUser> FindAsync(UserLoginInfo loginInfo)
         {

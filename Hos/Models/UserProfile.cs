@@ -11,5 +11,8 @@ namespace Hos.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int National_ID_Number { get; set; }
+        public string RoleName { get; set; }
+
+        public string SurName { get; set; }
     }
 }

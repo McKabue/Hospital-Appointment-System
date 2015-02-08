@@ -128,6 +128,8 @@ namespace Hos.HELPERS
                     Name = "FIVE",
                     ProgramID = 1
                 },
+
+
                 new Year {
                     YearID = 6,
                     Name = "ONE",
@@ -146,6 +148,11 @@ namespace Hos.HELPERS
                 new Year {
                     YearID = 9,
                     Name = "FOUR",
+                    ProgramID = 2
+                },
+                new Year {
+                    YearID = 10,
+                    Name = "FIVE",
                     ProgramID = 2
                 }
             };
@@ -207,19 +214,11 @@ namespace Hos.HELPERS
                     YearID = 6
                 },
                 new Semester {
-                    Name = "Semester 3",
-                    YearID = 6
-                },
-                new Semester {
                     Name = "Semester 1",
                     YearID = 7
                 },
                 new Semester {
                     Name = "Semester 2",
-                    YearID = 7
-                },
-                new Semester {
-                    Name = "Semester 3",
                     YearID = 7
                 },
                 new Semester {
@@ -231,10 +230,6 @@ namespace Hos.HELPERS
                     YearID = 8
                 },
                 new Semester {
-                    Name = "Semester 3",
-                    YearID = 8
-                },
-                new Semester {
                     Name = "Semester 1",
                     YearID = 9
                 },
@@ -243,8 +238,12 @@ namespace Hos.HELPERS
                     YearID = 9
                 },
                 new Semester {
-                    Name = "Semester 3",
-                    YearID = 9
+                    Name = "Semester 1",
+                    YearID = 10
+                },
+                new Semester {
+                    Name = "Semester 2",
+                    YearID = 10
                 }
             };
             semesters.ForEach(s => context.Semesters.Add(s));

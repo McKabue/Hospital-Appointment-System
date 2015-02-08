@@ -49,6 +49,7 @@
                         $.each(datas, function (index, data) {
                             //alert(ko.toJSON(data.User));
                             $.each(data.User, function (index, user) {
+                                $('#surName').val(user.SurName).attr('disabled', true);
                                 $('#firstName').val(user.FirstName).attr('disabled', true);
                                 $('#lastName').val(user.LastName).attr('disabled', true);
                                 $('#National_ID_Number').val(user.National_ID_Number).attr('disabled', true);
@@ -83,7 +84,7 @@
                 var JSONAppointmentData2 = { "Surname": $('#surName', context).val(), "FirstName": $('#firstName', context).val(), "LastName": $('#lastName', context).val(), "National_ID_Number": $('#National_ID_Number', context).val(), "Registration_Number": $('#Registration_Number', context).val(), "Birth_Date": $('#Birth_Date', context).val(), "Program": $('#Program option:selected', context).text(), "Year": $('#Year option:selected', context).text(), "Semester": $('#Semester option:selected', context).text(), "Faculty": $('#Faculty option:selected', context).text(), "Course": $('#Course option:selected', context).text(), "Medical_Type": $('#Medical_Type option:selected', context).text(), "Doctor": $('#Doctor option:selected', context).text(), "Feelings": $('#tags1', context).select2("val"), "Possible_Causes": $('#tags2', context).select2("val") };
             // alert(JSONAppointmentData);
                 $.ajax({
-                    url: "/api/Appointment/AppointmentData",
+                    url: "/api/Appointment/AppointmentData/Save",
                     data: JSONAppointmentData2, // {"Registration_Number": "ID475478/RUR", "JObject": [{ "Registration_Number": "29", "value": "Country" }, { "Registration_Number": "30", "value": "4,3,5" }] },
                     dataType: 'json',
                     ContentType: "application/json",
@@ -154,8 +155,8 @@
             }
         }
         self.SignUp = function (context) {
-            if (!$('input[name="surname"]', context).val() == "" && !$('input[name="firstname"]', context).val() == "" && !$('input[name="lastname"]', context).val() == "" && !$('input[name="registration_number"]', context).val() == "" && !$('input[name="password"]', context).val() == "" && !$('input[name="confirmpassword"]', context).val() == "") {
-                var SignUpData = "surName=" + $('input[name="surname"]', context).val() + "&firstName=" + $('input[name="firstname"]', context).val() + "&lastName=" + $('input[name="lastname"]', context).val() + "&userName=" + $('input[name="registration_number"]', context).val() + "&password=" + $('input[name="password"]', context).val() + "&confirmPassword=" + $('input[name="confirmpassword"]', context).val();
+            if (!$('input[name="surname"]', context).val() == "" && !$('input[name="firstname"]', context).val() == "" && !$('input[name="lastname"]', context).val() == "" && !$('input[name="registration_number"]', context).val() == "" && !$('input[name="national_id_number"]', context).val() == "" && !$('input[name="roleName"]', context).val() == "" && !$('input[name="password"]', context).val() == "" && !$('input[name="confirmpassword"]', context).val() == "") {
+                var SignUpData = "surName=" + $('input[name="surname"]', context).val() + "&firstName=" + $('input[name="firstname"]', context).val() + "&lastName=" + $('input[name="lastname"]', context).val() + "&userName=" + $('input[name="registration_number"]', context).val() + "&National_ID_Number=" + $('input[name="national_id_number"]', context).val() + "&roleName=" + $('input[name="roleName"]', context).val() + "&password=" + $('input[name="password"]', context).val() + "&confirmPassword=" + $('input[name="confirmpassword"]', context).val();
                 alert(ko.toJSON(SignUpData));
                 $.ajax({
                     url: "/api/account/register",
@@ -164,7 +165,7 @@
                     cache: false,
                     type: 'POST',
                     success: function () { },
-                    error: function (err) { alert(err); },
+                    error: function (err) { alert(ko.toJSON(err)); },
                     statusCode: {
                         200: function () {
                             $('#mustLogin').text('You Registered Successfully; now You just need to login...');

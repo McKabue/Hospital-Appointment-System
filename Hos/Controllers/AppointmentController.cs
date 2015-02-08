@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -19,9 +20,8 @@ namespace Hos.Controllers
         [AllowAnonymous]
         //[Authorize]
         [Route("Data")]
-        public HttpResponseMessage Get()
+        public async Task<IHttpActionResult> Get()
         {
-            HttpResponseMessage responseMessage;
 
             var result =(from optionsData in context.OptionsDatas.ToList()
                           select new
@@ -29,6 +29,7 @@ namespace Hos.Controllers
                               User = from user in context.Users.Where(c => c.UserName == User.Identity.Name).ToList()
                                           select new
                                           {
+                                              SurName = user.SurName,
                                               FirstName = user.FirstName,
                                               LastName = user.LastName,
                                               National_ID_Number = user.National_ID_Number,
@@ -79,12 +80,11 @@ namespace Hos.Controllers
                                               }
                           }).AsEnumerable();
 
-            responseMessage = Request.CreateResponse(HttpStatusCode.OK, result);
-            return responseMessage;
+            return Ok(result);
         }
 
         [Authorize]
-        [Route("AppointmentData")]
+        [Route("AppointmentData/Save")]
         public async Task<IHttpActionResult> PostAppointment(JObject data)
         {
             dynamic json = data;
@@ -143,14 +143,138 @@ namespace Hos.Controllers
                 }
             }
             
-
-
-
-
-
-
+            
             return Ok(appointment.AppointmentID);
 
+        }
+
+
+        [Authorize]
+        [Route("AppointmentData/Edit")]
+        public async Task<IHttpActionResult> GetPutData()
+        {
+            var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+            var roleName = ((Claim)cp.Claims.Single(x => x.Type == "RoleName")).Value.ToString();
+
+            if (roleName == "STUDENT")
+            {
+                var result = (from appointment in context.Appointments.Where(c => c.Registration_Number == User.Identity.Name).ToList()
+                              select new
+                              {
+                                  User = from user in context.Users.Where(c => c.UserName == User.Identity.Name).ToList()
+                                         select new
+                                         {
+                                             SurName = user.SurName,
+                                             FirstName = user.FirstName,
+                                             LastName = user.LastName,
+                                             National_ID_Number = user.National_ID_Number,
+                                             Registration_Number = user.UserName
+                                         },
+                                  Program = appointment.Program,
+                                  Year = appointment.Year,
+                                  Semester = appointment.Semester,
+                                  Faculty = appointment.Faculty,
+                                  Course = appointment.Course,
+                                  Medical_Type = appointment.Medical_Type,
+                                  Available_Doctor = appointment.Available_Doctor,
+                                  Feelings = from feelings in context.Feelings.Where(c => c.AppointmentID == appointment.AppointmentID).ToList()
+                                             select new
+                                             {
+                                                 FeelingBody = feelings.FeelingBody
+                                             },
+                                  Possible_Causes = from possible_Causes in context.Possible_Causes.Where(c => c.AppointmentID == appointment.AppointmentID).ToList()
+                                                    select new
+                                                    {
+                                                        Possible_CauseBody = possible_Causes.Possible_CauseBody
+                                                    }
+                              }).AsEnumerable();
+                return Ok(result);
+            }
+
+            if (roleName == "DOCTOR")
+            {
+                var result = (from appointment in context.Appointments.ToList()
+                              select new
+                              {
+                                  //AppointmentID
+                                  /*User = from user in context.Users.Where(c => c.UserName == User.Identity.Name).ToList()
+                                         select new
+                                         {
+                                             SurName = user.SurName,
+                                             FirstName = user.FirstName,
+                                             LastName = user.LastName,
+                                             National_ID_Number = user.National_ID_Number,
+                                             Registration_Number = user.UserName
+                                         },*/
+                                  //Birth_Date
+                                  Program = appointment.Program,
+                                  Year = appointment.Year,
+                                  Semester = appointment.Semester,
+                                  Faculty = appointment.Faculty,
+                                  Course = appointment.Course,
+                                  Medical_Type = appointment.Medical_Type,
+                                  Available_Doctor = appointment.Available_Doctor,
+                                  Feelings = from feelings in context.Feelings.Where(c => c.AppointmentID == appointment.AppointmentID).ToList()
+                                             select new
+                                             {
+                                                 FeelingBody = feelings.FeelingBody
+                                             },
+                                  Possible_Causes = from possible_Causes in context.Possible_Causes.Where(c => c.AppointmentID == appointment.AppointmentID).ToList()
+                                                    select new
+                                                    {
+                                                        Possible_CauseBody = possible_Causes.Possible_CauseBody
+                                                    }
+                              }).AsEnumerable();
+                return Ok(result);
+            }
+
+            if (roleName == "ADMINISTRATOR")
+            {
+                var result = (from appointment in context.Appointments.Where(c => c.Registration_Number == User.Identity.Name).ToList()
+                              select new
+                              {
+                                  User = from user in context.Users.Where(c => c.UserName == User.Identity.Name).ToList()
+                                         select new
+                                         {
+                                             SurName = user.SurName,
+                                             FirstName = user.FirstName,
+                                             LastName = user.LastName,
+                                             National_ID_Number = user.National_ID_Number,
+                                             Registration_Number = user.UserName
+                                         },
+                                  Program = appointment.Program,
+                                  Year = appointment.Year,
+                                  Semester = appointment.Semester,
+                                  Faculty = appointment.Faculty,
+                                  Course = appointment.Course,
+                                  Medical_Type = appointment.Medical_Type,
+                                  Available_Doctor = appointment.Available_Doctor,
+                                  Feelings = from feelings in context.Feelings.Where(c => c.AppointmentID == appointment.AppointmentID).ToList()
+                                             select new
+                                             {
+                                                 FeelingBody = feelings.FeelingBody
+                                             },
+                                  Possible_Causes = from possible_Causes in context.Possible_Causes.Where(c => c.AppointmentID == appointment.AppointmentID).ToList()
+                                                    select new
+                                                    {
+                                                        Possible_CauseBody = possible_Causes.Possible_CauseBody
+                                                    }
+                              }).AsEnumerable();
+                return Ok(result);
+            }
+            else
+                return Ok();
+        }
+
+
+        [Authorize]
+        [Route("AppointmentData/Edit/Save")]
+        public async Task<IHttpActionResult> PutSave(JObject data)
+        {
+
+
+
+            return Ok();
         }
     }
 }

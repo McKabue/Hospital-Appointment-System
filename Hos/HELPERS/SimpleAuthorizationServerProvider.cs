@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Hos.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Collections.Generic;
@@ -23,21 +24,30 @@ namespace Hos.HELPERS
 
             using (AuthRepo _repo = new AuthRepo())
             {
-                IdentityUser user = await _repo.FindUser(context.UserName, context.Password);
+                UserProfile user = await _repo.FindUser(context.UserName, context.Password);
 
                 if (user == null)
                 {
                     context.SetError("invalid_grant", "The user name or password is incorrect.");
                     return;
                 }
+
+                /*var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.GivenName, user.FirstName),
+                };*/
+
+                var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+                identity.AddClaim(new Claim("sub", context.UserName));
+                identity.AddClaim(new Claim("role", "user"));
+                identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
+                identity.AddClaim(new Claim("RoleName", user.RoleName));
+
+                context.Validated(identity);
             }
 
-            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new Claim("sub", context.UserName));
-            identity.AddClaim(new Claim("role", "user"));
-            identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
 
-            context.Validated(identity);
+            
 
         }
     }
