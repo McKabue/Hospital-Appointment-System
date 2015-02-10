@@ -45,7 +45,7 @@
                             clearInterval(progress);
                             $('#pleaseWaitDialog').modal('hide');
                         }
-
+                        alert(ko.toJSON(datas));
                         $.each(datas, function (index, data) {
                             //alert(ko.toJSON(data.User));
                             $.each(data.User, function (index, user) {

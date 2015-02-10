@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.OData;
+using System.Web.Http.Results;
 
 namespace Hos.Controllers
 {
@@ -76,6 +78,7 @@ namespace Hos.Controllers
                                                                       {
                                                                           Available_DoctorID = available_Doctor.Available_DoctorID,
                                                                           Name = available_Doctor.Name
+                                                                          
                                                                       }
                                               }
                           }).AsEnumerable();
@@ -91,6 +94,7 @@ namespace Hos.Controllers
 
             var appointment = 
                 new Appointment {
+                    AppointmentDate = DateTime.UtcNow,
                     Registration_Number = json.Registration_Number,
                     Birth_Date = DateTime.Parse("1992-09-03"),
                     Program = json.Program,
@@ -150,11 +154,12 @@ namespace Hos.Controllers
 
 
         [Authorize]
-        [Route("AppointmentData/Edit")]
-        public async Task<IHttpActionResult> GetPutData()
+        [Route("Details")]
+        [EnableQuery]
+        public async Task<IHttpActionResult> GetDetails()
         {
             var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
-            var roleName = ((Claim)cp.Claims.Single(x => x.Type == "RoleName")).Value.ToString();
+            var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
 
             if (roleName == "STUDENT")
             {
@@ -262,14 +267,20 @@ namespace Hos.Controllers
                               }).AsEnumerable();
                 return Ok(result);
             }
+
+
             else
-                return Ok();
+            {
+                return NotFound();
+                //return new ResponseMessageResult(Request.CreateErrorResponse((HttpStatusCode)401, new HttpError("Yoe need to re-login again")));
+                //return Ok(statusCode(401));
+            }
         }
 
 
         [Authorize]
-        [Route("AppointmentData/Edit/Save")]
-        public async Task<IHttpActionResult> PutSave(JObject data)
+        [Route("Edit")]
+        public async Task<IHttpActionResult> PutEdit(JObject data)
         {
 
 

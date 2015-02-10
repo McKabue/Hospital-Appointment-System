@@ -10,8 +10,9 @@ namespace Hos.Models
     {
         [Key]
         public int AppointmentID { get; set; }
+        public DateTime? AppointmentDate { get; set; }
         public string Registration_Number { get; set; }
-        public DateTime Birth_Date { get; set; }
+        public DateTime? Birth_Date { get; set; }
 
         public string Program { get; set; }
         public string Year { get; set; }
@@ -112,6 +113,7 @@ namespace Hos.Models
     {
         public int Available_DoctorID { get; set; }
         public string Name { get; set; }
+        public string Doctor_UserName { get; set; }
         public int Medical_TypeID { get; set; }
     }
 }

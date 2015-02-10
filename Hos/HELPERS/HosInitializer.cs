@@ -16,8 +16,14 @@ namespace Hos.HELPERS
             var hasher = new PasswordHasher();
             var user = new UserManager<UserProfile>(new UserStore<UserProfile>(context));
             user.UserValidator = new UserValidator<UserProfile>(user) { AllowOnlyAlphanumericUserNames = false };
-            user.Create(new UserProfile() { FirstName = "kamaa", LastName = "john", UserName = "IN16/20034/13", Email = "jj@gmail.com", PasswordHash = hasher.HashPassword("1234567890") });
-            user.Create(new UserProfile() { FirstName = "kamaa2", LastName = "john2", UserName = "IN162006413", Email = "kk@gmail.com", PasswordHash = hasher.HashPassword("1234567890") });
+            user.Create(new UserProfile() { FirstName = "kamaa", LastName = "john", UserName = "IN16/20034/13", RoleName = "STUDENT", PasswordHash = hasher.HashPassword("1234567890") });
+            user.Create(new UserProfile() { FirstName = "kamaa2", LastName = "john2", UserName = "IN162006413", RoleName = "STUDENT", PasswordHash = hasher.HashPassword("1234567890") });
+
+            user.Create(new UserProfile() { FirstName = "Dr. Kamau", LastName = "john2", UserName = "Dr.Kamau", RoleName = "DOCTOR", PasswordHash = hasher.HashPassword("1234567890") });
+            user.Create(new UserProfile() { FirstName = "Dr. Nancy", LastName = "john2", UserName = "Dr.Nancy", RoleName = "DOCTOR", PasswordHash = hasher.HashPassword("1234567890") });
+            user.Create(new UserProfile() { FirstName = "Miss Rebecca", LastName = "john2", UserName = "MissRebecca", RoleName = "DOCTOR", PasswordHash = hasher.HashPassword("1234567890") });
+            user.Create(new UserProfile() { FirstName = "sister Moraa", LastName = "john2", UserName = "sisterMoraa", RoleName = "DOCTOR", PasswordHash = hasher.HashPassword("1234567890") });
+            user.Create(new UserProfile() { FirstName = "kamaa Again", LastName = "john2", UserName = "kamaaAgain", RoleName = "DOCTOR", PasswordHash = hasher.HashPassword("1234567890") });
             
             /////////////////////////////////////////////////////////////////////////////
             var appointments = new List<Appointment> 
@@ -328,22 +334,27 @@ namespace Hos.HELPERS
             { 
                 new Available_Doctor {
                     Name = "Dr. Kamau",
+                    Doctor_UserName = "Dr.Kamau",
                     Medical_TypeID = 1
                 },
                 new Available_Doctor {
                     Name = "Dr. Nancy",
+                    Doctor_UserName = "Dr.Nancy",
                     Medical_TypeID = 1
                 },
                 new Available_Doctor {
                     Name = "Miss Rebbecca",
+                    Doctor_UserName = "MissRebbecca",
                     Medical_TypeID = 3
                 },
                 new Available_Doctor {
                     Name = "Sister Moraa",
+                    Doctor_UserName = "sisterMoraa",
                     Medical_TypeID = 3
                 },
                 new Available_Doctor {
-                    Name = "Winfrey",
+                    Name = "Dr. Kamau A",
+                    Doctor_UserName = "kamaaAgain",
                     Medical_TypeID = 4
                 }
             };
