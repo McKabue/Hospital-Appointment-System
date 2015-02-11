@@ -122,6 +122,10 @@ $('.close').click(function(){
         }
     });
 
+////////////////LOGIN and LOGOUT switch///////////////////
+    /*if (!$.cookie('cookieToken') == null) {
+        $('#login a[href=#loginModal]').text('Logout');
+    }*/
 
 
 

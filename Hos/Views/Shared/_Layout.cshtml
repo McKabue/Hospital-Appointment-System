@@ -27,10 +27,10 @@
                     <li><a href="#">Home</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Appointments<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#book" tabindex="-1" data-toggle="tab">Book Appointment</a> </li>
-                            <li><a href="#reschedule" tabindex="-1" data-toggle="tab">Edit Appointments</a> </li>
-                            <li><a href="#cancel" tabindex="-1" data-toggle="tab">Administrator</a> </li>	
+                        <ul id="myTab" class="dropdown-menu">
+                            <li class=""><a href="#book" tabindex="-1" data-bind="click: loadOptionsData" data-toggle="tab">Book Appointment</a> </li>
+                            <li><a href="#reschedule" tabindex="-1" data-bind="click: loadEditData" data-toggle="tab">Edit Appointments</a> </li>
+                            <li><a href="#cancel" tabindex="-1" data-toggle="tab">Administrator</a> </li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -42,8 +42,8 @@
                         </ul>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a title="" data-toggle="modal" style="" href="#loginModal">Login/Register</a></li>
+                <ul id="login" class="nav navbar-nav navbar-right">
+                    <li><a title="" data-toggle="modal" style="" href="#loginModal" data-bind="click:logout">Login/Register</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>

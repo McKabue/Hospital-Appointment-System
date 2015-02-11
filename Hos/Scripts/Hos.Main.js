@@ -1,6 +1,5 @@
 ﻿jQuery(document).ready(function ($) {
 
-
     function Program(Name, Years) {
         var self = this;
         self.name = ko.observable(Name);
@@ -19,6 +18,13 @@
     }
     var viewModel = function () {
         var self = this;
+ 
+        self.cookieToken = ko.observable($.cookie('Registration'));
+        self.logout = function () {
+            $('#login a').removeAttr('href').text('Logout');
+            $.removeCookie('cookieToken', { path: '/' });
+        }
+
         self.program = ko.observableArray();
         self.year = ko.observable();
         self.semesters = ko.observable();
@@ -45,7 +51,7 @@
                             clearInterval(progress);
                             $('#pleaseWaitDialog').modal('hide');
                         }
-                        alert(ko.toJSON(datas));
+                        //alert(ko.toJSON(datas));
                         $.each(datas, function (index, data) {
                             //alert(ko.toJSON(data.User));
                             $.each(data.User, function (index, user) {
@@ -70,6 +76,15 @@
                     401: function () {
                         clearInterval(progress);
                         $('#pleaseWaitDialog').modal('hide');
+                    },
+                    666: function (doc) {
+                        //alert(ko.toJSON(doc));
+                        $('#myTab a[href=#reschedule]').tab('show');
+                        if (doc != null) {
+                            clearInterval(progress);
+                            $('#pleaseWaitDialog').modal('hide');
+                        }
+                        self.loadEditData();
                     }
                 }
             });
@@ -104,7 +119,37 @@
            // }
         }
 
+        self.loadEditData = function () {
+            $.ajax({
+                url: "/api/Appointment/Details",
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'GET',
+                success: function () { },
+                error: function (err) { },
+                statusCode: {
+                    200: function (edits) {
 
+                        alert(ko.toJSON(edits));
+
+                        $.each(edits, function (index, edit) {
+                            $.each(edit.User, function (index, user) {
+                                $('#surNameEdit').val(user.SurName).attr('disabled', true);
+                                $('#firstNameEdit').val(user.FirstName).attr('disabled', true);
+                                $('#lastNameEdit').val(user.LastName).attr('disabled', true);
+                                $('#Registration_NumberEdit').val(user.Registration_Number).attr('disabled', true);
+                                $('#National_ID_NumberEdit').val(user.National_ID_Number).attr('disabled', true);
+                             }); 
+                        });
+                    },
+                    400: function () { alert("400:"); },
+                    401: function () {
+                        $('#loginModal').modal('show');
+                        $('#mustLogin').text('You need to First Login / Register');
+                    }
+                }
+            });
+        }
 
 
 

@@ -14,76 +14,87 @@ using System.Web.Http.Results;
 
 namespace Hos.Controllers
 {
+    //[Authorize]
     [RoutePrefix("api/Appointment")]
     public class AppointmentController : ApiController
     {
         private HosContext context = new HosContext();
 
         [AllowAnonymous]
-        //[Authorize]
+        //[OverrideAuthorization]
         [Route("Data")]
         public async Task<IHttpActionResult> Get()
         {
+            //var roleName = "STUDENT";
+            var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+            var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
 
-            var result =(from optionsData in context.OptionsDatas.ToList()
-                          select new
-                          {
-                              User = from user in context.Users.Where(c => c.UserName == User.Identity.Name).ToList()
-                                          select new
-                                          {
-                                              SurName = user.SurName,
-                                              FirstName = user.FirstName,
-                                              LastName = user.LastName,
-                                              National_ID_Number = user.National_ID_Number,
-                                              Registration_Number = user.UserName
-                                          },
-                              Faculties = from faculty in context.Faculties.ToList()
-                                           select new
-                                           {
-                                               FacultyID = faculty.FacultyID,
-                                               Name = faculty.Name,
-                                               Courses = from course in context.Courses.Where(c => c.FacultyID == faculty.FacultyID).ToList()
-                                                         select new
-                                                         {
-                                                             CourseID = course.CourseID,
-                                                             Name = course.Name
-                                                         }
-                                           },
-                              Programs = from program in context.Programs.ToList()
-                                          select new
-                                          {
-                                              ProgramID = program.ProgramID,
-                                              Name = program.Name,
-                                              Years = from year in context.Years.Where(c => c.ProgramID == program.ProgramID).ToList()
-                                                      select new
-                                                      {
-                                                          YearID = year.YearID,
-                                                          Name = year.Name,
-                                                          Semesters = from semester in context.Semesters.Where(c => c.YearID == year.YearID).ToList()
-                                                                      select new
-                                                                      {
-                                                                          SemesterID = semester.SemesterID,
-                                                                          Name = semester.Name
-                                                                      }
-                                                      }
-                                          },
-                              
-                              Medical_Types = from medical_Type in context.Medical_Types.ToList()
+            if (roleName == null)
+            {
+
+
+                var result = (from optionsData in context.OptionsDatas.ToList()
+                              select new
+                              {
+                                  User = from user in context.Users.Where(c => c.UserName == User.Identity.Name).ToList()
+                                         select new
+                                         {
+                                             SurName = user.SurName,
+                                             FirstName = user.FirstName,
+                                             LastName = user.LastName,
+                                             National_ID_Number = user.National_ID_Number,
+                                             Registration_Number = user.UserName
+                                         },
+                                  Faculties = from faculty in context.Faculties.ToList()
                                               select new
                                               {
-                                                  Medical_TypeID = medical_Type.Medical_TypeID,
-                                                  Name = medical_Type.Name,
-                                                  Available_Doctors = from available_Doctor in context.Available_Doctors.Where(c => c.Medical_TypeID == medical_Type.Medical_TypeID).ToList()
-                                                                      select new
-                                                                      {
-                                                                          Available_DoctorID = available_Doctor.Available_DoctorID,
-                                                                          Name = available_Doctor.Name
-                                                                          
-                                                                      }
-                                              }
-                          }).AsEnumerable();
+                                                  FacultyID = faculty.FacultyID,
+                                                  Name = faculty.Name,
+                                                  Courses = from course in context.Courses.Where(c => c.FacultyID == faculty.FacultyID).ToList()
+                                                            select new
+                                                            {
+                                                                CourseID = course.CourseID,
+                                                                Name = course.Name
+                                                            }
+                                              },
+                                  Programs = from program in context.Programs.ToList()
+                                             select new
+                                             {
+                                                 ProgramID = program.ProgramID,
+                                                 Name = program.Name,
+                                                 Years = from year in context.Years.Where(c => c.ProgramID == program.ProgramID).ToList()
+                                                         select new
+                                                         {
+                                                             YearID = year.YearID,
+                                                             Name = year.Name,
+                                                             Semesters = from semester in context.Semesters.Where(c => c.YearID == year.YearID).ToList()
+                                                                         select new
+                                                                         {
+                                                                             SemesterID = semester.SemesterID,
+                                                                             Name = semester.Name
+                                                                         }
+                                                         }
+                                             },
 
-            return Ok(result);
+                                  Medical_Types = from medical_Type in context.Medical_Types.ToList()
+                                                  select new
+                                                  {
+                                                      Medical_TypeID = medical_Type.Medical_TypeID,
+                                                      Name = medical_Type.Name,
+                                                      Available_Doctors = from available_Doctor in context.Available_Doctors.Where(c => c.Medical_TypeID == medical_Type.Medical_TypeID).ToList()
+                                                                          select new
+                                                                          {
+                                                                              Available_DoctorID = available_Doctor.Available_DoctorID,
+                                                                              Name = available_Doctor.Name
+
+                                                                          }
+                                                  }
+                              }).AsEnumerable();
+
+                return Ok(result);
+            }else{
+                return new ResponseMessageResult(Request.CreateErrorResponse((HttpStatusCode)666, new HttpError("You are a Doctor")));
+            }
         }
 
         [Authorize]
@@ -155,7 +166,7 @@ namespace Hos.Controllers
 
         [Authorize]
         [Route("Details")]
-        [EnableQuery]
+        //[EnableQuery]
         public async Task<IHttpActionResult> GetDetails()
         {
             var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
@@ -201,8 +212,9 @@ namespace Hos.Controllers
                 var result = (from appointment in context.Appointments.ToList()
                               select new
                               {
-                                  //AppointmentID
-                                  /*User = from user in context.Users.Where(c => c.UserName == User.Identity.Name).ToList()
+                                  AppointmentID = appointment.AppointmentID,
+                                  AppointmentDate = appointment.AppointmentDate,
+                                  User = from user in context.Users.Where(c => c.UserName == appointment.Registration_Number).ToList()
                                          select new
                                          {
                                              SurName = user.SurName,
@@ -210,7 +222,7 @@ namespace Hos.Controllers
                                              LastName = user.LastName,
                                              National_ID_Number = user.National_ID_Number,
                                              Registration_Number = user.UserName
-                                         },*/
+                                         },
                                   //Birth_Date
                                   Program = appointment.Program,
                                   Year = appointment.Year,

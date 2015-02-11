@@ -43,12 +43,14 @@ namespace Hos.HELPERS
                 identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
                 identity.AddClaim(new Claim("RoleName", user.RoleName));
 
+            
+
                 context.Validated(identity);
             }
+        }
 
 
             
 
         }
-    }
 }
