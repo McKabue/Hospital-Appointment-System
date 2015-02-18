@@ -7,7 +7,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
+<body data-bind="style: { background: role() == 'DOCTOR' ? 'rgba(140, 91, 91, 1)' : '' }">
     <!-- Fixed navbar -->
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div style="font-size: 1.3em;  margin: 0 30px 0 30px;">
@@ -28,9 +28,8 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Appointments<b class="caret"></b></a>
                         <ul id="myTab" class="dropdown-menu">
-                            <li class=""><a href="#book" tabindex="-1" data-bind="click: loadOptionsData" data-toggle="tab">Book Appointment</a> </li>
-                            <li><a href="#reschedule" tabindex="-1" data-bind="click: loadEditData" data-toggle="tab">Edit Appointments</a> </li>
-                            <li><a href="#cancel" tabindex="-1" data-toggle="tab">Administrator</a> </li>
+                            <li class=""><a data-toggle="tab" href="#book" tabindex="-1" data-bind="click: loadOptionsData">Book Appointment</a> </li>
+                            <li><a data-toggle="tab" href="#reschedule" tabindex="-1" data-bind="click: loadEditData">Details</a> </li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -43,13 +42,13 @@
                     </li>
                 </ul>
                 <ul id="login" class="nav navbar-nav navbar-right">
-                    <li><a title="" data-toggle="modal" style="" href="#loginModal" data-bind="click:logout">Login/Register</a></li>
+                    <li><a title="" data-toggle="modal" style="" href="#loginModal" data-bind="html: user"></a></li>
+                    <li><a style="" href="" data-bind="visible: u() != null, click: logout">logout</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
     </div>
     <!-- END Fixed navbar -->
-
     <!-- PROGRESS BAR -->
     <div class="modal" role="dialog" aria-hidden="true" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
         <div style="margin-top:300px; width:800px;" class="modal-dialog">
@@ -64,15 +63,15 @@
             <div id="" class="modal-content">
                 <div class="modal-header" style="padding-bottom:0px;">
                     <button type="button" class="close mustLogin" data-dismiss="modal" aria-hidden="true"><i class="glyphicon glyphicon-remove-circle"></i></button>
-                    <br/><span id="mustLogin" style="font-size:1.5em;" class="text-danger mustLogin"></span>
+                    <br /><span id="mustLogin" style="font-size:1.5em;" class="text-danger mustLogin"></span>
                     <ul id="myLoginTab" class="nav nav-tabs" style="margin-top:30px;">
-                        <li class="active"><a href="#login" data-parent="myTabContentLogin" data-toggle="tab">Login</a></li>
-                        <li><a href="#register" data-parent="myTabContentLogin" data-toggle="tab">Register</a></li>
+                        <li class="active"><a data-target="#login2" data-parent="myTabContentLogin" data-toggle="tab">Login</a></li>
+                        <li><a data-target="#register" data-parent="myTabContentLogin" data-toggle="tab">Register</a></li>
                     </ul>
                 </div>
                 <div style="padding-left:5px;padding-right:5px;" class="modal-body">
                     <div id="myTabContentLogin" class="tab-content">
-                        <div class="tab-pane fade in active" id="login">
+                        <div class="tab-pane fade in active" id="login2">
                             <form class="navbar-form form" role="form" data-bind="submit: GetToken">
                                 <div class="form-group">
                                     <div class="input-group">
@@ -169,19 +168,19 @@
 
     <div class="clear"></div>
 
-    
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    
+
+    @RenderBody()
+    <hr />
+    <footer>
+        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+    </footer>
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/otherScripts")
     @RenderSection("scripts", required: false)
-
+    <script src="~/signalr/hubs"></script>
 
 </body>
 </html>

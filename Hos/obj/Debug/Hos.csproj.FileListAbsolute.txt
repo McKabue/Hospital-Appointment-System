@@ -102,3 +102,7 @@ C:\Users\Kabue\Documents\Visual Studio 2013\Projects\Hos\Hos\bin\zh-Hant\System.
 C:\Users\Kabue\Documents\Visual Studio 2013\Projects\Hos\Hos\obj\Debug\Hos.dll
 C:\Users\Kabue\Documents\Visual Studio 2013\Projects\Hos\Hos\obj\Debug\Hos.pdb
 C:\Users\Kabue\Documents\Visual Studio 2013\Projects\Hos\Hos\obj\Debug\Hos.csprojResolveAssemblyReference.cache
+C:\Users\Kabue\Documents\Visual Studio 2013\Projects\Hos\Hos\bin\Microsoft.AspNet.SignalR.Core.dll
+C:\Users\Kabue\Documents\Visual Studio 2013\Projects\Hos\Hos\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+C:\Users\Kabue\Documents\Visual Studio 2013\Projects\Hos\Hos\bin\Microsoft.AspNet.SignalR.Core.xml
+C:\Users\Kabue\Documents\Visual Studio 2013\Projects\Hos\Hos\bin\Microsoft.AspNet.SignalR.SystemWeb.xml

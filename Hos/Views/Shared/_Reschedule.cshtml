@@ -33,29 +33,30 @@
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="searchable">
+                        <!-- ko foreach: ViewDataArray -->
                         <tr class="rowClass">
-                            <td>1</td>
-                            <td>Otto</td>
-                            <td>General</td>
-                            <td>Dr. Kamaa</td>
-                            <td>Today, 6h ago</td>
-                            <td>Attended</td>
+                            <!--td data-bind="text: appointmentID"></td>-->
+                            <td data-bind="text: $index() + 1"></td>
+                            <td data-bind="text: surname"></td>
+                            <td data-bind="text: medical_Type"></td>
+                            <td data-bind="text: doctor"></td>
+                            <td data-bind="text: dateTime"></td>
+                            <td data-bind="template: { name: whichTemplate, if: whichTemplate }"></td>
                             <td>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-default" data-toggle="collapse" data-target=".demo1">Show Details</button>
+                                    <button type="button" class="btn btn-default" data-parent="table" data-toggle="collapse" data-bind="attr: {'data-target': '#collapse' + $index()}">Show Details</button>
                                     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu buttonActiveClass" role="menu">
-                                        <li class="active"><a data-target=".details" data-toggle="tab" data-parent="#detailsTabContent">Details</a></li>
-                                        <li><a data-target=".edit" data-toggle="tab" data-parent="#detailsTabContent">Edit</a></li>
-                                        <li><a href="#">Confirm</a></li>
-                                        <li><a href="#">Urgent (see now)</a></li>
-                                        <li><a href="#">Delay</a></li>
-                                        <li><a href="#">PostPone</a></li>
+                                        <li class="active"><a data-bind="attr: {'data-target': '#details' + $index()}" data-toggle="tab" data-parent="#detailsTabContent">Details</a></li>
+                                        @*<li><a data-bind="attr: {'data-target': '#edit' + $index()}" data-toggle="tab" data-parent="#detailsTabContent">Edit</a></li>*@
+                                        <li data-bind="visible: roleName() == 'DOCTOR'"><a href="#">Confirm</a></li>
+                                        <li data-bind="visible: roleName() == 'DOCTOR'"><a href="#">Urgent (see now)</a></li>
+                                        <li data-bind="visible: roleName() == 'DOCTOR', click: $root.postPone"><a href="#">PostPone</a></li>
                                         <li><a href="#">Select</a></li>
-                                        <li><a href="#">Delete</a></li>
+                                        <li><a href="#" data-bind="click: $root.deleteData">Delete</a></li>
                                     </ul>
                                 </div>
                                 <span style="padding-left:5px; font-size:1.5em;"> <input class="largerCheckbox" style="font-size:1.5em;" type="checkbox"> </span>
@@ -63,18 +64,19 @@
 
                         </tr>
 
-                        <tr>
-                            <td colspan="5" class="hiddenRow">
-                                <div class="collapse demo1" style=" padding:20px;">
+                        <script type="text/html" id="y-template">
+                            <button class="btn" data-bind="text: status, css: { 'btn-success': status() == 'Confirmed', 'btn-info': status() == 'postPone'}"></button>
+                        </script>
+                        <script type="text/html" id="n-template">
+                            <button class="btn btn-danger">Not Confirmed</button>
+                        </script>
+
+                        <tr data-bind="" class="warning">
+                            <td colspan="7" class="hiddenRow">
+                                <div data-bind="attr: {id:  'collapse' + $index()}" class="collapse" style=" padding:20px;">
 
                                     <div id="detailsTabContent" class="tab-content">
-                                        <div class="tab-pane fade in active details">
-                                            <div style="">
-                                                <p>DETAILS GO HERE...</p>
-                                            </div>
-                                        </div>
-
-                                        <div class="tab-pane fade edit">
+                                        <div data-bind="attr: {id:  'details' + $index()}" class="tab-pane fade in active">
                                             <form class="form-horizontal" role="form" style="">
                                                 <div class="row form-group" style="margin-bottom: 0px;">
                                                     <div class="col-md-3" style="">
@@ -82,28 +84,11 @@
                                                     </div>
                                                     <div class="col-md-9" style="">
                                                         <div class="">
-                                                            <div class="col-md-4" style="padding:0px;">
-                                                                <input placeholder="SurName" class="form-control" name="" id="surNameEdit">
-                                                            </div>
-                                                            <div class="col-md-4" style="padding:0px;">
-                                                                <input placeholder="First Name" class="form-control" name="" id="firstNameEdit">
-                                                            </div>
-                                                            <div class="col-md-4" style="padding:0px;">
-                                                                <input placeholder="Last Name" class="form-control" name="" id="lastNameEdit">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row form-group" style="margin-bottom: 0px;">
-                                                    <div class="col-md-3">
-                                                        <label style="" class="pull-right">Registration Number</label>
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <div class="">
-                                                            <div class="" style="padding:0px;">
-                                                                <input placeholder="When where you born?" class="form-control" name="" id="Registration_NumberEdit">
-                                                            </div>
+                                                            <ul class="list-inline">
+                                                                <li data-bind="text: surname"></li>
+                                                                <li data-bind="text: firstName"></li>
+                                                                <li data-bind="text: lastName"></li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -114,9 +99,22 @@
                                                     </div>
                                                     <div class="col-md-9">
                                                         <div class="">
-                                                            <div class="" style="padding:0px;">
-                                                                <input placeholder="When where you born?" class="form-control" name="" id="National_ID_NumberEdit">
-                                                            </div>
+                                                            <ul class="list-inline">
+                                                                <li data-bind="text: national_ID_Number"></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row form-group" style="margin-bottom: 0px;">
+                                                    <div class="col-md-3">
+                                                        <label style="" class="pull-right">Registration Number</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="">
+                                                            <ul class="list-inline">
+                                                                <li data-bind="text: registration_Number"></li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -127,9 +125,48 @@
                                                     </div>
                                                     <div class="col-md-9">
                                                         <div class="">
-                                                            <div class="" style="padding:0px;">
-                                                                <input placeholder="When where you born?" class="form-control" name="username">
-                                                            </div>
+                                                            <ul class="list-inline">
+                                                                <li>12/2/1995</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row form-group" style="margin-bottom: 0px;">
+                                                    <div class="col-md-3">
+                                                        <label style="" class="pull-right">Program</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="">
+                                                            <ul class="list-inline">
+                                                                <li>JAB</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row form-group" style="margin-bottom: 0px;">
+                                                    <div class="col-md-3">
+                                                        <label style="" class="pull-right">Year</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="">
+                                                            <ul class="list-inline">
+                                                                <li>Year 3</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row form-group" style="margin-bottom: 0px;">
+                                                    <div class="col-md-3">
+                                                        <label style="" class="pull-right">Semester</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="">
+                                                            <ul class="list-inline">
+                                                                <li>Semester 1</li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -140,56 +177,9 @@
                                                     </div>
                                                     <div class="col-md-9">
                                                         <div class="">
-                                                            <div class="" style="padding:0px;">
-                                                                <select data-placeholder='C' class="form-control" style="width: 300px;">
-                                                                    <option></option>
-                                                                    <option value="AZ">Arizona</option>
-                                                                    <option value="CO">Colorado</option>
-                                                                    <option value="ID">Idaho</option>
-                                                                    <option value="MT">Montana</option>
-                                                                    <option value="NE">Nebraska</option>
-                                                                    <option value="NM">New Mexico</option>
-                                                                    <option value="ND">North Dakota</option>
-                                                                    <option value="UT">Utah</option>
-                                                                    <option value="WY">Wyoming</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row form-group" style="margin-bottom: 0px;">
-                                                    <div class="col-md-3">
-                                                        <label style="" class="pull-right">Stream</label>
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <div class="">
-                                                            <div class="" style="padding:0px;">
-                                                                <select class="form-control" style="width: 300px;">
-                                                                    <option></option>
-                                                                    <optgroup label="Alaskan/Hawaiian Time Zone">
-                                                                        <option value="AK">Alaska</option>
-                                                                        <option value="HI">Hawaii</option>
-                                                                    </optgroup>
-                                                                    <optgroup label="Pacific Time Zone">
-                                                                        <option value="CA">California</option>
-                                                                        <option value="NV">Nevada</option>
-                                                                        <option value="OR">Oregon</option>
-                                                                        <option value="WA">Washington</option>
-                                                                    </optgroup>
-                                                                    <optgroup label="Mountain Time Zone">
-                                                                        <option value="AZ">Arizona</option>
-                                                                        <option value="CO">Colorado</option>
-                                                                        <option value="ID">Idaho</option>
-                                                                        <option value="MT">Montana</option>
-                                                                        <option value="NE">Nebraska</option>
-                                                                        <option value="NM">New Mexico</option>
-                                                                        <option value="ND">North Dakota</option>
-                                                                        <option value="UT">Utah</option>
-                                                                        <option value="WY">Wyoming</option>
-                                                                    </optgroup>
-                                                                </select>
-                                                            </div>
+                                                            <ul class="list-inline">
+                                                                <li>FIST</li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -200,36 +190,14 @@
                                                     </div>
                                                     <div class="col-md-9">
                                                         <div class="">
-                                                            <div class="" style="padding:0px;">
-                                                                <select class="form-control" style="width: 300px;">
-                                                                    <option></option>
-                                                                    <optgroup label="Alaskan/Hawaiian Time Zone">
-                                                                        <option value="AK">Alaska</option>
-                                                                        <option value="HI">Hawaii</option>
-                                                                    </optgroup>
-                                                                    <optgroup label="Pacific Time Zone">
-                                                                        <option value="CA">California</option>
-                                                                        <option value="NV">Nevada</option>
-                                                                        <option value="OR">Oregon</option>
-                                                                        <option value="WA">Washington</option>
-                                                                    </optgroup>
-                                                                    <optgroup label="Mountain Time Zone">
-                                                                        <option value="AZ">Arizona</option>
-                                                                        <option value="CO">Colorado</option>
-                                                                        <option value="ID">Idaho</option>
-                                                                        <option value="MT">Montana</option>
-                                                                        <option value="NE">Nebraska</option>
-                                                                        <option value="NM">New Mexico</option>
-                                                                        <option value="ND">North Dakota</option>
-                                                                        <option value="UT">Utah</option>
-                                                                        <option value="WY">Wyoming</option>
-                                                                    </optgroup>
-                                                                </select>
-                                                            </div>
+                                                            <ul class="list-inline">
+                                                                <li>Software</li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
 
+                                                <hr />
 
                                                 <div class="row form-group" style="margin-bottom: 0px;">
                                                     <div class="col-md-3">
@@ -237,9 +205,9 @@
                                                     </div>
                                                     <div class="col-md-9">
                                                         <div class="">
-                                                            <div class="" style="padding:0px;">
-                                                                <input class="select2-form-control" placeholder="Write very short explanations" id="tags1" name="username" style="width: 100%;">
-                                                            </div>
+                                                            <ul data-bind="foreach: feelings" class="list-inline">
+                                                                <li data-bind="text: FeelingBody"></li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -250,9 +218,9 @@
                                                     </div>
                                                     <div class="col-md-9">
                                                         <div class="">
-                                                            <div class="" style="padding:0px;">
-                                                                <input class="select2-form-control" placeholder="Write very short explanations" id="tags2" name="username" style="width: 100%;">
-                                                            </div>
+                                                            <ul data-bind="foreach: causes" class="list-inline">
+                                                                <li data-bind="text: CauseBody"></li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -264,15 +232,9 @@
                                                     </div>
                                                     <div class="col-md-9">
                                                         <div class="">
-                                                            <div class="" style="padding:0px;">
-                                                                <select id="medical2" data-placeholder='Medical Type' class="form-control" style="width: 300px;">
-                                                                    <option></option>
-                                                                    <option value="gynaecologist2">Gynaecologist</option>
-                                                                    <option value="psychiatry2">Psychiatry</option>
-                                                                    <option value="stress2">Stress</option>
-                                                                    <option value="guidance2">Guidance & Cancelling</option>
-                                                                </select>
-                                                            </div>
+                                                            <ul class="list-inline">
+                                                                <li data-bind="text: medical_Type"></li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -283,28 +245,289 @@
                                                     </div>
                                                     <div class="col-md-9">
                                                         <div class="">
-                                                            <div class="" style="padding:0px;">
-                                                                <select data-placeholder='Available Doctors' id='doctors2' class="form-control" style="width: 300px;">
-                                                                    <option></option>
-                                                                </select>
-                                                            </div>
+                                                            <ul class="list-inline">
+                                                                <li data-bind="text: doctor"></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <hr />
+
+                                                <div class="row form-group" style="margin-bottom: 0px;">
+                                                    <div class="col-md-3">
+                                                        <label style="" class="pull-right">Appointment Date</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="">
+                                                            <ul class="list-inline">
+                                                                <li>2/3/15</li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="row form-group" style="margin-bottom: 0px;">
                                                     <div class="col-md-3">
-
+                                                        <label style="" class="pull-right">Appointment Time</label>
                                                     </div>
                                                     <div class="col-md-9">
-                                                        <div class="" style="padding-top:20px;">
-                                                            <button type="submit" style="" class="btn btn-success">Save Edits</button>
+                                                        <div class="">
+                                                            <ul class="list-inline">
+                                                                <li data-bind="text: dateTime"></li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
 
+                                                <div class="row form-group" style="margin-bottom: 0px;">
+                                                    <div class="col-md-3">
+                                                        <label style="" class="pull-right">Appointment Status</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="">
+                                                            <ul class="list-inline">
+                                                                <li>Confirmed</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
                                             </form>
                                         </div>
+
+                                        @*<div data-bind="attr: {id:  'edit' + $index()}" class="tab-pane fade">
+                            <form class="form-horizontal" role="form" style="">
+                                <div class="row form-group" style="margin-bottom: 0px;">
+                                    <div class="col-md-3" style="">
+                                        <label style="" class="pull-right">Your Official Name</label>
+                                    </div>
+                                    <div class="col-md-9" style="">
+                                        <div class="">
+                                            <div class="col-md-4" style="padding:0px;">
+                                                <input placeholder="SurName" class="form-control" name="" id="surNameEdit">
+                                            </div>
+                                            <div class="col-md-4" style="padding:0px;">
+                                                <input placeholder="First Name" class="form-control" name="" id="firstNameEdit">
+                                            </div>
+                                            <div class="col-md-4" style="padding:0px;">
+                                                <input placeholder="Last Name" class="form-control" name="" id="lastNameEdit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group" style="margin-bottom: 0px;">
+                                    <div class="col-md-3">
+                                        <label style="" class="pull-right">Registration Number</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="">
+                                            <div class="" style="padding:0px;">
+                                                <input placeholder="When where you born?" class="form-control" name="" id="Registration_NumberEdit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group" style="margin-bottom: 0px;">
+                                    <div class="col-md-3">
+                                        <label style="" class="pull-right">National ID Number</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="">
+                                            <div class="" style="padding:0px;">
+                                                <input placeholder="When where you born?" class="form-control" name="" id="National_ID_NumberEdit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group" style="margin-bottom: 0px;">
+                                    <div class="col-md-3">
+                                        <label style="" class="pull-right">Birth Date</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="">
+                                            <div class="" style="padding:0px;">
+                                                <input id="Birth_DateEdit" placeholder="When where you born?" class="form-control" name="username">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group" style="margin-bottom: 0px;">
+                                    <div class="col-md-3">
+                                        <label style="" class="pull-right">Faculty</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="">
+                                            <div class="" style="padding:0px;">
+                                                <select data-placeholder='C' class="form-control" style="width: 300px;">
+                                                    <option></option>
+                                                    <option value="AZ">Arizona</option>
+                                                    <option value="CO">Colorado</option>
+                                                    <option value="ID">Idaho</option>
+                                                    <option value="MT">Montana</option>
+                                                    <option value="NE">Nebraska</option>
+                                                    <option value="NM">New Mexico</option>
+                                                    <option value="ND">North Dakota</option>
+                                                    <option value="UT">Utah</option>
+                                                    <option value="WY">Wyoming</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group" style="margin-bottom: 0px;">
+                                    <div class="col-md-3">
+                                        <label style="" class="pull-right">Stream</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="">
+                                            <div class="" style="padding:0px;">
+                                                <select class="form-control" style="width: 300px;">
+                                                    <option></option>
+                                                    <optgroup label="Alaskan/Hawaiian Time Zone">
+                                                        <option value="AK">Alaska</option>
+                                                        <option value="HI">Hawaii</option>
+                                                    </optgroup>
+                                                    <optgroup label="Pacific Time Zone">
+                                                        <option value="CA">California</option>
+                                                        <option value="NV">Nevada</option>
+                                                        <option value="OR">Oregon</option>
+                                                        <option value="WA">Washington</option>
+                                                    </optgroup>
+                                                    <optgroup label="Mountain Time Zone">
+                                                        <option value="AZ">Arizona</option>
+                                                        <option value="CO">Colorado</option>
+                                                        <option value="ID">Idaho</option>
+                                                        <option value="MT">Montana</option>
+                                                        <option value="NE">Nebraska</option>
+                                                        <option value="NM">New Mexico</option>
+                                                        <option value="ND">North Dakota</option>
+                                                        <option value="UT">Utah</option>
+                                                        <option value="WY">Wyoming</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group" style="margin-bottom: 0px;">
+                                    <div class="col-md-3">
+                                        <label style="" class="pull-right">Course</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="">
+                                            <div class="" style="padding:0px;">
+                                                <select class="form-control" style="width: 300px;">
+                                                    <option></option>
+                                                    <optgroup label="Alaskan/Hawaiian Time Zone">
+                                                        <option value="AK">Alaska</option>
+                                                        <option value="HI">Hawaii</option>
+                                                    </optgroup>
+                                                    <optgroup label="Pacific Time Zone">
+                                                        <option value="CA">California</option>
+                                                        <option value="NV">Nevada</option>
+                                                        <option value="OR">Oregon</option>
+                                                        <option value="WA">Washington</option>
+                                                    </optgroup>
+                                                    <optgroup label="Mountain Time Zone">
+                                                        <option value="AZ">Arizona</option>
+                                                        <option value="CO">Colorado</option>
+                                                        <option value="ID">Idaho</option>
+                                                        <option value="MT">Montana</option>
+                                                        <option value="NE">Nebraska</option>
+                                                        <option value="NM">New Mexico</option>
+                                                        <option value="ND">North Dakota</option>
+                                                        <option value="UT">Utah</option>
+                                                        <option value="WY">Wyoming</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row form-group" style="margin-bottom: 0px;">
+                                    <div class="col-md-3">
+                                        <label style="" class="pull-right">How Are You Feeling?</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="">
+                                            <div class="" style="padding:0px;">
+                                                <input data-bind="" class="select2-form-control" style="width: 100%;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group" style="margin-bottom: 0px;">
+                                    <div class="col-md-3">
+                                        <label style="" class="pull-right">Possible Causes</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="">
+                                            <div class="" style="padding:0px;">
+                                                <input data-bind="" class="select2-form-control" style="width: 100%;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row form-group" style="margin-bottom: 0px;">
+                                    <div class="col-md-3">
+                                        <label style="" class="pull-right">Medical Type</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="">
+                                            <div class="" style="padding:0px;">
+                                                <select id="medical2" data-placeholder='Medical Type' class="form-control" style="width: 300px;">
+                                                    <option></option>
+                                                    <option value="gynaecologist2">Gynaecologist</option>
+                                                    <option value="psychiatry2">Psychiatry</option>
+                                                    <option value="stress2">Stress</option>
+                                                    <option value="guidance2">Guidance & Cancelling</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group" style="margin-bottom: 0px;">
+                                    <div class="col-md-3">
+                                        <label style="" class="pull-right">Available Doctors</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="">
+                                            <div class="" style="padding:0px;">
+                                                <select data-placeholder='Available Doctors' id='doctors2' class="form-control" style="width: 300px;">
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group" style="margin-bottom: 0px;">
+                                    <div class="col-md-3">
+
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="" style="padding-top:20px;">
+                                            <button type="submit" style="" class="btn btn-success">Save Edits</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>*@
                                     </div>
 
 
@@ -312,7 +535,7 @@
                                 </div>
                             </td>
                         </tr>
-
+                        <!-- /ko -->
 
 
 

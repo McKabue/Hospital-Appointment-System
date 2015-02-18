@@ -1,5 +1,6 @@
 ﻿using Hos.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Collections.Generic;
@@ -32,10 +33,18 @@ namespace Hos.HELPERS
                     return;
                 }
 
-                /*var claims = new List<Claim>
+                //////////////////////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////////////////////
+                var props = new AuthenticationProperties(new Dictionary<string, string>
                 {
-                    new Claim(ClaimTypes.GivenName, user.FirstName),
-                };*/
+                    { 
+                        "userName", context.UserName
+                    },
+                    { 
+                        "roleName", user.RoleName
+                    }
+                });
+
 
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);
                 identity.AddClaim(new Claim("sub", context.UserName));
@@ -43,11 +52,30 @@ namespace Hos.HELPERS
                 identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
                 identity.AddClaim(new Claim("RoleName", user.RoleName));
 
-            
 
-                context.Validated(identity);
+                var ticket = new AuthenticationTicket(identity, props);
+
+                context.Validated(ticket);
+                //////////////////////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////////////////////
+
+                //context.Validated(identity);
             }
         }
+
+
+
+        public override Task TokenEndpoint(OAuthTokenEndpointContext context)
+        {
+            foreach (KeyValuePair<string, string> property in context.Properties.Dictionary)
+            {
+                context.AdditionalResponseParameters.Add(property.Key, property.Value);
+            }
+
+            return Task.FromResult<object>(null);
+        }
+
+
 
 
             

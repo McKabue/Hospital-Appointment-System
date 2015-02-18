@@ -1,12 +1,14 @@
 ﻿//jQuery(document).ready(function ($) {
 
 //////////////////BOOTSTRAP COLLAPSE////////////////
-$('.collapse').on('show.bs.collapse', function () {
-    $('.collapse.in').collapse('hide');
-});
+    $('body').on('show.bs.collapse', '.collapse', function () {
+        $('.collapse.in').collapse('hide');
+    });
 
-////////////////////SELECT2////////////////////////
-$("#tags1,#tags2").select2({
+
+    ////////////////////SELECT2////////////////////////
+
+    $("#tags1,#tags2").select2({
     allowClear: true,
     placeholder: "Write Tags Here...",
     //createSearchChoice:function(term, data) {return {id:term, text:term};},
@@ -17,10 +19,11 @@ $("#tags1,#tags2").select2({
     //maximumInputLength: 15,
     //maximumSelectionSize: 5
     //data: [{id: 0, text: 'story', locked: true},{id: 1, text: 'bug'},{id: 2, text: 'task'}]
-});
+    });
+
 
 //////////////BOOTSTRAP PROGRESS BAR///////////////
-var progress = setInterval(function () {
+/*var progress = setInterval(function () {
     var $bar = $('.progress-bar');
     $('#pleaseWaitDialog').modal();
 
@@ -32,7 +35,7 @@ var progress = setInterval(function () {
         $bar.width($bar.width() + 80);
     }
     $bar.text($bar.width() / 8 + 10 +"%");
-}, 1200);
+}, 1200);*/
 
 ////////////////BOOTSTRAP SELECT///////////////////$('.selectpicker').selectpicker();
 
@@ -42,7 +45,7 @@ $('.close').click(function(){
 });
 
 ////////////////Reschedule page///////////////////
-	$('.buttonActiveClass').on('click','li a',function(e){
+$('table').on('click', '.buttonActiveClass li a', function (e) {
 	    $('.buttonActiveClass').find('li.active').removeClass('active');
 	    $(this).addClass('active');
 	    if($(this).text() == "Select"){
@@ -54,13 +57,13 @@ $('.close').click(function(){
 	            $(this).parent().parent().parent().find('button').addClass('disabled');
 	        }
 	    }
-	    if($(this).text() == "Delete"){
+	   /* if($(this).text() == "Delete"){
 	        var c = confirm('Are you sure to delete this Appointment?');
 	        if(c){
 	            $('.collapse.in').collapse('hide');
 	            $(this).parents('tr').remove();
 	        }
-	    }
+	    }*/
 	  
 	})
 
@@ -109,7 +112,7 @@ $('.close').click(function(){
         //}
     });
 
-    $('td input[type="checkbox"]').click(function () {
+    $('table').on('click', 'td input[type="checkbox"]', function () {
         if ($(this).is(':checked')) {
             $(this).parent().parent().addClass('highlighted');
             $(this).parent().parent().siblings().addClass('highlighted');

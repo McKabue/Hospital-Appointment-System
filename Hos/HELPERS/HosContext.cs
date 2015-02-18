@@ -13,6 +13,7 @@ namespace Hos.HELPERS
         public HosContext() : base("HosContext") { }
 
         public DbSet<Appointment> Appointments { get; set; }
+        //public DbSet<Status> Statuses { get; set; }
         public DbSet<Feeling> Feelings { get; set; }
         public DbSet<Possible_Cause> Possible_Causes { get; set; }
 

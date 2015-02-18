@@ -22,8 +22,16 @@ namespace Hos.Models
         public string Course { get; set; }
         public string Medical_Type { get; set; }
         public string Available_Doctor { get; set; }
+
+        public Status? Status { get; set; }
+
         public virtual IList<Feeling> Feelings { get; set; }
         public virtual IList<Possible_Cause> Possible_Causes { get; set; }
+    }
+
+    public enum Status
+    {
+        Confirmed, Urgent, Postponed
     }
 
     public class Feeling
