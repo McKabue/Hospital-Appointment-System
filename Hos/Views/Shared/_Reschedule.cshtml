@@ -34,7 +34,7 @@
                     </thead>
                     <tbody id="tableBody" class="searchable">
                         <!-- ko foreach: ViewDataArray -->
-                        <tr class="rowClass">
+                        <tr class="rowClass" data-bind="css: { 'success': status() == 'Confirmed', 'info': status().toLowerCase() == 'postponed', 'danger': status().toLowerCase() == 'not_confirmed'}">
                             <!--td data-bind="text: appointmentID"></td>-->
                             <td data-bind="text: $index() + 1"></td>
                             <td data-bind="text: surname"></td>
@@ -52,7 +52,7 @@
                                     <ul class="dropdown-menu buttonActiveClass" role="menu">
                                         <li class="active"><a data-bind="attr: {'data-target': '#details' + $index()}" data-toggle="tab" data-parent="#detailsTabContent">Details</a></li>
                                         @*<li><a data-bind="attr: {'data-target': '#edit' + $index()}" data-toggle="tab" data-parent="#detailsTabContent">Edit</a></li>*@
-                                        <li data-bind="visible: roleName() == 'DOCTOR'"><a href="#">Confirm</a></li>
+                                        <li data-bind="visible: roleName() == 'DOCTOR', css: { disabled: status().toLowerCase() == 'confirmed' } "><a href="#">Confirm</a></li>
                                         <li data-bind="visible: roleName() == 'DOCTOR'"><a href="#">Urgent (see now)</a></li>
                                         <li data-bind="visible: roleName() == 'DOCTOR', click: $root.postPone"><a href="#">PostPone</a></li>
                                         <li><a href="#">Select</a></li>
@@ -65,7 +65,7 @@
                         </tr>
 
                         <script type="text/html" id="y-template">
-                            <button class="btn" data-bind="text: status, css: { 'btn-success': status() == 'Confirmed', 'btn-info': status() == 'postPone'}"></button>
+                            <button class="btn" data-bind="text: status, css: { 'btn-success': status() == 'Confirmed', 'btn-info': status().toLowerCase() == 'postponed'}"></button>
                         </script>
                         <script type="text/html" id="n-template">
                             <button class="btn btn-danger">Not Confirmed</button>

@@ -29,7 +29,9 @@ namespace Hos
 
                       "~/Scripts/jquery.signalR-2.1.2.min.js",
                       "~/signalr/hubs",
-                      
+
+                      //"~/Scripts/knockout.simpleGrid.3.0.js",
+
                       "~/Scripts/Hos.Main.js",
                       "~/Scripts/Hos.UX.js",
                       //"~/Scripts/knockout-select2.js",

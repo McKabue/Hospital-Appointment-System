@@ -40,7 +40,7 @@
         self.status = ko.observable(Status);
 
         self.whichTemplate = ko.computed(function () {
-            return self.status() != null ? 'y-template' : 'n-template';
+            return self.status() != 'Not_Confirmed' ? 'y-template' : 'n-template';
         });
 
         self.AppointmentUrl = ko.computed(function () {
@@ -220,7 +220,7 @@
         }
 
         self.postPone = function (e) {
-            e.status('postPone');
+            e.status("postPoned");
         };
 
         self.urgent = function (e) {
@@ -228,7 +228,7 @@
         };
 
         self.confirm = function (e) {
-            e.status('confirm');
+            e.status("Confirmed");
         };
 
 

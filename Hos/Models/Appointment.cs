@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -23,6 +25,7 @@ namespace Hos.Models
         public string Medical_Type { get; set; }
         public string Available_Doctor { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public Status? Status { get; set; }
 
         public virtual IList<Feeling> Feelings { get; set; }
@@ -31,7 +34,7 @@ namespace Hos.Models
 
     public enum Status
     {
-        Confirmed, Urgent, Postponed
+        Not_Confirmed, Confirmed, Urgent, Postponed
     }
 
     public class Feeling

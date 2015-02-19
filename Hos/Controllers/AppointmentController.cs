@@ -3,6 +3,7 @@ using Hos.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -185,7 +186,8 @@ namespace Hos.Controllers
                     Faculty = json.Faculty,
                     Course = json.Course,
                     Medical_Type = json.Medical_Type,
-                    Available_Doctor = json.Doctor
+                    Available_Doctor = json.Doctor,
+                    Status = Status.Not_Confirmed
                     //Birth_Date = DateTime.Parse(json.Birth_Date),
                     //Program = json.Program,
                     //Year = json.Year,
@@ -236,6 +238,7 @@ namespace Hos.Controllers
         [Authorize]
         [Route("Details")]
         //[EnableQuery]
+        [CustomQueryable]
         public async Task<IHttpActionResult> GetDetails()
         {
             var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
@@ -256,7 +259,7 @@ namespace Hos.Controllers
                                              Registration_Number = user.UserName
                                              //RoleName = user.RoleName
                                          },
-                                   RoleName = roleName,
+                                  RoleName = roleName,
                                   AppointmentID = appointment.AppointmentID,
                                   Birth_Date = appointment.Birth_Date,
                                   Program = appointment.Program,
@@ -265,10 +268,10 @@ namespace Hos.Controllers
                                   Faculty = appointment.Faculty,
                                   Course = appointment.Course,
                                   Feelings = from feeling in context.Feelings.Where(c => c.AppointmentID == appointment.AppointmentID).ToList()
-                                         select new
-                                         {
-                                             FeelingBody = feeling.FeelingBody
-                                         },
+                                             select new
+                                             {
+                                                 FeelingBody = feeling.FeelingBody
+                                             },
                                   Causes = from cause in context.Possible_Causes.Where(c => c.AppointmentID == appointment.AppointmentID).ToList()
                                            select new
                                            {
@@ -278,12 +281,12 @@ namespace Hos.Controllers
                                   Doctor = appointment.Available_Doctor,
 
                                   DateTime = appointment.AppointmentDate,
-                                  Status = appointment.Status
-                                          
-                                 
+                                  Status = appointment.Status.ToString()
 
 
-                              }).AsEnumerable();
+
+
+                              }).AsQueryable();
                 return Ok(result);
             }
 
@@ -325,10 +328,10 @@ namespace Hos.Controllers
                                   Doctor = appointment.Available_Doctor,
 
                                   DateTime = appointment.AppointmentDate,
-                                  Status = "Confirmed"
-                                  
-                                  
-                              }).AsEnumerable();
+                                  Status = appointment.Status.ToString()
+
+
+                              }).AsQueryable();
                 return Ok(result);
             }
 
@@ -338,6 +341,39 @@ namespace Hos.Controllers
                 //return new ResponseMessageResult(Request.CreateErrorResponse((HttpStatusCode)401, new HttpError("Yoe need to re-login again")));
                 //return Ok(statusCode(401));
             }
+        }
+
+
+        [Authorize]
+        [Route("qaz")]
+       // [AcceptVerbs("PATCH")]
+        public async Task<IHttpActionResult> Put(int key, Appointment newAppointment)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var appointment = await context.Appointments.FindAsync(key);
+            if (appointment == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            //newAppointment.Patch(appointment);
+            appointment.Status = newAppointment.Status;
+            //context.Appointments.Add(appointment);
+            await context.SaveChangesAsync();
+            /*foreach(var s in Enum.GetNames(typeof(Status))){
+                if (status.ToLower() == s.ToLower()){
+
+                    
+                }
+            }*/
+
+
+            //Hub.Clients.All.changedStatus();
+            return Content(HttpStatusCode.PartialContent, appointment);
         }
 
 
@@ -354,16 +390,6 @@ namespace Hos.Controllers
         }
 
 
-        [Authorize]
-        [Route("Status")]
-        public async Task<IHttpActionResult> Put(string status)
-        {
-            var entity = context.Appointments.SingleOrDefault(t => t.AppointmentID == key);
-            context.Appointments.Remove(entity);
-            context.SaveChanges();
-
-            Hub.Clients.All.changedStatus();
-            return Content(HttpStatusCode.OK, "changedStatus");
-        }
+        
     }
 }
