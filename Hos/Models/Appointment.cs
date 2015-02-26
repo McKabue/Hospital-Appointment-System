@@ -34,7 +34,7 @@ namespace Hos.Models
 
     public enum Status
     {
-        Not_Confirmed, Confirmed, Urgent, Postponed
+        Not_Confirmed, Confirmed, Treated, Postponed
     }
 
     public class Feeling

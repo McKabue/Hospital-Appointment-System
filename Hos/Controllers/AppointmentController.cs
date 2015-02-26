@@ -345,7 +345,7 @@ namespace Hos.Controllers
 
 
         [Authorize]
-        [Route("qaz")]
+        [Route("Status")]
        // [AcceptVerbs("PATCH")]
         public async Task<IHttpActionResult> Put(int key, Appointment newAppointment)
         {
@@ -362,18 +362,12 @@ namespace Hos.Controllers
 
             //newAppointment.Patch(appointment);
             appointment.Status = newAppointment.Status;
-            //context.Appointments.Add(appointment);
             await context.SaveChangesAsync();
-            /*foreach(var s in Enum.GetNames(typeof(Status))){
-                if (status.ToLower() == s.ToLower()){
-
-                    
-                }
-            }*/
 
 
-            //Hub.Clients.All.changedStatus();
-            return Content(HttpStatusCode.PartialContent, appointment);
+            Hub.Clients.All.changedStatus(key, appointment.Status.ToString());
+            return Content(HttpStatusCode.PartialContent, appointment.Status.ToString());
+            //return new ResponseMessageResult(Request.CreateErrorResponse((HttpStatusCode)333, new HttpError("Status Modified")));
         }
 
 

@@ -7,11 +7,17 @@
             <div class="panel-heading" style="padding-bottom:40px;">
                 <div class="col-md-3"><input style="" id="filter" type="text" class="form-control" placeholder="Type to Search here..."></div>
                 <div class="col-md-3">
-                    <select style="" class="form-control">
-                        <option>Time</option>
-                        <option>Sickness</option>
-                        <option>Urgency</option>
-                        <option>Name</option>
+                    <select id="pageSizeSelector" data-bind="value: pageSize" style="" class="form-control">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                        <option value="60">60</option>
+                        <option value="70">70</option>
+                        <option value="80">80</option>
+                        <option value="90">90</option>
+                        <option value="100">100</option>
                     </select>
                 </div>
                 <div class="col-md-1 pull-right"><input id="checkAll" class="largerCheckbox pull-right" style="font-size:1.5em;" type="checkbox"></div>
@@ -33,10 +39,10 @@
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="searchable">
-                        <!-- ko foreach: ViewDataArray -->
-                        <tr class="rowClass" data-bind="css: { 'success': status() == 'Confirmed', 'info': status().toLowerCase() == 'postponed', 'danger': status().toLowerCase() == 'not_confirmed'}">
+                        <!-- ko foreach: currentPage -->
+                        <tr class="rowClass" data-bind="css: { 'success': status() == 'Confirmed', 'info': status().toLowerCase() == 'postponed', 'danger': status().toLowerCase() == 'not_confirmed', 'default': status().toLowerCase() == 'treated'}">
                             <!--td data-bind="text: appointmentID"></td>-->
-                            <td data-bind="text: $index() + 1"></td>
+                            <td data-bind="text: ($this.currentPageIndex() * $this.pageSize()) + $index() + 1"></td>
                             <td data-bind="text: surname"></td>
                             <td data-bind="text: medical_Type"></td>
                             <td data-bind="text: doctor"></td>
@@ -52,11 +58,11 @@
                                     <ul class="dropdown-menu buttonActiveClass" role="menu">
                                         <li class="active"><a data-bind="attr: {'data-target': '#details' + $index()}" data-toggle="tab" data-parent="#detailsTabContent">Details</a></li>
                                         @*<li><a data-bind="attr: {'data-target': '#edit' + $index()}" data-toggle="tab" data-parent="#detailsTabContent">Edit</a></li>*@
-                                        <li data-bind="visible: roleName() == 'DOCTOR', css: { disabled: status().toLowerCase() == 'confirmed' } "><a href="#">Confirm</a></li>
-                                        <li data-bind="visible: roleName() == 'DOCTOR'"><a href="#">Urgent (see now)</a></li>
-                                        <li data-bind="visible: roleName() == 'DOCTOR', click: $root.postPone"><a href="#">PostPone</a></li>
-                                        <li><a href="#">Select</a></li>
-                                        <li><a href="#" data-bind="click: $root.deleteData">Delete</a></li>
+                                        <li data-bind="visible: roleName() == 'DOCTOR', click: $root.confirm, css: { disabled: status().toLowerCase() == 'confirmed' } "><a href="#">Confirm</a></li>
+                                        <li data-bind="visible: roleName() == 'DOCTOR', click: $root.treated, css: { disabled: status().toLowerCase() == 'treated'}"><a href="#">Treated</a></li>
+                                        <li data-bind="visible: roleName() == 'DOCTOR', click: $root.postpone, css: { disabled: status().toLowerCase() == 'postponed' }"><a href="#">PostPone</a></li>
+                                        <li data-bind="css: {disabled: status().toLowerCase() == 'treated'}"><a href="#">Select</a></li>
+                                        <li data-bind="css: {disabled: status().toLowerCase() == 'treated'}"><a href="#" data-bind="click: $root.deleteData">Delete</a></li>
                                     </ul>
                                 </div>
                                 <span style="padding-left:5px; font-size:1.5em;"> <input class="largerCheckbox" style="font-size:1.5em;" type="checkbox"> </span>
@@ -65,10 +71,10 @@
                         </tr>
 
                         <script type="text/html" id="y-template">
-                            <button class="btn" data-bind="text: status, css: { 'btn-success': status() == 'Confirmed', 'btn-info': status().toLowerCase() == 'postponed'}"></button>
+                            <button type="button" class="btn" data-bind="text: status, css: { 'btn-success': status() == 'Confirmed', 'btn-info': status().toLowerCase() == 'postponed', 'btn-default': status().toLowerCase() == 'treated'}"></button>
                         </script>
                         <script type="text/html" id="n-template">
-                            <button class="btn btn-danger">Not Confirmed</button>
+                            <button type="button" class="btn btn-danger">Not Confirmed</button>
                         </script>
 
                         <tr data-bind="" class="warning">
@@ -541,12 +547,24 @@
 
 
                     </tbody>
+
+                    <!--tfoot>
+                        <tr>
+                            
+                            <td colspan="6">
+                                <button class="btn">Previous<i class="icon-step-backward"></i></button>
+                                Page<label data-bind="text: currentPageIndex() + 1" class="badge"></label>
+                                <button  class="btn">Next<i class="icon-step-forward"></i></button>
+                            </td>
+                        </tr>
+                    </tfoot-->
                 </table>
             </div>
             <div style="margin-top: -20px;" class="panel-footer">
                 <ul class="pager pager-lg">
-                    <li class="disabled"><a href="#">Previous</a></li>
-                    <li><a href="#">Next</a></li>
+                    <li><a href="#" data-bind="click: previousPage, visible: currentPageIndex() > 0">Previous</a></li>
+                    <li class="disabled"><a href="#" data-bind="text: 'Page  ' + (currentPageIndex() + 1), visible: ViewDataArray().length > 0"></a></li>
+                    <li><a href="#" data-bind="click: nextPage, visible: ((currentPageIndex() + 1) * pageSize()) < ViewDataArray().length">Next</a></li>
                 </ul>
 
             </div>

@@ -46,11 +46,33 @@
         self.AppointmentUrl = ko.computed(function () {
             return "/api/Appointment/Delete?key=" + this.appointmentID();
         }, this);
+
+        
     }
 
 
     var viewModel = function () {
         var self = this;
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
         self.role = ko.observable($.cookie('role'));
         self.u = ko.observable($.cookie('user'));
@@ -185,7 +207,7 @@
                 statusCode: {
                     200: function (edits) {
 
-                        alert(ko.toJSON(edits));
+                        //alert(ko.toJSON(edits));
 
                         $.each(edits, function (index, edit) {
                             if (edit.RoleName == "STUDENT") {
@@ -219,21 +241,72 @@
 
         }
 
-        self.postPone = function (e) {
-            e.status("postPoned");
+        self.confirm = function (confirm) {
+            //alert(postponed.appointmentID());
+            var data = { Status: "Confirm" };
+            $.ajax({
+                url: "/api/Appointment/Status?key=" + confirm.appointmentID(),
+                data: { Status: "Confirmed" },
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'PUT',
+                success: function () { },
+                error: function (err) { },
+                statusCode: {
+                    400: function () { alert("400:"); },
+                    401: function () {
+                        $('#loginModal').modal('show');
+                        $('#mustLogin').text('You need to First Login / Register');
+                    }
+                }
+            });
         };
 
-        self.urgent = function (e) {
-            e.status('urgent');
+        self.postpone = function (postponed) {
+            //alert(postponed.appointmentID());
+            var data = { Status: "Postponed" };
+            $.ajax({
+                url: "/api/Appointment/Status?key=" + postponed.appointmentID(),
+                data: { Status: "Postponed" },
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'PUT',
+                success: function () { },
+                error: function (err) { },
+                statusCode: {
+                    400: function () { alert("400:"); },
+                    401: function () {
+                        $('#loginModal').modal('show');
+                        $('#mustLogin').text('You need to First Login / Register');
+                    }
+                }
+            });
         };
-
-        self.confirm = function (e) {
-            e.status("Confirmed");
+        
+        self.treated = function (treated) {
+            //alert(treated.appointmentID());
+            var data = { Status: "Treated" };
+            $.ajax({
+                url: "/api/Appointment/Status?key=" + treated.appointmentID(),
+                data: { Status: "Treated" },
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'PUT',
+                success: function () { },
+                error: function (err) { },
+                statusCode: {
+                    400: function () { alert("400:"); },
+                    401: function () {
+                        $('#loginModal').modal('show');
+                        $('#mustLogin').text('You need to First Login / Register');
+                    }
+                }
+            });
         };
 
 
         self.deleteData = function (url) {
-            alert(url.AppointmentUrl());
+            //alert(url.AppointmentUrl());
             $.ajax({
                 url: url.AppointmentUrl(),
                 cache: false,
@@ -261,6 +334,21 @@
             self.ViewDataArray.remove(function (item) { return item.appointmentID() === key; });
         };
 
+        hub.client.changedStatus = function (key, status) {
+            /**alert(key + '-' + status);
+            var arrayFilter = $.grep(self.ViewDataArray(), function (item) {
+                return item.appointmentID() === key;
+            });
+            var h = arrayFilter[0];
+            alert(ko.toJSON(arrayFilter));
+            alert(ko.toJSON(h));*/
+
+            var arrayFilter = ko.utils.arrayFirst(self.ViewDataArray(), function (item) {
+                return item.appointmentID() === key;
+            });
+            arrayFilter.status(status);
+            //alert(ko.toJSON(arrayFilter));
+        };
 
         
         
@@ -343,6 +431,76 @@
             }
         }
         self.loadOptionsData();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $this = this;
+        $this.currentPage = ko.observable();
+        $this.pageSize = ko.observable();
+        $this.currentPageIndex = ko.observable(0);
+        //$this.contacts = ko.observableArray();
+        $this.sortType = "ascending";
+        $this.currentColumn = ko.observable("");
+        $this.iconType = ko.observable("");
+        $this.currentPage = ko.computed(function () {
+            var pagesize = parseInt($this.pageSize(), 10),
+            startIndex = pagesize * $this.currentPageIndex(),
+            endIndex = startIndex + pagesize;
+            return self.ViewDataArray.slice(startIndex, endIndex);
+        });
+        $this.nextPage = function () {
+            if ((($this.currentPageIndex() + 1) * $this.pageSize()) < self.ViewDataArray().length) {
+                $this.currentPageIndex($this.currentPageIndex() + 1);
+            }
+            else {
+                $this.currentPageIndex(0);
+            }
+        };
+        $this.previousPage = function () {
+            if ($this.currentPageIndex() > 0) {
+                $this.currentPageIndex($this.currentPageIndex() - 1);
+            }
+            else {
+                $this.currentPageIndex((Math.ceil(self.ViewDataArray().length / $this.pageSize())) - 1);
+            }
+        };
+        $this.sortTable = function (viewModel, e) {
+            var orderProp = $(e.target).attr("data-column")
+            $this.currentColumn(orderProp);
+            $this.contacts.sort(function (left, right) {
+                leftVal = left[orderProp];
+                rightVal = right[orderProp];
+                if ($this.sortType == "ascending") {
+                    return leftVal < rightVal ? 1 : -1;
+                }
+                else {
+                    return leftVal > rightVal ? 1 : -1;
+                }
+            });
+            $this.sortType = ($this.sortType == "ascending") ? "descending" : "ascending";
+            $this.iconType(($this.sortType == "ascending") ? "icon-chevron-up" : "icon-chevron-down");
+        };
+
+
+
+
     }
    
     ko.applyBindings(new viewModel());
