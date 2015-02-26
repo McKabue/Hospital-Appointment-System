@@ -9,7 +9,7 @@ using System.Web;
 
 namespace Hos.HELPERS
 {
-    public class HosInitializer : DropCreateDatabaseIfModelChanges<HosContext>  //DropCreateDatabaseAlways //DropCreateDatabaseIfModelChanges
+    public class HosInitializer : CreateDatabaseIfNotExists<HosContext>  //DropCreateDatabaseAlways //DropCreateDatabaseIfModelChanges
     {
         protected override void Seed(HosContext context)
         {
