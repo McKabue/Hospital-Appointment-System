@@ -59,16 +59,17 @@ input.largerCheckbox
         margin: 45px auto !important;
     }
 
-.modal-footer {
- border-width:0;
-}
 
 
 
 @media all and (min-width: 702px) and (max-width: 1000px) {
-    body{
+    body,{
         zoom:-1;
-        font-size:9px;
+        font-size:10px;
+    }
+
+    .dropdown-menu li a{
+        font-size:11px;
     }
 
     .mainBody{
@@ -83,6 +84,15 @@ input.largerCheckbox
         height:auto;
         font-size:12px;
     }
+
+    .select2-results .select2-highlighted {
+        font-size: 15px;
+    }
+
+    .select2-container-multi .select2-choices .select2-search-field input {
+        font-size: 14px;
+    }
+
 
     .modal-dialog{
         width: 400px !important;
@@ -101,6 +111,10 @@ input.largerCheckbox
     body{
         zoom:-1;
         font-size:9px;
+    }
+
+    .dropdown-menu li a{
+        font-size:10px;
     }
     .mainBody {
 	    width: 100%;
@@ -141,6 +155,10 @@ input.largerCheckbox
 	body{
         zoom:-2;
         font-size:8px;
+    }
+
+    .dropdown-menu li a{
+        font-size:9px;
     }
 
     #book .col-xs-9 .form-control{
