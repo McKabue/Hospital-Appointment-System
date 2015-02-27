@@ -10,8 +10,9 @@ html {
 body {
 	background-color: #E0E0E0;
 	font-family: Arial,Liberation Sans,DejaVu Sans,sans-serif;
-	font-size: 14px; 
+	font-size: 11px; 
 	color: #000;
+    zoom:normal;
 	
 	
 }
@@ -25,6 +26,7 @@ body {
 	margin: 30px auto;
 	margin-top: 55px;
 	margin-bottom: 100px;
+    padding-top: 40px;
 }
 
 		
@@ -53,25 +55,128 @@ input.largerCheckbox
 	width: 100%;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.modal-dialog {
- width: 350px;
-}
+.modal-dialog{
+        margin: 45px auto !important;
+    }
 
 .modal-footer {
  border-width:0;
 }
 
+
+
+@media all and (min-width: 702px) and (max-width: 1000px) {
+    body{
+        zoom:-1;
+        font-size:9px;
+    }
+
+    .mainBody{
+	    width: 100%;
+	    margin: auto;
+	    margin-top: 55px;
+	    margin-bottom: 10px;
+        padding-top: 0;
+    }
+
+    #book .col-sm-9 .form-control{
+        height:auto;
+        font-size:12px;
+    }
+
+    .modal-dialog{
+        width: 400px !important;
+    }
+
+    .modal-body .form-group .input-group span{
+        width: 150px !important;
+    }
+
+    .modal-body .form-group .input-group input{
+        width: 250px !important;
+    }
+}
+
+@media all and (max-width: 701px) {
+    body{
+        zoom:-1;
+        font-size:9px;
+    }
+    .mainBody {
+	    width: 100%;
+	    margin: auto;
+	    margin-top: 55px;
+	    margin-bottom: 10px;
+        padding-top: 0;
+    }
+
+    #book .col-sm-9 .form-control{
+        height:auto;
+        font-size:12px;
+    }
+
+    #book .col-sm-3 .pull-right{
+        float:left !important;
+	}
+	
+    .modal-dialog{
+        width: 350px !important;
+    }
+
+    .modal-body .form-group .input-group span{
+        width: 125px !important;
+    }
+
+    .modal-body .form-group .input-group input{
+        width: 225px !important;
+    }
+}
+
+@media all and (max-width: 480px) {
+	.container-fluid{
+        padding-left:0;
+        padding-right:0;
+	}
+	
+	body{
+        zoom:-2;
+        font-size:8px;
+    }
+
+    #book .col-xs-9 .form-control{
+        height:auto;
+        font-size:10px;
+    }
+
+    .modal-dialog{
+        width: 300px !important;
+    }
+
+    .modal-body .form-group .input-group span{
+        display:none;
+    }
+
+    .modal-body .form-group .input-group form-control{
+        margin-bottom:-5px;
+    }
+
+    .modal-body .form-group .input-group input, .modal-body .form-group button{
+        width: auto;
+    }
+}
+
+@media all and (max-width: 380px) {
+	.navbar-brand{
+        display:none;
+	}
+
+    #book .col-xs-9{
+        width:100%;
+    }
+
+    #book .col-xs-3{
+        width:100%;
+    }
+
+
+}
