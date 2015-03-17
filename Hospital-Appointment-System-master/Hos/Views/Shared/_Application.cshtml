@@ -1,0 +1,747 @@
+﻿
+
+
+        <section class="tab-pane fade" id="book">
+            <form class="form-horizontal" role="form" style="" data-bind="submit:sendAppointmentData">
+
+                <div class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">Your Official Name</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="col-md-4 col-sm-4 col-xs-4" style="padding:0;">
+                                <input id="surName" placeholder="SurName" class="form-control" name="username">
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4" style="padding:0;">
+                                <input id="firstName" placeholder="First Name" class="form-control" name="username">
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4" style="padding:0;">
+                                <input id="lastName" placeholder="Last Name" class="form-control" name="username">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">Registration Number</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="" style="padding:0px;">
+                                <input id="Registration_Number" placeholder="Registration Number" class="form-control" name="username">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">National ID Number</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="" style="padding:0px;">
+                                <input id="National_ID_Number" placeholder="National_ID_Number" class="form-control" name="username">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">Birth Date</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="" style="padding:0px;">
+                                <input id="Birth_Date" placeholder="When where you born?" class="form-control" name="username">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">Program</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="" style="padding:0px;">
+                                <select id="Program" data-bind='options: program, optionsText: "name", optionsCaption: "", value: year ' class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div data-bind="with: year" class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">Year</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="" style="padding:0;">
+                                <select id="Year" data-bind='options: years, optionsText: "Name", optionsCaption: "", value: $parent.semesters ' class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div data-bind="with: semesters" class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">Semester</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="" style="padding:0;">
+                                <select data-bind='options: Semesters, optionsText: "Name", optionsCaption: "" ' class="form-control" id="Semester"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">Faculty</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="" style="padding:0px;">
+                                <select id="Faculty" data-bind='options: falcuty, optionsText: "name", optionsCaption: "", value: course ' class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div data-bind="with: course" class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">Course</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="" style="padding:0px;">
+                                <select data-bind='options: courses, optionsText: "Name", optionsCaption: ""' id="Course" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">How Are You Feeling?</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="" style="padding:0px;">
+                                <input class="select2-form-control" placeholder="Write very short explanations" id="tags1" name="username" style="width: 100%;">
+                            </div>
+                        </div>
+                        <a style="font-size:18px;" data-toggle="collapse" data-parent="" href="#collapseOne">More Explanation</a>
+                        <div id="collapseOne" class="collapse">
+                            <p style="color:#999999; font-size:18px;">Please put a space, comma or press Enter after every ..... Write very short explanations of how you are feeling. include everything you are feeling...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">Possible Causes</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="" style="padding:0px;">
+                                <input class="select2-form-control" placeholder="Write very short explanations" id="tags2" name="username" style="width: 100%;">
+                            </div>
+                        </div>
+                        <a style="font-size:18px;" data-toggle="collapse" data-parent="" href="#collapseTwo">More Explanation</a>
+                        <div id="collapseTwo" class="collapse">
+                            <p style="color:#999999; font-size:18px;">Please put a space, comma or press Enter after every ..... Write very short explanations of how you are feeling. include everything you are feeling...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">Medical Type</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="" style="padding:0px;">
+                                <select id="Medical_Type" data-bind='options: medical_Type, optionsText: "name", optionsCaption: "", value: available_Doctor ' class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div data-bind="with: available_Doctor" class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label style="font-size:1.5em;" class="pull-right">Available Doctors</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="">
+                            <div class="" style="padding:0px;">
+                                <select id="Doctor" data-bind='options: available_Doctors, optionsText: "Name", optionsCaption: ""' class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="" style="padding-top:20px;">
+                            <button type="submit" style="color:#000; font-size:1.5em;" class="btn btn-success">Send Appointment!</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+
+
+
+        <section class="tab-pane fade" id="reschedule">
+            <form id="" class="form-horizontal" role="form" style="">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading" style="font-size:1.5em;">Panel heading</div>
+                    <div class="panel-heading" style="padding-bottom:40px;">
+                        <div class="col-md-3"><input style="" id="filter" type="text" class="form-control" placeholder="Type to Search here..."></div>
+                        <div class="col-md-3">
+                            <select id="pageSizeSelector" data-bind="value: pageSize" style="" class="form-control">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                                <option value="60">60</option>
+                                <option value="70">70</option>
+                                <option value="80">80</option>
+                                <option value="90">90</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1 pull-right"><input id="checkAll" class="largerCheckbox pull-right" style="font-size:1.5em;" type="checkbox"></div>
+                        <div class="col-md-2 pull-right"><button type="button" id="deleteAll" class="btn btn-danger">Delete All Checked</button></div>
+                    </div>
+                    <div class="">
+                        <!-- Table 1 -->
+                        <table class="table table-striped table-condensed" style="border-collapse:collapse;">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%;">#</th>
+                                    <th style="width:15%;">surame</th>
+                                    <th style="width:16%;">Medical Type</th>
+                                    <th style="width:16%;">Doctor</th>
+                                    <th style="width:15%;">DateTime</th>
+                                    <th style="width:15%;">Status</th>
+                                    <th style="width:18%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody" class="searchable">
+                                <!-- ko foreach: currentPage -->
+                                <tr class="rowClass" data-bind="css: { 'success': status() == 'Confirmed', 'info': status().toLowerCase() == 'postponed', 'danger': status().toLowerCase() == 'not_confirmed', 'default': status().toLowerCase() == 'treated'}">
+                                    <!--td data-bind="text: appointmentID"></td>-->
+                                    <td data-bind="text: ($this.currentPageIndex() * $this.pageSize()) + $index() + 1"></td>
+                                    <td data-bind="text: surname"></td>
+                                    <td data-bind="text: medical_Type"></td>
+                                    <td data-bind="text: doctor"></td>
+                                    <td data-bind="text: dateTime"></td>
+                                    <td data-bind="template: { name: whichTemplate, if: whichTemplate }"></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default" data-parent="table" data-toggle="collapse" data-bind="attr: {'data-target': '#collapse' + $index()}">Show Details</button>
+                                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu buttonActiveClass" role="menu">
+                                                <li class="active"><a data-bind="attr: {'data-target': '#details' + $index()}" data-toggle="tab" data-parent="#detailsTabContent">Details</a></li>
+                                                @*<li><a data-bind="attr: {'data-target': '#edit' + $index()}" data-toggle="tab" data-parent="#detailsTabContent">Edit</a></li>*@
+                                                <li data-bind="visible: roleName() == 'DOCTOR', click: $root.confirm, css: { disabled: status().toLowerCase() == 'confirmed' } "><a href="#">Confirm</a></li>
+                                                <li data-bind="visible: roleName() == 'DOCTOR', click: $root.treated, css: { disabled: status().toLowerCase() == 'treated'}"><a href="#">Treated</a></li>
+                                                <li data-bind="visible: roleName() == 'STUDENT', click: $root.postpone, css: { disabled: status().toLowerCase() == 'postponed' }"><a href="#">PostPone</a></li>
+                                                <li data-bind="visible: roleName() == 'DOCTOR', css: { disabled: status().toLowerCase() == 'treated'}, attr: {'data-target': '#report' + $index()}" data-toggle="tab" data-parent="#detailsTabContent"><a href="#">Report</a></li>
+                                                <li data-bind="css: {disabled: status().toLowerCase() == 'treated'}"><a href="#" data-bind="click: $root.deleteData">Delete</a></li>
+                                                <li data-bind="visible: roleName() == 'STUDENT', css: {disabled: status() == 'Not_Confirmed'}, click: $root.reciept"><a href="#">Receipt</a></li>
+                                            </ul>
+                                        </div>
+                                        <span style="padding-left:5px; font-size:1.5em;"> <input class="largerCheckbox" style="font-size:1.5em;" type="checkbox"> </span>
+                                    </td>
+                                </tr>
+                                <script type="text/html" id="y-template">
+                                    <button type="button" class="btn" data-bind="text: status, css: { 'btn-success': status() == 'Confirmed', 'btn-info': status().toLowerCase() == 'postponed', 'btn-default': status().toLowerCase() == 'treated'}"></button>
+                                </script>
+                                <script type="text/html" id="n-template">
+                                    <button type="button" class="btn btn-danger">Not Confirmed</button>
+                                </script>
+                                <tr data-bind="" class="warning">
+                                    <td colspan="7" class="hiddenRow">
+                                        <div data-bind="attr: {id:  'collapse' + $index()}" class="collapse" style=" padding:20px;">
+                                            <div id="detailsTabContent" class="tab-content">
+                                                <div data-bind="attr: {id:  'details' + $index()}" class="tab-pane fade in active">
+                                                    <form class="form-horizontal" role="form" style="">
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3" style="">
+                                                                <label style="" class="pull-right">Your Official Name</label>
+                                                            </div>
+                                                            <div class="col-md-9" style="">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li data-bind="text: surname"></li>
+                                                                        <li data-bind="text: firstName"></li>
+                                                                        <li data-bind="text: lastName"></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">National ID Number</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li data-bind="text: national_ID_Number"></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Registration Number</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li data-bind="text: registration_Number"></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Birth Date</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li>12/2/1995</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Program</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li>JAB</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Year</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li>Year 3</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Semester</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li>Semester 1</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Faculty</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li>FIST</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Course</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li>Software</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">How Are You Feeling?</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul data-bind="foreach: feelings" class="list-inline">
+                                                                        <li data-bind="text: FeelingBody"></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Possible Causes</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul data-bind="foreach: causes" class="list-inline">
+                                                                        <li data-bind="text: CauseBody"></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Medical Type</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li data-bind="text: medical_Type"></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Available Doctors</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li data-bind="text: doctor"></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Appointment Date</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li>2/3/15</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Appointment Time</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li data-bind="text: dateTime"></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group" style="margin-bottom: 0px;">
+                                                            <div class="col-md-3">
+                                                                <label style="" class="pull-right">Appointment Status</label>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="">
+                                                                    <ul class="list-inline">
+                                                                        <li>Confirmed</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+
+                                                <div data-bind="attr: {id:  'report' + $index()}" class="tab-pane fade">
+                                                    <p>a commentation report goes here</p>
+                                                </div>
+                                                @*<div data-bind="attr: {id:  'edit' + $index()}" class="tab-pane fade">
+                                                        <form class="form-horizontal" role="form" style="">
+                                                            <div class="row form-group" style="margin-bottom: 0px;">
+                                                                <div class="col-md-3" style="">
+                                                                    <label style="" class="pull-right">Your Official Name</label>
+                                                                </div>
+                                                                <div class="col-md-9" style="">
+                                                                    <div class="">
+                                                                        <div class="col-md-4" style="padding:0px;">
+                                                                            <input placeholder="SurName" class="form-control" name="" id="surNameEdit">
+                                                                        </div>
+                                                                        <div class="col-md-4" style="padding:0px;">
+                                                                            <input placeholder="First Name" class="form-control" name="" id="firstNameEdit">
+                                                                        </div>
+                                                                        <div class="col-md-4" style="padding:0px;">
+                                                                            <input placeholder="Last Name" class="form-control" name="" id="lastNameEdit">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row form-group" style="margin-bottom: 0px;">
+                                                                <div class="col-md-3">
+                                                                    <label style="" class="pull-right">Registration Number</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="">
+                                                                        <div class="" style="padding:0px;">
+                                                                            <input placeholder="When where you born?" class="form-control" name="" id="Registration_NumberEdit">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row form-group" style="margin-bottom: 0px;">
+                                                                <div class="col-md-3">
+                                                                    <label style="" class="pull-right">National ID Number</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="">
+                                                                        <div class="" style="padding:0px;">
+                                                                            <input placeholder="When where you born?" class="form-control" name="" id="National_ID_NumberEdit">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row form-group" style="margin-bottom: 0px;">
+                                                                <div class="col-md-3">
+                                                                    <label style="" class="pull-right">Birth Date</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="">
+                                                                        <div class="" style="padding:0px;">
+                                                                            <input id="Birth_DateEdit" placeholder="When where you born?" class="form-control" name="username">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row form-group" style="margin-bottom: 0px;">
+                                                                <div class="col-md-3">
+                                                                    <label style="" class="pull-right">Faculty</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="">
+                                                                        <div class="" style="padding:0px;">
+                                                                            <select data-placeholder='C' class="form-control" style="width: 300px;">
+                                                                                <option></option>
+                                                                                <option value="AZ">Arizona</option>
+                                                                                <option value="CO">Colorado</option>
+                                                                                <option value="ID">Idaho</option>
+                                                                                <option value="MT">Montana</option>
+                                                                                <option value="NE">Nebraska</option>
+                                                                                <option value="NM">New Mexico</option>
+                                                                                <option value="ND">North Dakota</option>
+                                                                                <option value="UT">Utah</option>
+                                                                                <option value="WY">Wyoming</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row form-group" style="margin-bottom: 0px;">
+                                                                <div class="col-md-3">
+                                                                    <label style="" class="pull-right">Stream</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="">
+                                                                        <div class="" style="padding:0px;">
+                                                                            <select class="form-control" style="width: 300px;">
+                                                                                <option></option>
+                                                                                <optgroup label="Alaskan/Hawaiian Time Zone">
+                                                                                    <option value="AK">Alaska</option>
+                                                                                    <option value="HI">Hawaii</option>
+                                                                                </optgroup>
+                                                                                <optgroup label="Pacific Time Zone">
+                                                                                    <option value="CA">California</option>
+                                                                                    <option value="NV">Nevada</option>
+                                                                                    <option value="OR">Oregon</option>
+                                                                                    <option value="WA">Washington</option>
+                                                                                </optgroup>
+                                                                                <optgroup label="Mountain Time Zone">
+                                                                                    <option value="AZ">Arizona</option>
+                                                                                    <option value="CO">Colorado</option>
+                                                                                    <option value="ID">Idaho</option>
+                                                                                    <option value="MT">Montana</option>
+                                                                                    <option value="NE">Nebraska</option>
+                                                                                    <option value="NM">New Mexico</option>
+                                                                                    <option value="ND">North Dakota</option>
+                                                                                    <option value="UT">Utah</option>
+                                                                                    <option value="WY">Wyoming</option>
+                                                                                </optgroup>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row form-group" style="margin-bottom: 0px;">
+                                                                <div class="col-md-3">
+                                                                    <label style="" class="pull-right">Course</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="">
+                                                                        <div class="" style="padding:0px;">
+                                                                            <select class="form-control" style="width: 300px;">
+                                                                                <option></option>
+                                                                                <optgroup label="Alaskan/Hawaiian Time Zone">
+                                                                                    <option value="AK">Alaska</option>
+                                                                                    <option value="HI">Hawaii</option>
+                                                                                </optgroup>
+                                                                                <optgroup label="Pacific Time Zone">
+                                                                                    <option value="CA">California</option>
+                                                                                    <option value="NV">Nevada</option>
+                                                                                    <option value="OR">Oregon</option>
+                                                                                    <option value="WA">Washington</option>
+                                                                                </optgroup>
+                                                                                <optgroup label="Mountain Time Zone">
+                                                                                    <option value="AZ">Arizona</option>
+                                                                                    <option value="CO">Colorado</option>
+                                                                                    <option value="ID">Idaho</option>
+                                                                                    <option value="MT">Montana</option>
+                                                                                    <option value="NE">Nebraska</option>
+                                                                                    <option value="NM">New Mexico</option>
+                                                                                    <option value="ND">North Dakota</option>
+                                                                                    <option value="UT">Utah</option>
+                                                                                    <option value="WY">Wyoming</option>
+                                                                                </optgroup>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="row form-group" style="margin-bottom: 0px;">
+                                                                <div class="col-md-3">
+                                                                    <label style="" class="pull-right">How Are You Feeling?</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="">
+                                                                        <div class="" style="padding:0px;">
+                                                                            <input data-bind="" class="select2-form-control" style="width: 100%;">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row form-group" style="margin-bottom: 0px;">
+                                                                <div class="col-md-3">
+                                                                    <label style="" class="pull-right">Possible Causes</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="">
+                                                                        <div class="" style="padding:0px;">
+                                                                            <input data-bind="" class="select2-form-control" style="width: 100%;">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="row form-group" style="margin-bottom: 0px;">
+                                                                <div class="col-md-3">
+                                                                    <label style="" class="pull-right">Medical Type</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="">
+                                                                        <div class="" style="padding:0px;">
+                                                                            <select id="medical2" data-placeholder='Medical Type' class="form-control" style="width: 300px;">
+                                                                                <option></option>
+                                                                                <option value="gynaecologist2">Gynaecologist</option>
+                                                                                <option value="psychiatry2">Psychiatry</option>
+                                                                                <option value="stress2">Stress</option>
+                                                                                <option value="guidance2">Guidance & Cancelling</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row form-group" style="margin-bottom: 0px;">
+                                                                <div class="col-md-3">
+                                                                    <label style="" class="pull-right">Available Doctors</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="">
+                                                                        <div class="" style="padding:0px;">
+                                                                            <select data-placeholder='Available Doctors' id='doctors2' class="form-control" style="width: 300px;">
+                                                                                <option></option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row form-group" style="margin-bottom: 0px;">
+                                                                <div class="col-md-3">
+
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="" style="padding-top:20px;">
+                                                                        <button type="submit" style="" class="btn btn-success">Save Edits</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </form>
+                                                    </div>*@
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- /ko -->
+
+
+                            </tbody>
+                            <!--tfoot>
+                                <tr>
+
+                                    <td colspan="6">
+                                        <button class="btn">Previous<i class="icon-step-backward"></i></button>
+                                        Page<label data-bind="text: currentPageIndex() + 1" class="badge"></label>
+                                        <button  class="btn">Next<i class="icon-step-forward"></i></button>
+                                    </td>
+                                </tr>
+                            </tfoot-->
+                        </table>
+                    </div>
+                    <div style="margin-top: -20px;" class="panel-footer">
+                        <ul class="pager pager-lg">
+                            <li><a href="#" data-bind="click: previousPage, visible: currentPageIndex() > 0">Previous</a></li>
+                            <li class="disabled"><a href="#" data-bind="text: 'Page  ' + (currentPageIndex() + 1), visible: ViewDataArray().length > 0"></a></li>
+                            <li><a href="#" data-bind="click: nextPage, visible: ((currentPageIndex() + 1) * pageSize()) < ViewDataArray().length">Next</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+
+   
+
