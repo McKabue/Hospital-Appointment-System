@@ -131,7 +131,9 @@ $('table').on('click', '.buttonActiveClass li a', function (e) {
 ////////////////LOGIN and LOGOUT switch///////////////////
     /*if (!$.cookie('cookieToken') == null) {
         $('#login a[href=#loginModal]').text('Logout');
-    }*/
+        and i will add a loading bar
+    }*/ 
+
 
 
 
