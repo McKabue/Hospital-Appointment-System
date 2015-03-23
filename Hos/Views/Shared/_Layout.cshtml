@@ -23,25 +23,12 @@
                 @Html.ActionLink("Hospital System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @Style = "font-size: 1.6em;" })
             </div>
 
-            <div id="myTab2" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="#Home" data-toggle="tab" tabindex="-1" class="">Home</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Appointments<b class="caret"></b></a>
-                        <ul id="myTab" class="dropdown-menu">
-                            <li class=""><a data-toggle="tab" href="#book" tabindex="-1" data-bind="click: loadOptionsData">Book Appointment</a> </li>
-                            <li><a data-toggle="tab" href="#reschedule" tabindex="-1" data-bind="click: loadEditData">Details</a> </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Proposal<b class="caret"></b></a>
-                        <ul data-toggle="tab" href="#proposal" tabindex="-1" class="dropdown-menu">
-                            <li><a data-toggle="" href="#chapter1">Chapter 1</a></li>
-                            <li><a data-toggle="" href="#chapter2">Chapter 2</a></li>
-                            <li><a data-toggle="" href="#chapter3">Chapter 3</a></li>
-                        </ul>
-                    </li>
-                    <li>@Html.ActionLink("About", "Medical", "Home")</li>
+            <div class="navbar-collapse collapse">
+                <ul id="myTab2" class="nav navbar-nav">
+                    <li class="active"><a data-toggle="tab" href="#home" tabindex="-1">Home</a></li>
+                    <li><a data-toggle="tab" href="#book" tabindex="-1" data-bind="click: loadOptionsData">Book Appointment</a></li>
+                    <li><a data-toggle="tab" href="#reschedule" tabindex="-1" data-bind="click: loadEditData">Details</a></li>
+                    <li data-bind="visible: role() == 'ADMIN'"><a data-toggle="tab" href="#users" tabindex="-1" data-bind="click: loadUsers">Users</a></li>
                 </ul>
                 <ul id="login" class="nav navbar-nav navbar-right">
                     <li><a title="" data-toggle="modal" style="" href="#loginModal" data-bind="html: user"></a></li>
@@ -68,13 +55,24 @@
                     <br /><span id="mustLogin" style="font-size:1.5em;" class="text-danger mustLogin"></span>
                     <ul id="myLoginTab" class="nav nav-tabs" style="margin-top:30px;">
                         <li class="active"><a data-target="#login2" data-parent="myTabContentLogin" data-toggle="tab">Login</a></li>
-                        <li><a data-target="#register" data-parent="myTabContentLogin" data-toggle="tab">Register</a></li>
+                        <li data-bind="visible: role() == 'ADMIN'"><a data-target="#register" data-parent="myTabContentLogin" data-toggle="tab">Register</a></li>
                     </ul>
                 </div>
                 <div style="padding-left:5px;padding-right:5px;" class="modal-body">
                     <div id="myTabContentLogin" class="tab-content">
                         <div class="tab-pane fade in active" id="login2">
                             <form class="navbar-form form" role="form" data-bind="submit: GetToken">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span style="width:200px;" class="input-group-addon">Reg. Number</span>
+                                        <select style="width: 300px;" class="form-control" name="loginRole">
+                                            <option>STUDENT</option>
+                                            <option>DOCTOR</option>
+                                            <option>ADMIN</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span style="width:200px;" class="input-group-addon">Reg. Number</span>
@@ -96,7 +94,7 @@
                         </div>
 
 
-                        <div class="tab-pane fade" id="register">
+                        <div data-bind="visible: role() == 'ADMIN'" class="tab-pane fade" id="register">
                             <form style="" id="signupForm" class="navbar-form form" role="form" data-bind="submit: SignUp">
                                 <div class="form-group">
                                     <div class="input-group">
@@ -137,7 +135,11 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span style="width:200px;" class="input-group-addon">Role</span>
-                                        <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="roleName">
+                                        <select style="width: 300px;" class="form-control" name="registerRole">
+                                            <option>STUDENT</option>
+                                            <option>DOCTOR</option>
+                                            <option>ADMIN</option>
+                                        </select>
                                     </div>
                                 </div>
                                 @*/////////////////////////////////////////////////*@
@@ -170,9 +172,13 @@
 
     <div class="clear"></div>
 
-    
-        @RenderBody()
-    
+    <div class="row mainBody" style="background-color:#E0EAF1; padding:20px; margin-top: 95px; border:4px solid #AAA;">
+        <article class="tab-content">
+            @RenderBody()
+            
+        </article>
+    </div>
+
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
@@ -180,10 +186,10 @@
 
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
-    <script src="~/Scripts/jspdf.min.js"></script>
+        <script src="~/Scripts/jspdf.min.js"></script>
         @Scripts.Render("~/bundles/otherScripts")
         @RenderSection("scripts", required: false)
-        
+
         <script src="~/signalr/hubs"></script>
 </body>
 </html>

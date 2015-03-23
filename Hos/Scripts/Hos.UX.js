@@ -126,7 +126,9 @@ $('table').on('click', '.buttonActiveClass li a', function (e) {
     });
 
 
-    $('#myTab2 a[href=#Home]').tab('show');
+    
+
+
 
 ////////////////LOGIN and LOGOUT switch///////////////////
     /*if (!$.cookie('cookieToken') == null) {

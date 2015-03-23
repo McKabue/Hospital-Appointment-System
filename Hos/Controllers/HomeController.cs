@@ -10,19 +10,20 @@ namespace Hos.Controllers
     public class HomeController : Controller
     {
         // GET: Home
+        //[Route("Home")]
         public ActionResult Index()
         {
             return View();
         }
 
-        
-        public ActionResult Application()
+        [Route("Book")]
+        public ActionResult Book()
         {
             return View();
         }
 
-        [Route("Medical")]
-        public ActionResult Medical()
+        [Route("Reschedule")]
+        public ActionResult Reschedule()
         {
             return View();
         }

@@ -1,4 +1,5 @@
 ﻿jQuery(document).ready(function ($) {
+
     $.connection.hub.start();
 
     function Program(Name, Years) {
@@ -19,7 +20,7 @@
     }
 
 
-    function ViewData(AppointmentID, SurName, FirstName, LastName, Registration_Number, National_ID_Number, RoleName, Feelings, Causes, Medical_Type, Doctor, DateTime, Status) {
+    function ViewData(AppointmentID, SurName, FirstName, LastName, Registration_Number, National_ID_Number, RoleName, Feelings, Causes, Medical_Type, Doctor, DateTime, Status, Year, Semester, Faculty, Course, Program) {
         var self = this;
 
         self.appointmentID = ko.observable(AppointmentID);
@@ -39,6 +40,12 @@
         self.dateTime = ko.observable(DateTime);
         self.status = ko.observable(Status);
 
+        self.year = ko.observable(Year);
+        self.semester = ko.observable(Semester);
+        self.faculty = ko.observable(Faculty);
+        self.course = ko.observable(Course);
+        self.program = ko.observable(Program);
+
         self.whichTemplate = ko.computed(function () {
             return self.status() != 'Not_Confirmed' ? 'y-template' : 'n-template';
         });
@@ -50,12 +57,39 @@
         
     }
 
+    function User(Id, FirstName, LastName, Surname, UserName, Role) {
+        var self = this;
+        self.id = ko.observable(Id);
+        self.fName = ko.observable(FirstName);
+        self.lName = ko.observable(LastName);
+        self.sName = ko.observable(Surname);
+        self.uName = ko.observable(UserName);
+        self.rl = ko.observable(Role);
+        this.roleOptions = ["STUDENT", "DOCTOR", "ADMIN"];
+
+
+        self.readWrite = ko.observable("read");
+
+        self.templateToUse = ko.computed(function () {
+            return self.readWrite() == "read" ? 'readTemplate' : self.readWrite() == "write" ? 'editTemplate' : null;
+        });
+    }
+
 
     var viewModel = function () {
         var self = this;
 
         
-
+       /* $('#myTab2 li').on('click', function () {
+            $('#myTab2 li').find('.active').removeClass('active');
+            $(this).addClass('active');
+            if ($(this).attr('id') == 'boo') {
+                self.loadOptionsData();
+            }
+            if ($(this).attr('id') == 'detai') {
+                 self.loadEditData();
+            }
+        });*/
 
 
 
@@ -88,6 +122,7 @@
             self.u($.cookie('user'));
             self.role($.cookie('role'));
             self.loadOptionsData();
+            self.loadEditData();
         };
 
         self.program = ko.observableArray();
@@ -100,6 +135,7 @@
         self.ViewDataArray = ko.observableArray();
 
         self.loadOptionsData = function () {
+            //alert('hi');
             self.program([]);
             self.falcuty([]);
             self.medical_Type([]);
@@ -123,7 +159,7 @@
                          //   $('#pleaseWaitDialog').modal('hide');
                         //}
                         
-                       // $('#myTab a[href=#book]').tab('show');
+                        //$('#myTab a[href=#book]').tab('show');
                         //alert(ko.toJSON(datas));
                         $.each(datas, function (index, data) {
                             //alert(ko.toJSON(data.User
@@ -155,7 +191,9 @@
                     },
                     666: function (doc) {
                         //alert(ko.toJSON(doc));
-                        $('#myTab a[href=#reschedule]').tab('show');
+
+                        //$('#myTab2 li a[href=#reschedule]').tab('show');
+
                         if (doc != null) {
                            // clearInterval(progress);
                            // $('#pleaseWaitDialog').modal('hide');
@@ -196,6 +234,7 @@
         }
 
         self.loadEditData = function () {
+           
             self.ViewDataArray([]);
             $.ajax({
                 url: "/api/Appointment/Details",
@@ -208,12 +247,13 @@
                     200: function (edits) {
 
                         //alert(ko.toJSON(edits));
-
+                        // $('#myTab a[href=#reschedule]').tab('show');
+                        self.ViewDataArray([]);
                         $.each(edits, function (index, edit) {
                             if (edit.RoleName == "STUDENT") {
                                 $.each(edit.User, function (index, user) {
 
-                                    self.ViewDataArray.push(new ViewData(edit.AppointmentID, user.SurName, user.FirstName, user.LastName, user.Registration_Number, user.National_ID_Number, edit.RoleName, edit.Feelings, edit.Causes, edit.Medical_Type, edit.Doctor, edit.DateTime, edit.Status));
+                                    self.ViewDataArray.push(new ViewData(edit.AppointmentID, user.SurName, user.FirstName, user.LastName, user.Registration_Number, user.National_ID_Number, edit.RoleName, edit.Feelings, edit.Causes, edit.Medical_Type, edit.Doctor, edit.DateTime, edit.Status, edit.Year, edit.Semester, edit.Faculty, edit.Course, edit.Program));
 
                                     //$('#surNameEdit').val(user.SurName).attr('disabled', true);
                                     //$('#firstNameEdit').val(user.FirstName).attr('disabled', true);
@@ -225,10 +265,24 @@
                             }
 
                             if (edit.RoleName == "DOCTOR") {
+                               
+                                //alert("good");
                                 $.each(edit.User, function (index, user) {
-                                    self.ViewDataArray.push(new ViewData(edit.AppointmentID, user.SurName, user.FirstName, user.LastName, user.Registration_Number, user.National_ID_Number, edit.RoleName, edit.Feelings, edit.Causes, edit.Medical_Type, edit.Doctor, edit.DateTime, edit.Status));
+                                    self.ViewDataArray.push(new ViewData(edit.AppointmentID, user.SurName, user.FirstName, user.LastName, user.Registration_Number, user.National_ID_Number, edit.RoleName, edit.Feelings, edit.Causes, edit.Medical_Type, edit.Doctor, edit.DateTime, edit.Status, edit.Year, edit.Semester, edit.Faculty, edit.Course, edit.Program));
+
+                                    
                                 });
-                                }
+                            }
+
+                            if (edit.RoleName == "ADMIN") {
+
+                                //alert("good");
+                                $.each(edit.User, function (index, user) {
+                                    self.ViewDataArray.push(new ViewData(edit.AppointmentID, user.SurName, user.FirstName, user.LastName, user.Registration_Number, user.National_ID_Number, edit.RoleName, edit.Feelings, edit.Causes, edit.Medical_Type, edit.Doctor, edit.DateTime, edit.Status, edit.Year, edit.Semester, edit.Faculty, edit.Course, edit.Program));
+
+
+                                });
+                            }
                         });
                     },
                     400: function () { alert("400:"); },
@@ -371,20 +425,20 @@
             doc.text(20, 40, 'Details');
 
             doc.text(60, 40, ':');
-            doc.text(65, 40, "Stream");
-            doc.text(90, 40, "--> " + this.firstName());
+            doc.text(65, 40, "Year");
+            doc.text(90, 40, "--> " + this.year() + ", " + this.semester() + ", " + this.program());
             doc.text(60, 50, ':');
             doc.text(65, 50, "Fulculty");
-            doc.text(90, 50, "--> " + this.firstName());
+            doc.text(90, 50, "--> " + this.faculty());
             doc.text(60, 60, ':');
             doc.text(65, 60, "Course");
-            doc.text(90, 60, "--> " + this.firstName());
+            doc.text(90, 60, "--> " + this.course());
 
             doc.text(20, 70, 'Medical Report');
             doc.text(60, 70, ':');
             doc.text(65, 70, "This Apponintment was " + this.status() + " by " + this.doctor());
-            doc.text(60, 80, ':');
-            doc.text(65, 80, "The midical report made by a doctor goes here...");
+            /*doc.text(60, 80, ':');
+            doc.text(65, 80, "The midical report made by a doctor goes here...");*/
 
             doc.save('Reciept.pdf');
         }
@@ -425,6 +479,31 @@
             arrayFilter.doctor(doctor);
             //alert(ko.toJSON(arrayFilter));
         };
+
+        hub.client.usersChanged = function (Id, data) {
+            
+            //alert("role is comming");
+            var arrayFilter = ko.utils.arrayFirst(self.users(), function (item) {
+                return item.id() === Id;
+            });
+            arrayFilter.readWrite("read");
+            var USER = data[0];
+            alert(ko.toJSON(USER));
+            alert(USER.FirstName);
+            arrayFilter.fName(USER.FirstName);
+            arrayFilter.lName(USER.LastName);
+            arrayFilter.sName(USER.Surname);
+            arrayFilter.uName(USER.UserName);
+            arrayFilter.rl(USER.Role);
+        }
+
+        hub.client.userDeleted = function (Id) {
+            var arrayFilter = ko.utils.arrayFirst(self.users(), function (item) {
+                return item.id() === Id;
+            });
+            //alert(ko.toJSON(arrayFilter));
+            self.users.remove(arrayFilter);
+        }
 
         
         
@@ -478,35 +557,149 @@
                         200: function () {
                             $('#loginModal').modal('hide');
                             self.loadOptionsData();
+                            self.loadEditData();
                         },
                         400: function () { alert("400: Bad request"); }
+                        
                     }
                 });
             }
         }
         self.SignUp = function (context) {
-            if (!$('input[name="surname"]', context).val() == "" && !$('input[name="firstname"]', context).val() == "" && !$('input[name="lastname"]', context).val() == "" && !$('input[name="registration_number"]', context).val() == "" && !$('input[name="national_id_number"]', context).val() == "" && !$('input[name="roleName"]', context).val() == "" && !$('input[name="password"]', context).val() == "" && !$('input[name="confirmpassword"]', context).val() == "") {
-                var SignUpData = "surName=" + $('input[name="surname"]', context).val() + "&firstName=" + $('input[name="firstname"]', context).val() + "&lastName=" + $('input[name="lastname"]', context).val() + "&userName=" + $('input[name="registration_number"]', context).val() + "&National_ID_Number=" + $('input[name="national_id_number"]', context).val() + "&roleName=" + $('input[name="roleName"]', context).val() + "&password=" + $('input[name="password"]', context).val() + "&confirmPassword=" + $('input[name="confirmpassword"]', context).val();
+            if (!$('input[name="surname"]', context).val() == "" && !$('input[name="firstname"]', context).val() == "" && !$('input[name="lastname"]', context).val() == "" && !$('input[name="registration_number"]', context).val() == "" && !$('input[name="national_id_number"]', context).val() == "" && !$('select[name="registerRole"]', context).val() == "" && !$('input[name="password"]', context).val() == "" && !$('input[name="confirmpassword"]', context).val() == "") {
+                var SignUpData = "surName=" + $('input[name="surname"]', context).val() + "&firstName=" + $('input[name="firstname"]', context).val() + "&lastName=" + $('input[name="lastname"]', context).val() + "&userName=" + $('input[name="registration_number"]', context).val() + "&National_ID_Number=" + $('input[name="national_id_number"]', context).val() + "&roleName=" + $('select[name="registerRole"]', context).val() + "&password=" + $('input[name="password"]', context).val() + "&confirmPassword=" + $('input[name="confirmpassword"]', context).val();
                 alert(ko.toJSON(SignUpData));
                 $.ajax({
                     url: "/api/account/register",
                     data: SignUpData,
                     ContentType: "application/x-www-form-urlencoded",
                     cache: false,
+                    headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
                     type: 'POST',
                     success: function () { },
                     error: function (err) { alert(ko.toJSON(err)); },
                     statusCode: {
                         200: function () {
-                            $('#mustLogin').text('You Registered Successfully; now You just need to login...');
-                            $('#myLoginTab li:eq(0) a').tab('show');
+                           // $('#mustLogin').text('You Registered Successfully; now You just need to login...');
+                           // $('#myLoginTab li:eq(0) a').tab('show');
                         },
-                        400: function () { alert("400: Bad request"); }
+                        400: function () { alert("400: Bad request"); },
+                        777: function (e) { alert("777" + e); },
+                        888: function (e) { alert("888" + e); }
                     }
                 });
             }
         }
-        //self.loadOptionsData();
+
+        
+
+
+        
+
+        self.users = ko.observableArray();
+        self.selectedUser = ko.observable();
+
+        self.addUser = function () {
+            var newUser = new User();
+            self.users.push(newUser);
+            self.selectedUser(newUser);
+        };
+
+        self.deleteUser = function () {
+            alert(ko.toJSON(this));
+            var id = this.id();
+            $.ajax({
+                url: "api/account/delete?id=" + id,
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'DELETE',
+                success: function () {
+                    // alert("Update Successful");
+                },
+                error: function (err) {
+
+                    alert("Update NOT Successful" + ko.toJSON(err));
+                },
+                statusCode: {
+
+                }
+            });
+        };
+
+        self.cancelEdit = function () {
+            var userData = this;
+            userData.readWrite("read");
+        };
+
+        self.editUser = function () {
+            var userData = this;
+            userData.readWrite("write");
+        };
+
+        self.loadUsers = function () {
+            self.users([]);
+            $.ajax({
+                url: "api/account/allusers",
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'GET',
+                //data: UpdataData,
+                success: function (userss) {
+                   // alert(ko.toJSON(userss));
+                    $.each(userss, function (index, user) {
+                       // $.each(data.User, function (index, user) {
+                        self.users.push(new User(user.Id, user.FirstName, user.LastName, user.Surname, user.UserName, user.Role));
+                       // });
+                    });
+                    //self.users(userss); alert(ko.toJSON(userss));
+                },
+                error: function (err) { },
+                statusCode: {
+
+                }
+            });
+        };
+
+        self.acceptUser = function () {
+            var userData = this;
+            
+
+            var UpdataData = "Id=" + this.id() + "&surName=" + this.sName() + "&firstName=" + this.fName() + "&lastName=" + this.lName() + "&userName=" + this.uName() + "&roleName=" + this.rl();
+            //alert(UpdataData);
+            $.ajax({
+                url: "api/account/update",
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'PUT',
+                data: UpdataData,
+                success: function () {
+                   // alert("Update Successful");
+                },
+                error: function (err) {
+                    //alert("Update NOT Successful" + ko.toJSON(err));
+                },
+                statusCode: {
+
+                }
+            });
+             
+
+            //alert(this.rl());
+            //self.selectedUser(item);
+            //user.sName.focused(true);
+        };
+
+        //self.users([new User("ddssfs", "sf fs", "fs f", "ergte", "ADMIN"), new User("ddssfs", "sf fs", "fs f", "ergte", "STUDENT")]);
+
+
+
+
+
+
+
+
+
+
 
 
 

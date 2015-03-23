@@ -1,13 +1,9 @@
 ﻿
-@{
-    ViewBag.Title = "Home";
-}
 
-<div class="row mainBody" style="background-color:#E0EAF1; padding:20px; margin-top: 95px; border:4px solid #AAA;">
-    <article id="myTabContent2" class="tab-content">
-        @Html.Partial("_Home")
-        @Html.Partial("_Application")
-        @Html.Partial("_Proposal")
-        </article>
-</div>
+
+@Html.Partial("_Home")
+@Html.Partial("_Book")
+@Html.Partial("_Reschedule")
+@Html.Partial("_Users")
+
 

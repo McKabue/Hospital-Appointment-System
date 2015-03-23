@@ -13,8 +13,10 @@ body {
 	font-size: 11px; 
 	color: #000;
     zoom:normal;
-	
-	
+}
+
+#users input{
+    width:70px;
 }
 
 .clear {

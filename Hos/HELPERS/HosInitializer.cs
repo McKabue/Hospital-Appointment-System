@@ -9,13 +9,16 @@ using System.Web;
 
 namespace Hos.HELPERS
 {
-    public class HosInitializer : CreateDatabaseIfNotExists<HosContext>  //DropCreateDatabaseAlways //DropCreateDatabaseIfModelChanges
+    public class HosInitializer : DropCreateDatabaseIfModelChanges<HosContext>  //DropCreateDatabaseAlways //DropCreateDatabaseIfModelChanges
     {
         protected override void Seed(HosContext context)
         {
             var hasher = new PasswordHasher();
             var user = new UserManager<UserProfile>(new UserStore<UserProfile>(context));
             user.UserValidator = new UserValidator<UserProfile>(user) { AllowOnlyAlphanumericUserNames = false };
+
+            user.Create(new UserProfile() { FirstName = "rvferi", LastName = "fvij", UserName = "Admin", RoleName = "ADMIN", PasswordHash = hasher.HashPassword("Admin") });
+
             user.Create(new UserProfile() { FirstName = "kamaa", LastName = "john", UserName = "IN16/20034/13", RoleName = "STUDENT", PasswordHash = hasher.HashPassword("1234567890") });
             user.Create(new UserProfile() { FirstName = "kamaa2", LastName = "john2", UserName = "IN162006413", RoleName = "STUDENT", PasswordHash = hasher.HashPassword("1234567890") });
 

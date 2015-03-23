@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Hos5Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Appointments">
+    <Key>
+      <PropertyRef Name="AppointmentID" />
+    </Key>
+    <Property Name="AppointmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AppointmentDate" Type="datetime" />
+    <Property Name="Registration_Number" Type="nvarchar(max)" />
+    <Property Name="Birth_Date" Type="datetime" />
+    <Property Name="Program" Type="nvarchar(max)" />
+    <Property Name="Year" Type="nvarchar(max)" />
+    <Property Name="Semester" Type="nvarchar(max)" />
+    <Property Name="Faculty" Type="nvarchar(max)" />
+    <Property Name="Course" Type="nvarchar(max)" />
+    <Property Name="Medical_Type" Type="nvarchar(max)" />
+    <Property Name="Available_Doctor" Type="nvarchar(max)" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="Available_Doctor">
+    <Key>
+      <PropertyRef Name="Available_DoctorID" />
+    </Key>
+    <Property Name="Available_DoctorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="Doctor_UserName" Type="nvarchar(max)" />
+    <Property Name="Medical_TypeID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Courses">
+    <Key>
+      <PropertyRef Name="CourseID" />
+    </Key>
+    <Property Name="CourseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="FacultyID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Faculties">
+    <Key>
+      <PropertyRef Name="FacultyID" />
+    </Key>
+    <Property Name="FacultyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="OptionsData_OptionsDataID" Type="int" />
+  </EntityType>
+  <EntityType Name="Feelings">
+    <Key>
+      <PropertyRef Name="FeelingID" />
+    </Key>
+    <Property Name="FeelingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FeelingBody" Type="nvarchar(max)" />
+    <Property Name="AppointmentID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Medical_Type">
+    <Key>
+      <PropertyRef Name="Medical_TypeID" />
+    </Key>
+    <Property Name="Medical_TypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="OptionsData_OptionsDataID" Type="int" />
+  </EntityType>
+  <EntityType Name="OptionsDatas">
+    <Key>
+      <PropertyRef Name="OptionsDataID" />
+    </Key>
+    <Property Name="OptionsDataID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Possible_Cause">
+    <Key>
+      <PropertyRef Name="Possible_CauseID" />
+    </Key>
+    <Property Name="Possible_CauseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Possible_CauseBody" Type="nvarchar(max)" />
+    <Property Name="AppointmentID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Programs">
+    <Key>
+      <PropertyRef Name="ProgramID" />
+    </Key>
+    <Property Name="ProgramID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="OptionsData_OptionsDataID" Type="int" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Semesters">
+    <Key>
+      <PropertyRef Name="SemesterID" />
+    </Key>
+    <Property Name="SemesterID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="YearID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserClaims">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar(max)" />
+    <Property Name="ClaimType" Type="nvarchar(max)" />
+    <Property Name="ClaimValue" Type="nvarchar(max)" />
+    <Property Name="IdentityUser_Id" Type="nvarchar" MaxLength="128" />
+  </EntityType>
+  <EntityType Name="UserLogins">
+    <Key>
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="IdentityUser_Id" Type="nvarchar" MaxLength="128" />
+  </EntityType>
+  <EntityType Name="UserRoles">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="IdentityUser_Id" Type="nvarchar" MaxLength="128" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Email" Type="nvarchar(max)" />
+    <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+    <Property Name="PasswordHash" Type="nvarchar(max)" />
+    <Property Name="SecurityStamp" Type="nvarchar(max)" />
+    <Property Name="PhoneNumber" Type="nvarchar(max)" />
+    <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="datetime" />
+    <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar(max)" />
+    <Property Name="FirstName" Type="nvarchar(max)" />
+    <Property Name="LastName" Type="nvarchar(max)" />
+    <Property Name="National_ID_Number" Type="int" />
+    <Property Name="RoleName" Type="nvarchar(max)" />
+    <Property Name="SurName" Type="nvarchar(max)" />
+    <Property Name="Discriminator" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="OptionsData_OptionsDataID" Type="int" />
+  </EntityType>
+  <EntityType Name="Years">
+    <Key>
+      <PropertyRef Name="YearID" />
+    </Key>
+    <Property Name="YearID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="ProgramID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_dbo_Available_Doctor_dbo_Medical_Type_Medical_TypeID">
+    <End Role="Medical_Type" Type="Self.Medical_Type" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Available_Doctor" Type="Self.Available_Doctor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Medical_Type">
+        <PropertyRef Name="Medical_TypeID" />
+      </Principal>
+      <Dependent Role="Available_Doctor">
+        <PropertyRef Name="Medical_TypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Courses_dbo_Faculties_FacultyID">
+    <End Role="Faculties" Type="Self.Faculties" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Courses" Type="Self.Courses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Faculties">
+        <PropertyRef Name="FacultyID" />
+      </Principal>
+      <Dependent Role="Courses">
+        <PropertyRef Name="FacultyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Faculties_dbo_OptionsDatas_OptionsData_OptionsDataID">
+    <End Role="OptionsDatas" Type="Self.OptionsDatas" Multiplicity="0..1" />
+    <End Role="Faculties" Type="Self.Faculties" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OptionsDatas">
+        <PropertyRef Name="OptionsDataID" />
+      </Principal>
+      <Dependent Role="Faculties">
+        <PropertyRef Name="OptionsData_OptionsDataID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Feelings_dbo_Appointments_AppointmentID">
+    <End Role="Appointments" Type="Self.Appointments" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Feelings" Type="Self.Feelings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Appointments">
+        <PropertyRef Name="AppointmentID" />
+      </Principal>
+      <Dependent Role="Feelings">
+        <PropertyRef Name="AppointmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Medical_Type_dbo_OptionsDatas_OptionsData_OptionsDataID">
+    <End Role="OptionsDatas" Type="Self.OptionsDatas" Multiplicity="0..1" />
+    <End Role="Medical_Type" Type="Self.Medical_Type" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OptionsDatas">
+        <PropertyRef Name="OptionsDataID" />
+      </Principal>
+      <Dependent Role="Medical_Type">
+        <PropertyRef Name="OptionsData_OptionsDataID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Possible_Cause_dbo_Appointments_AppointmentID">
+    <End Role="Appointments" Type="Self.Appointments" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Possible_Cause" Type="Self.Possible_Cause" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Appointments">
+        <PropertyRef Name="AppointmentID" />
+      </Principal>
+      <Dependent Role="Possible_Cause">
+        <PropertyRef Name="AppointmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Programs_dbo_OptionsDatas_OptionsData_OptionsDataID">
+    <End Role="OptionsDatas" Type="Self.OptionsDatas" Multiplicity="0..1" />
+    <End Role="Programs" Type="Self.Programs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OptionsDatas">
+        <PropertyRef Name="OptionsDataID" />
+      </Principal>
+      <Dependent Role="Programs">
+        <PropertyRef Name="OptionsData_OptionsDataID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Semesters_dbo_Years_YearID">
+    <End Role="Years" Type="Self.Years" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Semesters" Type="Self.Semesters" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Years">
+        <PropertyRef Name="YearID" />
+      </Principal>
+      <Dependent Role="Semesters">
+        <PropertyRef Name="YearID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_UserClaims_dbo_Users_IdentityUser_Id">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="UserClaims" Type="Self.UserClaims" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserClaims">
+        <PropertyRef Name="IdentityUser_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_UserLogins_dbo_Users_IdentityUser_Id">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="UserLogins" Type="Self.UserLogins" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserLogins">
+        <PropertyRef Name="IdentityUser_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_UserRoles_dbo_Roles_RoleId">
+    <End Role="Roles" Type="Self.Roles" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserRoles">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_UserRoles_dbo_Users_IdentityUser_Id">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserRoles">
+        <PropertyRef Name="IdentityUser_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Users_dbo_OptionsDatas_OptionsData_OptionsDataID">
+    <End Role="OptionsDatas" Type="Self.OptionsDatas" Multiplicity="0..1" />
+    <End Role="Users" Type="Self.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OptionsDatas">
+        <PropertyRef Name="OptionsDataID" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="OptionsData_OptionsDataID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Years_dbo_Programs_ProgramID">
+    <End Role="Programs" Type="Self.Programs" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Years" Type="Self.Years" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Programs">
+        <PropertyRef Name="ProgramID" />
+      </Principal>
+      <Dependent Role="Years">
+        <PropertyRef Name="ProgramID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Hos5ModelStoreContainer">
+    <EntitySet Name="Appointments" EntityType="Self.Appointments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Available_Doctor" EntityType="Self.Available_Doctor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Faculties" EntityType="Self.Faculties" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Feelings" EntityType="Self.Feelings" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Medical_Type" EntityType="Self.Medical_Type" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OptionsDatas" EntityType="Self.OptionsDatas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Possible_Cause" EntityType="Self.Possible_Cause" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Programs" EntityType="Self.Programs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Semesters" EntityType="Self.Semesters" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserClaims" EntityType="Self.UserClaims" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Years" EntityType="Self.Years" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_dbo_Available_Doctor_dbo_Medical_Type_Medical_TypeID" Association="Self.FK_dbo_Available_Doctor_dbo_Medical_Type_Medical_TypeID">
+      <End Role="Medical_Type" EntitySet="Medical_Type" />
+      <End Role="Available_Doctor" EntitySet="Available_Doctor" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Courses_dbo_Faculties_FacultyID" Association="Self.FK_dbo_Courses_dbo_Faculties_FacultyID">
+      <End Role="Faculties" EntitySet="Faculties" />
+      <End Role="Courses" EntitySet="Courses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Faculties_dbo_OptionsDatas_OptionsData_OptionsDataID" Association="Self.FK_dbo_Faculties_dbo_OptionsDatas_OptionsData_OptionsDataID">
+      <End Role="OptionsDatas" EntitySet="OptionsDatas" />
+      <End Role="Faculties" EntitySet="Faculties" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Feelings_dbo_Appointments_AppointmentID" Association="Self.FK_dbo_Feelings_dbo_Appointments_AppointmentID">
+      <End Role="Appointments" EntitySet="Appointments" />
+      <End Role="Feelings" EntitySet="Feelings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Medical_Type_dbo_OptionsDatas_OptionsData_OptionsDataID" Association="Self.FK_dbo_Medical_Type_dbo_OptionsDatas_OptionsData_OptionsDataID">
+      <End Role="OptionsDatas" EntitySet="OptionsDatas" />
+      <End Role="Medical_Type" EntitySet="Medical_Type" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Possible_Cause_dbo_Appointments_AppointmentID" Association="Self.FK_dbo_Possible_Cause_dbo_Appointments_AppointmentID">
+      <End Role="Appointments" EntitySet="Appointments" />
+      <End Role="Possible_Cause" EntitySet="Possible_Cause" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Programs_dbo_OptionsDatas_OptionsData_OptionsDataID" Association="Self.FK_dbo_Programs_dbo_OptionsDatas_OptionsData_OptionsDataID">
+      <End Role="OptionsDatas" EntitySet="OptionsDatas" />
+      <End Role="Programs" EntitySet="Programs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Semesters_dbo_Years_YearID" Association="Self.FK_dbo_Semesters_dbo_Years_YearID">
+      <End Role="Years" EntitySet="Years" />
+      <End Role="Semesters" EntitySet="Semesters" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_UserClaims_dbo_Users_IdentityUser_Id" Association="Self.FK_dbo_UserClaims_dbo_Users_IdentityUser_Id">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserClaims" EntitySet="UserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_UserLogins_dbo_Users_IdentityUser_Id" Association="Self.FK_dbo_UserLogins_dbo_Users_IdentityUser_Id">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserLogins" EntitySet="UserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_UserRoles_dbo_Roles_RoleId" Association="Self.FK_dbo_UserRoles_dbo_Roles_RoleId">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="UserRoles" EntitySet="UserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_UserRoles_dbo_Users_IdentityUser_Id" Association="Self.FK_dbo_UserRoles_dbo_Users_IdentityUser_Id">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserRoles" EntitySet="UserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Users_dbo_OptionsDatas_OptionsData_OptionsDataID" Association="Self.FK_dbo_Users_dbo_OptionsDatas_OptionsData_OptionsDataID">
+      <End Role="OptionsDatas" EntitySet="OptionsDatas" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Years_dbo_Programs_ProgramID" Association="Self.FK_dbo_Years_dbo_Programs_ProgramID">
+      <End Role="Programs" EntitySet="Programs" />
+      <End Role="Years" EntitySet="Years" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

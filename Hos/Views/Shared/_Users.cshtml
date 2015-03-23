@@ -1,0 +1,46 @@
+﻿
+
+    <section class="tab-pane fade" id="users" data-bind="visible: role() == 'ADMIN'">
+    <article class="row-fluid">
+        <section class="col-md-10">
+            <table class="table table-striped table-condensed" style="border-collapse:collapse;">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Surname</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody data-bind=" foreach: users">
+                    <tr data-bind="template: { name: templateToUse, data: $data}"></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <script id="readTemplate" type="text/html">
+            <td data-bind="text: $index() + 1"></td>
+            <td data-bind="text: fName"></td>
+            <td data-bind="text: lName"></td>
+            <td data-bind="text: sName"></td>
+            <td data-bind="text: uName"></td>
+            <td data-bind="text: rl"></td>
+            <td><button type="button" data-bind="click: $root.editUser">Edit</button>   <button type="button" data-bind="click: $root.deleteUser">Delete</button></td>
+        </script>
+
+        <script id="editTemplate" type="text/html">
+            <td data-bind="text: $index() + 1"></td>
+            <td><input type="text" data-bind="value: fName" /></td>
+            <td><input type="text" data-bind="value: lName" /></td>
+            <td><input type="text" data-bind="value: sName"></td>
+            <td><input type="text" data-bind="value: uName" /></td>
+            <td><select type="text" data-bind="options: roleOptions, value: rl"> </select></td>
+            <td><button type="button" data-bind="click: $root.acceptUser">Accept</button>   <button type="button" data-bind="click: $root.cancelEdit">Cancel</button></td>
+        </script>
+
+    </article>
+
+</section>

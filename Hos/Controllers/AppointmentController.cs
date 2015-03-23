@@ -1,5 +1,6 @@
 ﻿using Hos.HELPERS;
 using Hos.Models;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,12 @@ namespace Hos.Controllers
     public class AppointmentController : SignalrBaseWebApiController<hosHub>
     {
         private HosContext context = new HosContext();
+        private AuthRepo _repo = null;
+        public AppointmentController()
+        {
+            _repo = new AuthRepo();
+        }
+
 
         [AllowAnonymous]
         //[OverrideAuthorization]
@@ -32,7 +39,7 @@ namespace Hos.Controllers
                 var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
                 var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
 
-                if (roleName != "DOCTOR")
+                if (roleName == "STUDENT")
                 {
                     var result = (from optionsData in context.OptionsDatas.ToList()
                                   select new
@@ -96,7 +103,7 @@ namespace Hos.Controllers
                 }
                 else
                 {
-                    return new ResponseMessageResult(Request.CreateErrorResponse((HttpStatusCode)666, new HttpError("You are a Doctor")));
+                    return new ResponseMessageResult(Request.CreateErrorResponse((HttpStatusCode)666, new HttpError("You are a Doctor ot Admin")));
                 }
             }
 
@@ -173,10 +180,25 @@ namespace Hos.Controllers
         [Route("AppointmentData/Save")]
         public async Task<IHttpActionResult> PostAppointment(JObject data)
         {
-            dynamic json = data;
+            
 
-            var appointment = 
-                new Appointment {
+            if (User.Identity.IsAuthenticated)
+            {
+                var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+                var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
+                if (roleName == "DOCTOR")
+                {
+                    return new ResponseMessageResult(Request.CreateErrorResponse((HttpStatusCode)666, new HttpError("You are a Doctor")));
+                }
+
+                
+
+
+
+                dynamic json = data;
+
+                var appointment = new Appointment
+                {
                     AppointmentDate = DateTime.UtcNow,
                     Registration_Number = json.Registration_Number,
                     Birth_Date = DateTime.Parse("1992-09-03"),
@@ -196,42 +218,45 @@ namespace Hos.Controllers
                     //Course = json.Course,
                     //Medical_Type = json.Medical_Type,
                     //Available_Doctor = json.Doctor
-                
-            };
-            context.Appointments.Add(appointment);
-            context.SaveChanges();
 
-            if (json.Feelings != null)
-            {
-                foreach (var feeling in json.Feelings)
+                };
+                context.Appointments.Add(appointment);
+                await context.SaveChangesAsync();
+
+                if (json.Feelings != null)
                 {
-                    var feelings =
-                            new Feeling
-                            {
-                                FeelingBody = feeling,
-                                AppointmentID = appointment.AppointmentID
-                            };
-                    context.Feelings.Add(feelings);
-                    context.SaveChanges();
+                    foreach (var feeling in json.Feelings)
+                    {
+                        var feelings =
+                                new Feeling
+                                {
+                                    FeelingBody = feeling,
+                                    AppointmentID = appointment.AppointmentID
+                                };
+                        context.Feelings.Add(feelings);
+                        await context.SaveChangesAsync();
+                    }
                 }
-            }
 
-            if (json.Possible_Causes != null)
-            {
-                foreach (var cause in json.Possible_Causes)
+                if (json.Possible_Causes != null)
                 {
-                    var causes =
-                            new Possible_Cause
-                            {
-                                Possible_CauseBody = cause,
-                                AppointmentID = appointment.AppointmentID
-                            };
-                    context.Possible_Causes.Add(causes);
-                    context.SaveChanges();
+                    foreach (var cause in json.Possible_Causes)
+                    {
+                        var causes =
+                                new Possible_Cause
+                                {
+                                    Possible_CauseBody = cause,
+                                    AppointmentID = appointment.AppointmentID
+                                };
+                        context.Possible_Causes.Add(causes);
+                        await context.SaveChangesAsync();
+                    }
                 }
-            }
 
-            return Ok(appointment.AppointmentID);
+                return Ok(appointment.AppointmentID);
+
+            }
+            return Unauthorized();
         }
 
 
@@ -335,6 +360,51 @@ namespace Hos.Controllers
                 return Ok(result);
             }
 
+            if (roleName == "ADMIN")
+            {
+                var result = (from appointment in context.Appointments.ToList()
+                              select new
+                              {
+                                  User = from user in context.Users.Where(c => c.UserName == appointment.Registration_Number).ToList()
+                                         select new
+                                         {
+                                             SurName = user.SurName,
+                                             FirstName = user.FirstName,
+                                             LastName = user.LastName,
+                                             National_ID_Number = user.National_ID_Number,
+                                             Registration_Number = user.UserName
+                                             //RoleName = user.RoleName
+                                         },
+
+                                  RoleName = roleName,
+                                  AppointmentID = appointment.AppointmentID,
+                                  Birth_Date = appointment.Birth_Date,
+                                  Program = appointment.Program,
+                                  Year = appointment.Year,
+                                  Semester = appointment.Semester,
+                                  Faculty = appointment.Faculty,
+                                  Course = appointment.Course,
+                                  Feelings = from feeling in context.Feelings.Where(c => c.AppointmentID == appointment.AppointmentID).ToList()
+                                             select new
+                                             {
+                                                 FeelingBody = feeling.FeelingBody
+                                             },
+                                  Causes = from cause in context.Possible_Causes.Where(c => c.AppointmentID == appointment.AppointmentID).ToList()
+                                           select new
+                                           {
+                                               CauseBody = cause.Possible_CauseBody
+                                           },
+                                  Medical_Type = appointment.Medical_Type,
+                                  Doctor = appointment.Available_Doctor,
+
+                                  DateTime = appointment.AppointmentDate,
+                                  Status = appointment.Status.ToString()
+
+
+                              }).AsQueryable();
+                return Ok(result);
+            }
+
             else
             {
                 return NotFound();
@@ -353,7 +423,7 @@ namespace Hos.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            
             var appointment = await context.Appointments.FindAsync(key);
             if (appointment == null)
             {
