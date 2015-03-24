@@ -35,7 +35,8 @@ namespace Hos.Controllers
             {
                 var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
                 var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
-                if (roleName == "ADMIN")
+                //if (roleName == "ADMIN")
+                if (roleName == "DOCTOR")
                 {
 
                     if (!ModelState.IsValid)
