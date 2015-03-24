@@ -111,7 +111,7 @@
         self.role = ko.observable($.cookie('role'));
         self.u = ko.observable($.cookie('user'));
         self.user = ko.computed(function() {
-            return self.u() != null ? '<i class="glyphicon glyphicon-user"></i> &nbsp;&nbsp; Hello ' + self.u() : 'Login/Register';
+            return self.u() != null ? '<i class="glyphicon glyphicon-user"></i> &nbsp;&nbsp; Hello ' + self.u() : 'Login';
         });
 
         self.logout = function () {
@@ -505,6 +505,13 @@
             self.users.remove(arrayFilter);
         }
 
+        hub.client.newUser = function (result) {
+            var user = result[0];
+            //alert(ko.toJSON(result));
+            self.users.push(new User(user.Id, user.FirstName, user.LastName, user.Surname, user.UserName, user.Role));
+            //self.users.push(user);
+        }
+
         
         
 
@@ -577,16 +584,16 @@
                     headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
                     type: 'POST',
                     success: function () { },
-                    error: function (err) { alert(ko.toJSON(err)); },
-                    statusCode: {
+                    error: function (err) { alert(ko.toJSON(err)); }
+                    /*statusCode: {
                         200: function () {
                            // $('#mustLogin').text('You Registered Successfully; now You just need to login...');
                            // $('#myLoginTab li:eq(0) a').tab('show');
                         },
-                        400: function () { alert("400: Bad request"); },
+                        400: function (e) { alert("400: Bad request" + e); },
                         777: function (e) { alert("777" + e); },
                         888: function (e) { alert("888" + e); }
-                    }
+                    }*/
                 });
             }
         }
@@ -690,7 +697,8 @@
         };
 
         //self.users([new User("ddssfs", "sf fs", "fs f", "ergte", "ADMIN"), new User("ddssfs", "sf fs", "fs f", "ergte", "STUDENT")]);
-
+        
+        self.loadUsers();
 
 
 
@@ -766,8 +774,6 @@
             $this.sortType = ($this.sortType == "ascending") ? "descending" : "ascending";
             $this.iconType(($this.sortType == "ascending") ? "icon-chevron-up" : "icon-chevron-down");
         };
-
-
 
 
     }

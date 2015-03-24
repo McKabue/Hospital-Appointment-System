@@ -9,6 +9,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.ModelBinding;
 
 namespace Hos.HELPERS
 {
@@ -26,13 +27,35 @@ namespace Hos.HELPERS
             _userManager.UserValidator = new UserValidator<UserProfile>(_userManager) { AllowOnlyAlphanumericUserNames = false };
         }
 
-       
 
 
-        public async Task<IdentityResult> RegisterUser(UserModel userModel)
+
+        public async Task<IEnumerable> RegisterUser(UserModel userModel)
         {
-            var result = _userManager.Create(new UserProfile() { SurName = userModel.SurName, FirstName = userModel.FirstName, LastName = userModel.LastName, National_ID_Number = userModel.National_ID_Number, UserName = userModel.UserName, RoleName = userModel.RoleName, PasswordHash = hasher.HashPassword(userModel.Password) });
-            return result;
+            var USER = new UserProfile() { SurName = userModel.SurName, FirstName = userModel.FirstName, LastName = userModel.LastName, National_ID_Number = userModel.National_ID_Number, UserName = userModel.UserName, RoleName = userModel.RoleName, PasswordHash = hasher.HashPassword(userModel.Password) };
+            var result = await _userManager.CreateAsync(USER);
+            await  _ctx.SaveChangesAsync();
+
+            var USERR = (from user in _ctx.Users.Where(u => u.Id == USER.Id)
+                        select new
+                        {
+                            Id = user.Id,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            Surname = user.SurName,
+                            UserName = user.UserName,
+                            Role = user.RoleName,
+                        }).AsEnumerable();
+
+            return USERR;
+        }
+
+
+        public async Task<UserProfile> findUserAsync(UserModel userModel)
+        {
+            UserProfile user = await _userManager.FindByNameAsync(userModel.UserName);
+
+            return user;
         }
 
         public async Task<UserProfile> FindUser(string userName, string password)

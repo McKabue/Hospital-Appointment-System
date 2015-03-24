@@ -1,5 +1,30 @@
 ﻿<section class="tab-pane fade active in" id="home">
     <div style="text-align:center;" class="text-info"><h2>KISII UNIVERSITY HOSPITAL APPOINTMENT SYSTEM</h2></div>
+    <div class="page-header"><h2><small>Users</small></h2></div>
+    <table class="table table-striped table-condensed" style="border-collapse:collapse;">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Surname</th>
+                <th>Username</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody data-bind=" foreach: users">
+            <tr>
+                <td data-bind="text: $index() + 1"></td>
+                <td data-bind="text: fName"></td>
+                <td data-bind="text: lName"></td>
+                <td data-bind="text: sName"></td>
+                <td data-bind="text: uName"></td>
+                <td data-bind="text: rl"></td>
+            </tr>
+        </tbody>
+    </table>
+
+
     <div class="page-header"><h2><small>Book Appointment</small></h2></div>
     <p>
         In response to the National Library of Medicine’s Broad Area Announcement titled “Application of Advanced Network Infrastructure Technology in Health and Disaster Management,” the Decision Systems Group (DSG) at Brigham and Women’s Hospital has proposed the development of SMART, acronym for Scalable Medical Alert and Response Technology, as a model for both local area and wide area patient monitoring.  It will also serve as a model for patient monitoring in a disaster situation.  To test this model, the DSG has proposed building a test bed patient monitoring system in the Emergency Department at the Brigham and Women’s Hospital.

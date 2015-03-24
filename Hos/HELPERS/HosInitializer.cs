@@ -17,10 +17,11 @@ namespace Hos.HELPERS
             var user = new UserManager<UserProfile>(new UserStore<UserProfile>(context));
             user.UserValidator = new UserValidator<UserProfile>(user) { AllowOnlyAlphanumericUserNames = false };
 
-            user.Create(new UserProfile() { FirstName = "rvferi", LastName = "fvij", UserName = "Admin", RoleName = "ADMIN", PasswordHash = hasher.HashPassword("Admin") });
+            user.Create(new UserProfile() { FirstName = "makori", LastName = "m", SurName="mokaya", UserName = "Admin", RoleName = "ADMIN", PasswordHash = hasher.HashPassword("Admin") });
 
             user.Create(new UserProfile() { FirstName = "kamaa", LastName = "john", UserName = "IN16/20034/13", RoleName = "STUDENT", PasswordHash = hasher.HashPassword("1234567890") });
-            user.Create(new UserProfile() { FirstName = "kamaa2", LastName = "john2", UserName = "IN162006413", RoleName = "STUDENT", PasswordHash = hasher.HashPassword("1234567890") });
+
+            user.Create(new UserProfile() { FirstName = "cindy", LastName = "muga", UserName = "IN14/20049/11", RoleName = "STUDENT", PasswordHash = hasher.HashPassword("cat") });
 
             user.Create(new UserProfile() { FirstName = "Dr. Kamau", LastName = "john2", UserName = "Dr.Kamau", RoleName = "DOCTOR", PasswordHash = hasher.HashPassword("1234567890") });
             user.Create(new UserProfile() { FirstName = "Dr. Nancy", LastName = "john2", UserName = "Dr.Nancy", RoleName = "DOCTOR", PasswordHash = hasher.HashPassword("1234567890") });

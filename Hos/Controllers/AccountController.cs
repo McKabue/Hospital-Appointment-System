@@ -43,16 +43,22 @@ namespace Hos.Controllers
                         return BadRequest(ModelState);
                     }
 
-                    IdentityResult result = await _repo.RegisterUser(userModel);
-
-                    IHttpActionResult errorResult = GetErrorResult(result);
-
-                    if (errorResult != null)
+                    var findUser = await _repo.findUserAsync(userModel);
+                    if (findUser == null)
                     {
-                        return errorResult;
+                        var result = await _repo.RegisterUser(userModel);
+                        Hub.Clients.All.newUser(result);
+                        return Ok();
                     }
 
-                    return Ok();
+                    else
+                    {
+                        return BadRequest("User With the UserName or Admission Number " + userModel.UserName + " already Exists");
+                    }
+                    
+
+                    
+                    
                 }
                 else
                 {
@@ -125,16 +131,16 @@ namespace Hos.Controllers
         }
 
 
-        [Authorize]
+       // [AllowAnonymous]
         [Route("AllUsers")]
         public async Task<IHttpActionResult> Get()
         {
-            if (User.Identity.IsAuthenticated)
+            /*if (User.Identity.IsAuthenticated)
             {
                 var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
                 var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
                 if (roleName == "ADMIN")
-                {
+                {*/
                     var Users = (from user in context.Users.ToList()
                                         select new
                                         {
@@ -147,7 +153,7 @@ namespace Hos.Controllers
                                         }).AsEnumerable();
 
                             return Ok(Users);
-                 }
+                /* }
                 else
                 {
                     return new ResponseMessageResult(Request.CreateErrorResponse((HttpStatusCode)777, new HttpError("You are not an ADMIN")));
@@ -156,8 +162,19 @@ namespace Hos.Controllers
 
             else
             {
-                return new ResponseMessageResult(Request.CreateErrorResponse((HttpStatusCode)888, new HttpError("You are not Allowed")));
-            }
+                var Users = (from user in context.Users.ToList()
+                             select new
+                             {
+                                 Id = user.Id,
+                                 FirstName = user.FirstName,
+                                 LastName = user.LastName,
+                                 Surname = user.SurName,
+                                 UserName = user.UserName,
+                                 Role = user.RoleName,
+                             }).AsEnumerable();
+
+                return Ok(Users);
+            }*/
         }
 
 

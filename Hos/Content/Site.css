@@ -65,7 +65,7 @@ input.largerCheckbox
 
 
 @media all and (min-width: 702px) and (max-width: 1000px) {
-    body,{
+    body{
         zoom:-1;
         font-size:10px;
     }
@@ -104,7 +104,7 @@ input.largerCheckbox
         width: 150px !important;
     }
 
-    .modal-body .form-group .input-group input{
+    .modal-body .form-group .input-group input, .modal-body .form-group .input-group select{
         width: 250px !important;
     }
 }
@@ -143,7 +143,7 @@ input.largerCheckbox
         width: 125px !important;
     }
 
-    .modal-body .form-group .input-group input{
+    .modal-body .form-group .input-group input, .modal-body .form-group .input-group select{
         width: 225px !important;
     }
 }
@@ -180,7 +180,7 @@ input.largerCheckbox
         margin-bottom:-5px;
     }
 
-    .modal-body .form-group .input-group input, .modal-body .form-group button{
+    .modal-body .form-group .input-group input, .modal-body .form-group button, .modal-body .form-group .input-group select{
         width: auto;
     }
 }
