@@ -1,4 +1,26 @@
 ﻿jQuery(document).ready(function ($) {
+    var progress;
+    $(document).ajaxStart(function () {
+        progress = setInterval(function () {
+            var $bar = $('.progress-bar');
+            $('#pleaseWaitDialog').modal();
+
+            if ($bar.width() >= 800) {
+                clearInterval(progress);
+                $('#pleaseWaitDialog').modal('hide');
+                $('.progress').removeClass('animate');
+            } else {
+                $bar.width($bar.width() + 80);
+            }
+            $bar.text($bar.width() / 8 + 10 + "%");
+        }, 1200);
+    }).ajaxComplete(function () {
+        clearInterval(progress);
+        $('#pleaseWaitDialog').modal('hide');
+    });
+
+
+
 
     $.connection.hub.start();
 
@@ -205,13 +227,16 @@
         }
 
         self.sendAppointmentData = function (context) {
+
+
+
             var feelings = ko.toJSON($('#tags1', context).select2("val"));
             var causes = ko.toJSON($('#tags2', context).select2("val"));
         
-           // if (!$('#surName', context).val() == "" && !$('#firstName', context).val() == "" && !$('#lastName', context).val() == "" && !$('#National_ID_Number', context).val() == "" && !$('#Registration_Number', context).val() == "" && !$('#Birth_Date', context).val() == "" && !$('#Program option:selected', context).text() == "" && !$('#Year option:selected', context).text() == "" && !$('#Semester option:selected', context).text() == "" && !$('#Faculty option:selected', context).text() == "" && !$('#Course option:selected', context).text() == "" && feelings !== "[]" && causes !== "[]" && !$('#Medical_Type option:selected', context).text() == "" && !$('#Doctor option:selected', context).text() == "") {
+            if ( $('#Birth_Date', context).val() != ""  != "" && feelings !== "[]" && causes !== "[]") {
                 var JSONAppointmentData = "\"Surname\":\"" + $('#surName', context).val() + "\", \"FirstName\":\"" + $('#firstName', context).val() + "\", \"LastName\":\"" + $('#lastName', context).val() + "\", \"National_ID_Number\":\"" + $('#National_ID_Number', context).val() + "\", \"Registration_Number\":\"" + $('#Registration_Number', context).val() + "\", \"Birth_Date\":\"" + $('#Birth_Date', context).val() + "\", \"Program\":\"" + $('#Program option:selected', context).text() + "\", \"Year\":\"" + $('#Year option:selected', context).text() + "\", \"Semester\":\"" + $('#Semester option:selected', context).text() + "\", \"Faculty\":\"" + $('#Faculty option:selected', context).text() + "\", \"Course\":\"" + $('#Course option:selected', context).text() + "\", \"Medical_Type\":\"" + $('#Medical_Type option:selected', context).text() + "\", \"Doctor\":\"" + $('#Doctor option:selected', context).text() + "\", \"Feelings\":" + feelings + "\, \"Causes\":" + causes;
                 var JSONAppointmentData2 = { "Surname": $('#surName', context).val(), "FirstName": $('#firstName', context).val(), "LastName": $('#lastName', context).val(), "National_ID_Number": $('#National_ID_Number', context).val(), "Registration_Number": $('#Registration_Number', context).val(), "Birth_Date": $('#Birth_Date', context).val(), "Program": $('#Program option:selected', context).text(), "Year": $('#Year option:selected', context).text(), "Semester": $('#Semester option:selected', context).text(), "Faculty": $('#Faculty option:selected', context).text(), "Course": $('#Course option:selected', context).text(), "Medical_Type": $('#Medical_Type option:selected', context).text(), "Doctor": $('#Doctor option:selected', context).text(), "Feelings": $('#tags1', context).select2("val"), "Possible_Causes": $('#tags2', context).select2("val") };
-             alert(JSONAppointmentData);
+            // alert(JSONAppointmentData);
                 $.ajax({
                     url: "/api/Appointment/AppointmentData/Save",
                     data: JSONAppointmentData2, // {"Registration_Number": "ID475478/RUR", "JObject": [{ "Registration_Number": "29", "value": "Country" }, { "Registration_Number": "30", "value": "4,3,5" }] },
@@ -223,14 +248,16 @@
                     success: function () { $('#loginModal').modal('hide'); },
                     error: function (err) { alert(ko.toJSON(err)); },
                     statusCode: {
-                        200: function (data) { alert(ko.toJSON(data)); console.log(ko.toJSON(data)); },
+                        200: function (data) {
+                            //alert(ko.toJSON(data)); console.log(ko.toJSON(data));
+                        },
                         401: function () {
                             $('#loginModal').modal('show');
                             $('#mustLogin').text('You need to First Login / Register');
                         }
                     }
                 });
-           // }
+            }
         }
 
         self.loadEditData = function () {
@@ -405,7 +432,7 @@
 
         self.reciept = function () {
             var data = this;
-            alert(ko.toJSON(data));
+            //alert(ko.toJSON(data));
 
             var doc = new jsPDF();
             doc.setFontSize(22);
@@ -444,11 +471,11 @@
         }
 
         self.sendOrEditReport = function () {
-            alert("a pop up or modal will appear, or a report box simmirar to a commentation will be appended to the details tab-content space...");
+            //alert("a pop up or modal will appear, or a report box simmirar to a commentation will be appended to the details tab-content space...");
         }
 
         self.reportComment = function () {
-            alert("a pop up or modal will appear, or a report box simmirar to a commentation will be appended to the details tab-content space...");
+            //alert("a pop up or modal will appear, or a report box simmirar to a commentation will be appended to the details tab-content space...");
         }
 
 
@@ -488,8 +515,8 @@
             });
             arrayFilter.readWrite("read");
             var USER = data[0];
-            alert(ko.toJSON(USER));
-            alert(USER.FirstName);
+           // alert(ko.toJSON(USER));
+           // alert(USER.FirstName);
             arrayFilter.fName(USER.FirstName);
             arrayFilter.lName(USER.LastName);
             arrayFilter.sName(USER.Surname);
@@ -575,7 +602,7 @@
         self.SignUp = function (context) {
             if (!$('input[name="surname"]', context).val() == "" && !$('input[name="firstname"]', context).val() == "" && !$('input[name="lastname"]', context).val() == "" && !$('input[name="registration_number"]', context).val() == "" && !$('input[name="national_id_number"]', context).val() == "" && !$('select[name="registerRole"]', context).val() == "" && !$('input[name="password"]', context).val() == "" && !$('input[name="confirmpassword"]', context).val() == "") {
                 var SignUpData = "surName=" + $('input[name="surname"]', context).val() + "&firstName=" + $('input[name="firstname"]', context).val() + "&lastName=" + $('input[name="lastname"]', context).val() + "&userName=" + $('input[name="registration_number"]', context).val() + "&National_ID_Number=" + $('input[name="national_id_number"]', context).val() + "&roleName=" + $('select[name="registerRole"]', context).val() + "&password=" + $('input[name="password"]', context).val() + "&confirmPassword=" + $('input[name="confirmpassword"]', context).val();
-                alert(ko.toJSON(SignUpData));
+                //alert(ko.toJSON(SignUpData));
                 $.ajax({
                     url: "/api/account/register",
                     data: SignUpData,

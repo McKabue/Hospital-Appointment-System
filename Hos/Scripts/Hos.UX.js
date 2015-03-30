@@ -1,4 +1,13 @@
-﻿//jQuery(document).ready(function ($) {
+﻿/// <reference path="jquery-2.1.1.intellisense.js" />
+
+
+
+
+
+//jQuery(document).ready(function ($) {
+
+
+
 
 //////////////////BOOTSTRAP COLLAPSE////////////////
     $('body').on('show.bs.collapse', '.collapse', function () {
@@ -127,7 +136,52 @@ $('table').on('click', '.buttonActiveClass li a', function (e) {
 
 
     
+    $('select[name="loginRole"]').on('change', function () {
+        if ($('option:selected', this).text() == 'ADMIN') {
+            //$('input[name="loginRegistrationNumber"]').attr('pattern', "[A-Za-z0-9]{10}");
+            //$('input[name="loginRegistrationNumber"]').attr('oninvalid', "setCustomValidity('Hey Admin, Enter  a Valid Username!')");
+            $('input[name="loginRegistrationNumber"]').attr('pattern', "");
+            $('input[name="loginRegistrationNumber"]').attr('oninvalid', "");
+            $('#rolespan').text('User Name');
+        }
+        if ($('option:selected', this).text() == 'DOCTOR') {
+            //$('input[name="loginRegistrationNumber"]').attr('pattern', "[A-Za-z0-9]{10}");
+            //$('input[name="loginRegistrationNumber"]').attr('oninvalid', "setCustomValidity('Hey Admin, Enter  a Valid Username!')");
+            $('input[name="loginRegistrationNumber"]').attr('pattern', "");
+            $('input[name="loginRegistrationNumber"]').attr('oninvalid', ""); 
+            $('#rolespan').text('User Name');
+        }
+        if ($('option:selected', this).text() == 'STUDENT') {
+            $('input[name="loginRegistrationNumber"]').attr('pattern', "(?:[A-Za-z]{2}[0-9]{2}|[A-Za-z]{2}[Pp]{1}[0-9]{2})\/[0-9]{5}\/([1-2]{1}[90]{1}[0-9]{2}|[901]{1}[0-9]{1})");
+            $('input[name="loginRegistrationNumber"]').attr('oninvalid', "setCustomValidity('Please enter a valid Admission Number!')");
+            $('#rolespan').text('Reg. Number');
+        }
+    });
 
+    $('select[name="registerRole"]').on('change', function () {
+        if ($('option:selected', this).text() == 'ADMIN') {
+            //$('input[name="loginRegistrationNumber"]').attr('pattern', "[A-Za-z0-9]{10}");
+            //$('input[name="loginRegistrationNumber"]').attr('oninvalid', "setCustomValidity('Hey Admin, Enter  a Valid Username!')");
+            $('input[name="registration_number"]').attr('pattern', "");
+            $('input[name="registration_number"]').attr('oninvalid', "");
+            $('input[name="registration_number"]').text("");
+            $('#rolespan2').text('User Name');
+        }
+        if ($('option:selected', this).text() == 'DOCTOR') {
+            //$('input[name="loginRegistrationNumber"]').attr('pattern', "[A-Za-z0-9]{10}");
+            //$('input[name="loginRegistrationNumber"]').attr('oninvalid', "setCustomValidity('Hey Admin, Enter  a Valid Username!')");
+            $('input[name="registration_number"]').attr('pattern', "");
+            $('input[name="registration_number"]').attr('oninvalid', "");
+            $('input[name="registration_number"]').text("");
+            $('#rolespan2').text('User Name');
+        }
+        if ($('option:selected', this).text() == 'STUDENT') {
+            $('input[name="registration_number"]').attr('pattern', "(?:[A-Za-z]{2}[0-9]{2}|[A-Za-z]{2}[Pp]{1}[0-9]{2})\/[0-9]{5}\/([1-2]{1}[90]{1}[0-9]{2}|[901]{1}[0-9]{1})");
+            $('input[name="registration_number"]').attr('oninvalid', "setCustomValidity('Please enter a valid Admission Number!')");
+            $('input[name="registration_number"]').text("");
+            $('#rolespan2').text('Reg. Number');
+        }
+    });
 
 
 ////////////////LOGIN and LOGOUT switch///////////////////

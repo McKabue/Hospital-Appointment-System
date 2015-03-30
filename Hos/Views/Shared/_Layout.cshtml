@@ -6,6 +6,8 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/formValidator.css" rel="stylesheet" />
+
 </head>
 <body class="container-fluid" data-bind="style: { background: role() == 'DOCTOR' ? 'rgba(140, 91, 91, 1)' : '' }">
     <!-- Fixed navbar -->
@@ -26,7 +28,7 @@
             <div class="navbar-collapse collapse">
                 <ul id="myTab2" class="nav navbar-nav">
                     <li class="active"><a data-toggle="tab" href="#home" tabindex="-1">Home</a></li>
-                    <li><a data-toggle="tab" href="#book" tabindex="-1" data-bind="click: loadOptionsData">Book Appointment</a></li>
+                    <li data-bind="visible: role() == 'STUDENT'"><a data-toggle="tab" href="#book" tabindex="-1" data-bind="click: loadOptionsData">Book Appointment</a></li>
                     <li><a data-toggle="tab" href="#reschedule" tabindex="-1" data-bind="click: loadEditData">Details</a></li>
                     <li data-bind="visible: role() == 'ADMIN'"><a data-toggle="tab" href="#users" tabindex="-1" data-bind="click: loadUsers">Users</a></li>
                 </ul>
@@ -64,7 +66,7 @@
                             <form class="navbar-form form" role="form" data-bind="submit: GetToken">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <span style="width:200px;" class="input-group-addon">Reg. Number</span>
+                                        <span style="width:200px;" class="input-group-addon">Role</span>
                                         <select style="width: 300px;" class="form-control" name="loginRole">
                                             <option>STUDENT</option>
                                             <option>DOCTOR</option>
@@ -75,8 +77,8 @@
 
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <span style="width:200px;" class="input-group-addon">Reg. Number</span>
-                                        <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="loginRegistrationNumber">
+                                        <span id="rolespan" style="width:200px;" class="input-group-addon">Reg. Number</span>
+                                        <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="loginRegistrationNumber" pattern="(?:[A-Za-z]{2}[0-9]{2}|[A-Za-z]{2}[Pp]{1}[0-9]{2})\/[0-9]{5}\/([1-2]{1}[90]{1}[0-9]{2}|[901]{1}[0-9]{1})" oninvalid="setCustomValidity('Please enter a valid Registration Number!')" onchange="try{setCustomValidity('')}catch(e){}" required />
                                     </div>
                                 </div>
 
@@ -116,36 +118,21 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <span style="width:200px;" class="input-group-addon">SurName</span>
-                                <input style="width: 300px;" placeholder="SurName" class="form-control" name="surname">
+                                <input style="width: 300px;" placeholder="SurName" class="form-control" name="surname" required pattern="[a-zA-Z]{3,10}">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="input-group">
                                 <span style="width:200px;" class="input-group-addon">First Name</span>
-                                <input style="width: 300px;" placeholder="First name" class="form-control" name="firstname">
+                                <input style="width: 300px;" placeholder="First name" class="form-control" name="firstname" required pattern="[a-zA-Z]{3,10}">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="input-group">
                                 <span style="width:200px;" class="input-group-addon">Last Name</span>
-                                <input style="width: 300px;" placeholder="Last name" class="form-control" name="lastname">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span style="width:200px;" class="input-group-addon">Reg. Number</span>
-                                <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="registration_number">
-                            </div>
-                        </div>
-
-                        @*/////////////////////////////////////////////////*@
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span style="width:200px;" class="input-group-addon">NationaL ID</span>
-                                <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="national_id_number">
+                                <input style="width: 300px;" placeholder="Last name" class="form-control" name="lastname" required pattern="[a-zA-Z]{3,10}">
                             </div>
                         </div>
 
@@ -159,19 +146,35 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span id="rolespan2" style="width:200px;" class="input-group-addon">Reg. Number</span>
+                                <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="registration_number" pattern="(?:[A-Za-z]{2}[0-9]{2}|[A-Za-z]{2}[Pp]{1}[0-9]{2})\/[0-9]{5}\/([1-2]{1}[90]{1}[0-9]{2}|[901]{1}[0-9]{1})" oninvalid="setCustomValidity('Please enter a valid Registration Number!')" onchange="try{setCustomValidity('')}catch(e){}" required>
+                            </div>
+                        </div>
+
+                        @*/////////////////////////////////////////////////*@
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span style="width:200px;" class="input-group-addon">NationaL ID</span>
+                                <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="national_id_number" required pattern="[0-9]{8}">
+                            </div>
+                        </div>
+
                         @*/////////////////////////////////////////////////*@
 
                         <div class="form-group">
                             <div class="input-group">
                                 <span style="width:200px;" class="input-group-addon">Password</span>
-                                <input style="width: 300px;" ffpdm="4j1x06h10f6jxmd6j6urs" id="passwordInput" placeholder="password" class="form-control" type="password" name="password">
+                                <input style="width: 300px;" ffpdm="4j1x06h10f6jxmd6j6urs" id="passwordInput" placeholder="password" class="form-control" type="password" name="password" required>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="input-group">
                                 <span style="width:200px;" class="input-group-addon">Confirm Password</span>
-                                <input style="width:300px;" ffpdm="4j1x06h10f6jxmd6j6urs" id="passwordInput" placeholder="confirm password" class="form-control" type="password" name="confirmpassword">
+                                <input style="width:300px;" ffpdm="4j1x06h10f6jxmd6j6urs" id="passwordInput" placeholder="confirm password" class="form-control" type="password" name="confirmpassword" required>
                             </div>
                         </div>
 
@@ -206,5 +209,7 @@
         @RenderSection("scripts", required: false)
 
         <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/bootstrapValidator.js"></script>
+    <script src="~/Scripts/validate.js"></script>
 </body>
 </html>
