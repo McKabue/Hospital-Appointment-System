@@ -1,15 +1,19 @@
 ﻿using Hos.HELPERS;
 using Hos.Models;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.OData;
 using System.Web.Http.Results;
@@ -41,63 +45,30 @@ namespace Hos.Controllers
 
                 if (roleName == "STUDENT")
                 {
-                    var result = (from optionsData in context.OptionsDatas.ToList()
-                                  select new
+
+                    var result = new OptionsData
                                   {
-                                      User = from user in context.Users.Where(c => c.UserName == User.Identity.Name).ToList()
-                                             select new
-                                             {
-                                                 SurName = user.SurName,
+                                      User = (from user in context.Users.Where(c => c.UserName == User.Identity.Name)
+                                              select new UserModel()
+                                              { 
+                                                 UserName = user.UserName,
                                                  FirstName = user.FirstName,
                                                  LastName = user.LastName,
-                                                 National_ID_Number = user.National_ID_Number,
-                                                 Registration_Number = user.UserName
-                                             },
-                                      Faculties = from faculty in context.Faculties.ToList()
-                                                  select new
-                                                  {
-                                                      FacultyID = faculty.FacultyID,
-                                                      Name = faculty.Name,
-                                                      Courses = from course in context.Courses.Where(c => c.FacultyID == faculty.FacultyID).ToList()
-                                                                select new
-                                                                {
-                                                                    CourseID = course.CourseID,
-                                                                    Name = course.Name
-                                                                }
-                                                  },
-                                      Programs = from program in context.Programs.ToList()
-                                                 select new
-                                                 {
-                                                     ProgramID = program.ProgramID,
-                                                     Name = program.Name,
-                                                     Years = from year in context.Years.Where(c => c.ProgramID == program.ProgramID).ToList()
-                                                             select new
-                                                             {
-                                                                 YearID = year.YearID,
-                                                                 Name = year.Name,
-                                                                 Semesters = from semester in context.Semesters.Where(c => c.YearID == year.YearID).ToList()
-                                                                             select new
-                                                                             {
-                                                                                 SemesterID = semester.SemesterID,
-                                                                                 Name = semester.Name
-                                                                             }
-                                                             }
-                                                 },
-
-                                      Medical_Types = from medical_Type in context.Medical_Types.ToList()
-                                                      select new
+                                                 SurName = user.SurName
+                                             }).FirstOrDefault(),
+                                      Faculties = context.Faculties.ToList(),
+                                      Programs = context.Programs.Include(y => y.Years).ToList(),
+                                      Medical_Types = (from mt in context.Medical_Types.ToList()
+                                                      select new Medical_Type()
                                                       {
-                                                          Medical_TypeID = medical_Type.Medical_TypeID,
-                                                          Name = medical_Type.Name,
-                                                          Available_Doctors = from available_Doctor in context.Available_Doctors.Where(c => c.Medical_TypeID == medical_Type.Medical_TypeID).ToList()
-                                                                              select new
+                                                          Name = mt.Name,
+                                                          Available_Doctors = (from ad in context.Available_Doctors.ToList()
+                                                                              select new Available_Doctor()
                                                                               {
-                                                                                  Available_DoctorID = available_Doctor.Available_DoctorID,
-                                                                                  Name = available_Doctor.Name
-
-                                                                              }
-                                                      }
-                                  }).AsEnumerable();
+                                                                                  UserName =  context.Users.Find(ad.UserId).UserName // "No Name"
+                                                                              }).ToList()
+                                                      }).ToList()
+                                  };
 
                     return Ok(result);
                 }
@@ -107,72 +78,7 @@ namespace Hos.Controllers
                 }
             }
 
-            else
-            {
-                var result = (from optionsData in context.OptionsDatas.ToList()
-                              select new
-                              {
-                                  User = from user in context.Users.Where(c => c.UserName == User.Identity.Name).ToList()
-                                         select new
-                                         {
-                                             SurName = user.SurName,
-                                             FirstName = user.FirstName,
-                                             LastName = user.LastName,
-                                             National_ID_Number = user.National_ID_Number,
-                                             Registration_Number = user.UserName
-                                         },
-                                  Faculties = from faculty in context.Faculties.ToList()
-                                              select new
-                                              {
-                                                  FacultyID = faculty.FacultyID,
-                                                  Name = faculty.Name,
-                                                  Courses = from course in context.Courses.Where(c => c.FacultyID == faculty.FacultyID).ToList()
-                                                            select new
-                                                            {
-                                                                CourseID = course.CourseID,
-                                                                Name = course.Name
-                                                            }
-                                              },
-                                  Programs = from program in context.Programs.ToList()
-                                             select new
-                                             {
-                                                 ProgramID = program.ProgramID,
-                                                 Name = program.Name,
-                                                 Years = from year in context.Years.Where(c => c.ProgramID == program.ProgramID).ToList()
-                                                         select new
-                                                         {
-                                                             YearID = year.YearID,
-                                                             Name = year.Name,
-                                                             Semesters = from semester in context.Semesters.Where(c => c.YearID == year.YearID).ToList()
-                                                                         select new
-                                                                         {
-                                                                             SemesterID = semester.SemesterID,
-                                                                             Name = semester.Name
-                                                                         }
-                                                         }
-                                             },
-
-                                  Medical_Types = from medical_Type in context.Medical_Types.ToList()
-                                                  select new
-                                                  {
-                                                      Medical_TypeID = medical_Type.Medical_TypeID,
-                                                      Name = medical_Type.Name,
-                                                      Available_Doctors = from available_Doctor in context.Available_Doctors.Where(c => c.Medical_TypeID == medical_Type.Medical_TypeID).ToList()
-                                                                          select new
-                                                                          {
-                                                                              Available_DoctorID = available_Doctor.Available_DoctorID,
-                                                                              Name1 = from user in context.Users.Where(c => c.UserName == available_Doctor.Doctor_UserName)
-                                                                                     select new
-                                                                                     {
-                                                                                         Name = user.UserName
-                                                                                     }
-
-                                                                          }
-                                                  }
-                              }).AsEnumerable();
-
-                return Ok(result);
-            }
+            return BadRequest();
             
         }
 
@@ -258,6 +164,171 @@ namespace Hos.Controllers
             }
             return Unauthorized();
         }
+
+
+        [HttpGet]
+        [Authorize]
+        [Route("courses")]
+        public async Task<IHttpActionResult> Courses()
+        {
+                var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+                var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
+                if (roleName == "ADMIN")
+                {
+                    var courses = context.Faculties.ToList();
+
+                    return Ok(courses);
+                }
+            return BadRequest();
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        [Route("falculty")]
+        public async Task<IHttpActionResult> Falculty(JObject data)
+        {
+
+            dynamic json = data;
+            var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+            var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
+            if (roleName == "ADMIN")
+            {
+                var course = context.Faculties.Add(new Faculty
+                {
+                    Name = json.falculty
+                });
+
+                await context.SaveChangesAsync();
+
+                return Ok(course);
+            }
+            return BadRequest();
+        }
+
+
+
+
+        [HttpPost]
+        [Authorize]
+        [Route("medicaltype")]
+        public async Task<IHttpActionResult> Medical_Type(JObject data)
+        {
+
+            dynamic json = data;
+            var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+            var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
+            if (roleName == "ADMIN")
+            {
+                var medical_Type = context.Medical_Types.Add(new Medical_Type
+                {
+                    Name = json.medicaltype
+                });
+
+                await context.SaveChangesAsync();
+
+                return Ok(medical_Type);
+            }
+            return BadRequest();
+        }
+
+
+
+        [HttpPost]
+        [Authorize]
+        [Route("course")]
+        public async Task<IHttpActionResult> Course(JObject data)
+        {
+
+            dynamic json = data;
+
+            var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+            var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
+            if (roleName == "ADMIN")
+            {
+                var course = context.Courses.Add(new Course
+                {
+                    Name = json.course,
+                    FacultyID = json.FacultyID
+                });
+
+                await context.SaveChangesAsync();
+
+                Hub.Clients.All.newCourse(course);
+                return Ok(course);
+            }
+            return BadRequest();
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("download/{appointmentid}")]
+        public async void Get(string appointmentid)
+        {
+            var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+            var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
+
+            if (roleName == "STUDENT")
+            {
+                var user = await _repo.findUserAsync(User.Identity.Name);
+                var appointment = context.Appointments.FindAsync(appointmentid);
+
+                var doc = new Document(PageSize.A4, 5, 5, 110, 60);
+                MemoryStream memoryStream = new MemoryStream();
+                PdfWriter writer = PdfWriter.GetInstance(doc, memoryStream);
+
+                BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+                iTextSharp.text.Font times = new Font(bfTimes, 12, Font.ITALIC, BaseColor.RED);
+                iTextSharp.text.Font bolder = new Font(bfTimes, 50, Font.BOLD, BaseColor.BLACK);
+
+
+                doc.Open();
+
+                var phrase = new Phrase();
+                phrase.Add(new Chunk(user.UserName + "made an appointment " + appointment.Id));
+
+                
+
+
+
+
+                PdfPTable table = new PdfPTable(2);
+                
+                float[] widths = new float[] { 2f, 3f };
+                table.SetWidths(widths);
+
+                PdfPCell cell = new PdfPCell(new Phrase("Kisii University Annex", bolder));
+                //cell.Width = doc.PageSize.Width;
+                cell.Border = 0;
+                cell.Colspan = 2;
+                cell.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+
+                table.AddCell(cell);
+
+                table.AddCell("Registration Number"); table.AddCell(user.UserName);
+
+                table.AddCell("Full Name"); table.AddCell(user.FirstName + " " + user.LastName + " " + user.SurName);
+
+                doc.Add(table);
+
+
+
+                doc.Close();
+
+                HttpContext.Current.Response.Buffer = false;
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.ClearContent();
+                HttpContext.Current.Response.ClearHeaders();
+                HttpContext.Current.Response.AppendHeader("content-disposition", "attachment;filename=" + user.UserName + ".pdf\"");
+                HttpContext.Current.Response.ContentType = "Application/pdf";
+                HttpContext.Current.Response.BinaryWrite(memoryStream.ToArray());
+                HttpContext.Current.Response.Flush();
+                HttpContext.Current.Response.End();
+            }
+
+            //return BadRequest("This Appointment Belongs to a user, and only the user can download it...Please!");
+        }
+
 
 
         [Authorize]
@@ -452,6 +523,23 @@ namespace Hos.Controllers
             Hub.Clients.All.deleteAppointment(key);
             return Content(HttpStatusCode.NoContent, "Deleted");
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         

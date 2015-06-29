@@ -51,12 +51,14 @@ namespace Hos.HELPERS
         }
 
 
-        public async Task<UserProfile> findUserAsync(UserModel userModel)
+        public async Task<UserProfile> findUserAsync(string UserName)
         {
-            UserProfile user = await _userManager.FindByNameAsync(userModel.UserName);
+            UserProfile user = await _userManager.FindByNameAsync(UserName);
 
             return user;
         }
+
+       
 
         public async Task<UserProfile> FindUser(string userName, string password)
         {

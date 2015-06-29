@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>Cindy Sandra Muga Fina Year Project</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/formValidator.css" rel="stylesheet" />
@@ -31,6 +31,8 @@
                     <li data-bind="visible: role() == 'STUDENT'"><a data-toggle="tab" href="#book" tabindex="-1" data-bind="click: loadOptionsData">Book Appointment</a></li>
                     <li><a data-toggle="tab" href="#reschedule" tabindex="-1" data-bind="click: loadEditData">Details</a></li>
                     <li data-bind="visible: role() == 'ADMIN'"><a data-toggle="tab" href="#users" tabindex="-1" data-bind="click: loadUsers">Users</a></li>
+                    <li data-bind="visible: role() == 'ADMIN'"><a data-toggle="tab" href="#courses" tabindex="-1" data-bind="click: loadCourses">Courses</a></li>
+                    <li data-bind="visible: role() == 'ADMIN'"><a data-toggle="tab" href="#doctors" tabindex="-1" data-bind="click: loadDoctors">Doctors</a></li>
                 </ul>
                 <ul id="login" class="nav navbar-nav navbar-right">
                     <li><a title="" data-toggle="modal" style="" href="#loginModal" data-bind="html: user"></a></li>
@@ -42,9 +44,9 @@
     <!-- END Fixed navbar -->
     <!-- PROGRESS BAR -->
     <div class="modal" role="dialog" aria-hidden="true" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
-        <div style="margin-top:300px; width:800px;" class="modal-dialog">
-            <h1 style="">Accessing Database...Please Wait...</h1>
-            <div style="height:30px;" class="progress progress-striped active"><div class="progress-bar progress-bar-success animate" style="width: 0%;"></div></div>
+        <div style="width: 800px; margin-top: 20% !important;" class="modal-dialog">
+            <h1 style="color: #fff; font-weight: 800;">Accessing Database...Please Wait...</h1>
+            <div style="" class="progress progress-striped active"><div class="progress-bar progress-bar-success animate" style="width: 0%;"></div></div>
         </div>
     </div>
     <!-- END OF ROGRESS BAR -->
@@ -204,7 +206,6 @@
 
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
-        <script src="~/Scripts/jspdf.min.js"></script>
         @Scripts.Render("~/bundles/otherScripts")
         @RenderSection("scripts", required: false)
 

@@ -93,10 +93,80 @@
         self.readWrite = ko.observable("read");
 
         self.templateToUse = ko.computed(function () {
-            return self.readWrite() == "read" ? 'readTemplate' : self.readWrite() == "write" ? 'editTemplate' : null;
+            return self.readWrite() == "read" ? 'readTemplate' : self.readWrite() == "write" ? 'writeTemplate' : null;
         });
     }
 
+
+
+    function Falcuty2(data) {
+        var self = this;
+
+        self.FacultyID = ko.observable(data.FacultyID);
+        self.Name = ko.observable(data.Name);
+        self.Courses = ko.observableArray([]);
+
+
+
+        if (data.Courses != null) {
+            data.Courses.forEach(function (item) {
+                self.Courses.push(new Course(item.Name, "read", item.FacultyID));
+            });
+        }
+        
+    }
+
+    function Course(Name, readWriteC, FacultyID) {
+        var self = this;
+
+        self.Name = ko.observable(Name);
+        self.FacultyID = ko.observable(FacultyID);
+        
+        self.readWriteC = ko.observable(readWriteC);
+
+        self.templateToUseC = ko.computed(function () {
+            return self.readWriteC() == "read" ? 'readTemplateC' : self.readWriteC() == "write" ? 'editTemplateC' : self.readWriteC() == "save" ? 'saveTemplateC' : null;
+        });
+    }
+
+
+
+    function Medical_Type2(data){
+        var self = this;
+
+        self.Name = ko.observable(data.Name);
+        self.Medical_TypeID = ko.observable(data.Medical_TypeID);
+        self.Available_Doctors = ko.observableArray([]);
+
+
+        if (data.Available_Doctors != null) {
+            data.Available_Doctors.forEach(function (item) {
+                self.Available_Doctors.push(new Doctor2(item.UserName, "read", item.Medical_TypeID));
+            });
+        }
+    }
+
+
+
+    function Doctor2(UserName, readWriteD, Medical_TypeID) {
+        var self = this;
+
+        self.Medical_TypeID = ko.observable(Medical_TypeID);
+        self.UserName = ko.observable(UserName);
+
+
+        self.readWriteD = ko.observable(readWriteD);
+
+        self.templateToUseD = ko.computed(function () {
+            return self.readWriteD() == "read" ? 'readTemplateD' : self.readWriteD() == "write" ? 'editTemplateD' : self.readWriteD() == "save" ? 'saveTemplateD' : null;
+        });
+    }
+
+
+
+
+    var courses = ko.observableArray([]);
+    var doctors = ko.observableArray([]);
 
     var viewModel = function () {
         var self = this;
@@ -172,39 +242,34 @@
                 headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
                 type: 'GET',
                 success: function () { },
-                error: function (err) { },
+                error: function (err) {
+                    alert(ko.toJSON(err));
+                },
                 statusCode: {
-                    200: function (datas) {
+                    200: function (data) {
 
-                        //if (datas != null) {
-                         //   clearInterval(progress);
-                         //   $('#pleaseWaitDialog').modal('hide');
-                        //}
-                        
-                        //$('#myTab a[href=#book]').tab('show');
-                        //alert(ko.toJSON(datas));
-                        $.each(datas, function (index, data) {
-                            //alert(ko.toJSON(data.User
-                            
-                            $.each(data.User, function (index, user) {
-                                    $('#surName').val(user.SurName).attr('disabled', true);
-                                    $('#firstName').val(user.FirstName).attr('disabled', true);
-                                    $('#lastName').val(user.LastName).attr('disabled', true);
-                                    $('#National_ID_Number').val(user.National_ID_Number).attr('disabled', true);
-                                    $('#Registration_Number').val(user.Registration_Number).attr('disabled', true);
-                                
-                                });
-                            
-                            $.each(data.Programs, function (index, program) {
-                                self.program.push(new Program(program.Name, program.Years));
-                            });
-                            $.each(data.Faculties, function (index, falcuty) {
-                                self.falcuty.push(new Falcuty(falcuty.Name, falcuty.Courses));
-                            });
-                            $.each(data.Medical_Types, function (index, medical_Type) {
-                                self.medical_Type.push(new Medical_Types(medical_Type.Name, medical_Type.Available_Doctors));
-                            });
+                        alert(ko.toJSON(data.Medical_Types));
+
+                        $('#surName').val(data.User.SurName).attr('disabled', true);
+                        $('#firstName').val(data.User.FirstName).attr('disabled', true);
+                        $('#lastName').val(data.User.LastName).attr('disabled', true);
+                        $('#National_ID_Number').val(data.User.National_ID_Number).attr('disabled', true);
+                        $('#Registration_Number').val(data.User.UserName).attr('disabled', true);
+
+
+                        $.each(data.Programs, function (index, program) {
+                            self.program.push(new Program(program.Name, program.Years));
                         });
+                        $.each(data.Faculties, function (index, falcuty) {
+                            self.falcuty.push(new Falcuty(falcuty.Name, falcuty.Courses));
+                        });
+
+                        $.each(data.Medical_Types, function (index, medical_Type) {
+                            self.medical_Type.push(new Medical_Types(medical_Type.Name, medical_Type.Available_Doctors));
+                        });
+                        
+                            
+                        
                     },
                     400: function () { alert("400:"); },
                     401: function () {
@@ -431,44 +496,9 @@
         }
 
         self.reciept = function () {
-            var data = this;
-            //alert(ko.toJSON(data));
-
-            var doc = new jsPDF();
-            doc.setFontSize(22);
-            doc.setTextColor(0, 0, 255);
-            doc.text(40, 20, 'Kisii University Annex');
-
-
-            doc.setFontSize(16);
-            doc.setTextColor(100);
-            doc.text(150, 20, 'Serial No. ' + this.appointmentID());
-
-            doc.text(20, 30, 'Full Name');
-            doc.text(60, 30, ':');
-            doc.text(65, 30, this.firstName() + " " + this.lastName() + " " + this.surname());
-
-
-            doc.text(20, 40, 'Details');
-
-            doc.text(60, 40, ':');
-            doc.text(65, 40, "Year");
-            doc.text(90, 40, "--> " + this.year() + ", " + this.semester() + ", " + this.program());
-            doc.text(60, 50, ':');
-            doc.text(65, 50, "Fulculty");
-            doc.text(90, 50, "--> " + this.faculty());
-            doc.text(60, 60, ':');
-            doc.text(65, 60, "Course");
-            doc.text(90, 60, "--> " + this.course());
-
-            doc.text(20, 70, 'Medical Report');
-            doc.text(60, 70, ':');
-            doc.text(65, 70, "This Apponintment was " + this.status() + " by " + this.doctor());
-            /*doc.text(60, 80, ':');
-            doc.text(65, 80, "The midical report made by a doctor goes here...");*/
-
-            doc.save('Reciept.pdf');
+            window.open("/api/Appointment/download/" + this.appointmentID() + "?token=" + $.cookie('cookieToken'), "Authenticate Account", "location=0,status=0,width=600,height=750");
         }
+
 
         self.sendOrEditReport = function () {
             //alert("a pop up or modal will appear, or a report box simmirar to a commentation will be appended to the details tab-content space...");
@@ -539,7 +569,22 @@
             //self.users.push(user);
         }
 
+        hub.client.newCourse = function (course) {
+            var arrayFilter = ko.utils.arrayFirst(courses(), function (item) {
+                return item.FacultyID() == course.FacultyID;
+            });
+            arrayFilter.Courses.unshift(new Course(course.Name, "read", course.FacultyID));
+
+        }
         
+        hub.client.newDoctor2 = function (doc) {
+            var arrayFilter = ko.utils.arrayFirst(doctors(), function (item) {
+                return item.Medical_TypeID() == doc.Medical_TypeID;
+            });
+
+            arrayFilter.Available_Doctors.unshift(new Doctor2(doc.UserName, "read", doc.Medical_TypeID));
+
+        }
         
 
 
@@ -670,6 +715,35 @@
             userData.readWrite("write");
         };
 
+        self.acceptUser = function () {
+            var userData = this;
+
+
+            var UpdataData = "Id=" + this.id() + "&surName=" + this.sName() + "&firstName=" + this.fName() + "&lastName=" + this.lName() + "&userName=" + this.uName() + "&roleName=" + this.rl();
+            //alert(UpdataData);
+            $.ajax({
+                url: "api/account/update",
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'PUT',
+                data: UpdataData,
+                success: function () {
+                    // alert("Update Successful");
+                },
+                error: function (err) {
+                    //alert("Update NOT Successful" + ko.toJSON(err));
+                },
+                statusCode: {
+
+                }
+            });
+
+
+            //alert(this.rl());
+            //self.selectedUser(item);
+            //user.sName.focused(true);
+        };
+
         self.loadUsers = function () {
             self.users([]);
             $.ajax({
@@ -693,39 +767,233 @@
                 }
             });
         };
+        self.loadUsers();
 
-        self.acceptUser = function () {
-            var userData = this;
+
+
+        self.newFalculty = ko.observable(false);
+        self.newFalcultyClick = ko.computed({
+            read: function (){
+                
+            },
+            write: function () {
+                if (self.newFalculty()) {
+                    self.newFalculty(false);
+                } else {
+                    self.newFalculty(true);
+                }
+            }
+        });
+        
+        self.saveCourse = function () {
+            var self = this;
+            if (this.Name() != "") {
+                
+                $.ajax({
+                    url: "api/appointment/course",
+                    cache: false,
+                    data: { FacultyID: this.FacultyID(), course: this.Name() },
+                    headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                    type: 'POST',
+                    success: function (course) {
+                       
+                        var arrayFilter = ko.utils.arrayFirst(courses(), function (item) {
+                            return item.FacultyID() == course.FacultyID;
+                        });
+                        arrayFilter.Courses.remove(self)
+                    },
+                    error: function (err) {
+                        alert(ko.toJSON(err));
+                    },
+                    statusCode: {
+
+                    }
+                });
+            }
+        };
+
+        self.deleteCourse = function () {
+            self.courses.remove(this);
             
-
-            var UpdataData = "Id=" + this.id() + "&surName=" + this.sName() + "&firstName=" + this.fName() + "&lastName=" + this.lName() + "&userName=" + this.uName() + "&roleName=" + this.rl();
-            //alert(UpdataData);
             $.ajax({
-                url: "api/account/update",
+                url: "api/account/delete?id=" + id,
                 cache: false,
                 headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
-                type: 'PUT',
-                data: UpdataData,
+                type: 'DELETE',
                 success: function () {
-                   // alert("Update Successful");
+                    // alert("Update Successful");
                 },
                 error: function (err) {
-                    //alert("Update NOT Successful" + ko.toJSON(err));
+
+                    alert("Update NOT Successful" + ko.toJSON(err));
                 },
                 statusCode: {
 
                 }
             });
-             
-
-            //alert(this.rl());
-            //self.selectedUser(item);
-            //user.sName.focused(true);
         };
 
-        //self.users([new User("ddssfs", "sf fs", "fs f", "ergte", "ADMIN"), new User("ddssfs", "sf fs", "fs f", "ergte", "STUDENT")]);
+        self.cancelCourseEdit = function () {
+            if (this.Name() != "") {
+                this.readWriteC("read");
+            }
+        };
+
+        self.editCourse = function () {
+            this.readWriteC("write");
+        };
+        self.addCourse = function () {
+            alert(ko.toJSON(this));
+
+            this.Courses.unshift(new Course("", "save", this.FacultyID()));
+
+        }
+        self.f = ko.observable();
+        self.addFalculty = function () {
+            $.ajax({
+                url: "api/appointment/falculty",
+                cache: false,
+                data: { falculty: self.f() },
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'POST',
+                success: function (course) {
+                    self.courses.push(new Falcuty2(course));
+                },
+                error: function (err) {
+                    alert(ko.toJSON(err));
+                },
+                statusCode: {
+
+                }
+            });
+        };
         
-        self.loadUsers();
+        self.courses = courses;
+        self.selectedcourse = ko.observable();
+        self.loadCourses = function () {
+            self.courses([]);
+            $.ajax({
+                url: "api/appointment/courses",
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'GET',
+                success: function (courses) {
+                    courses.forEach(function (item) {
+                        
+                        self.courses.push(new Falcuty2(item));
+                    });
+                    
+                },
+                error: function (err) {
+                    alert(ko.toJSON(err));
+                },
+                statusCode: {
+
+                }
+            });
+        };
+
+        ////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+
+        self.newMedical_TypeClick = ko.computed({
+            read: function () {
+
+            },
+            write: function () {
+                if (self.newMedical_Type()) {
+                    self.newMedical_Type(false);
+                } else {
+                    self.newMedical_Type(true);
+                }
+            }
+        });
+        self.newMedical_Type = ko.observable(false);
+        self.addMedical_Type = function () {
+            $.ajax({
+                url: "api/appointment/medicaltype",
+                cache: false,
+                data: { medicaltype: self.d() },
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'POST',
+                success: function (medicaltype) {
+                    self.doctors.push(new Medical_Type2(medicaltype));
+                },
+                error: function (err) {
+                    alert(ko.toJSON(err));
+                },
+                statusCode: {
+
+                }
+            });
+        };
+        self.d = ko.observable();
+        self.addDoctor = function () {
+            this.Available_Doctors.unshift(new Doctor2("", "save", this.Medical_TypeID()));
+
+        }
+        self.deleteDoctor = ko.observable();
+        self.cancelDoctorEdit = function () {
+            this.readWriteD("read");
+        };
+        self.saveDoctor = function () {
+            var self = this;
+            if (this.UserName() != "") {
+                
+                $.ajax({
+                    url: "api/account/doctor",
+                    cache: false,
+                    data: { Medical_TypeID: this.Medical_TypeID(), UserName: this.UserName() },
+                    headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                    type: 'POST',
+                    success: function (doctor) {
+                        
+                        var arrayFilter = ko.utils.arrayFirst(doctors(), function (item) {
+                            return item.Medical_TypeID() == doctor.Medical_TypeID;
+                        });
+
+                        arrayFilter.Available_Doctors.remove(self);
+
+                    },
+                    error: function (err) {
+                        alert(ko.toJSON(err));
+                    },
+                    statusCode: {
+
+                    }
+                });
+            }
+        };
+        self.editDoctor = function () {
+            this.readWriteD("write");
+        };
+
+
+        self.doctors = doctors;
+        self.loadDoctors = function () {
+            self.doctors([]);
+            $.ajax({
+                url: "api/account/doctors",
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'GET',
+                success: function (doctors) {
+                   // alert(ko.toJSON(doctors));
+
+                    doctors.forEach(function (item) {
+
+                        self.doctors.push(new Medical_Type2(item));
+                    });
+
+                },
+                error: function (err) {
+                    alert(ko.toJSON(err));
+                },
+                statusCode: {
+
+                }
+            });
+        };
 
 
 
@@ -748,11 +1016,8 @@
 
 
 
-
-
-
-
-
+        ///////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////
 
 
         $this = this;

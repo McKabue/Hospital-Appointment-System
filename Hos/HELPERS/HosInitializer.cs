@@ -86,14 +86,7 @@ namespace Hos.HELPERS
             ////////////////////////////////////////////////////////////////////////////////
             ///////////////////////////////////////////////////////////////////////////////
 
-            var optionsData = new List<OptionsData> 
-            { 
-                new OptionsData {
-                    OptionsDataID = 1
-                }
-            };
-            optionsData.ForEach(s => context.OptionsDatas.Add(s));
-            context.SaveChanges();
+            
 
             ////////////////////////////////////////////////////////////////////////////1
             var programs = new List<Program> 
@@ -337,28 +330,18 @@ namespace Hos.HELPERS
             var available_Doctor = new List<Available_Doctor> 
             { 
                 new Available_Doctor {
-                    Name = "Dr. Kamau",
-                    Doctor_UserName = "Dr.Kamau",
                     Medical_TypeID = 1
                 },
                 new Available_Doctor {
-                    Name = "Dr. Nancy",
-                    Doctor_UserName = "Dr.Nancy",
                     Medical_TypeID = 1
                 },
                 new Available_Doctor {
-                    Name = "Miss Rebbecca",
-                    Doctor_UserName = "MissRebbecca",
                     Medical_TypeID = 3
                 },
                 new Available_Doctor {
-                    Name = "Sister Moraa",
-                    Doctor_UserName = "sisterMoraa",
                     Medical_TypeID = 3
                 },
                 new Available_Doctor {
-                    Name = "Dr. Kamau A",
-                    Doctor_UserName = "kamaaAgain",
                     Medical_TypeID = 4
                 }
             };

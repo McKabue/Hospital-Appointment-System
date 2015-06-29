@@ -2,6 +2,7 @@
 using Hos.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace Hos.Controllers
                         return BadRequest(ModelState);
                     }
 
-                    var findUser = await _repo.findUserAsync(userModel);
+                    var findUser = await _repo.findUserAsync(userModel.UserName);
                     if (findUser == null)
                     {
                         var result = await _repo.RegisterUser(userModel);
@@ -128,6 +129,72 @@ namespace Hos.Controllers
             {
                 return new ResponseMessageResult(Request.CreateErrorResponse((HttpStatusCode)888, new HttpError("You are not Allowed")));
             }
+        }
+
+
+
+
+        [HttpPost]
+        [Route("doctor")]
+        public async Task<IHttpActionResult> SaveDoctors(JObject data)
+        {
+            dynamic json = data;
+
+            var user = await _repo.CreateAsync(new UserProfile
+            {
+                UserName = json.UserName,
+                RoleName = "DOCTOR"
+            });
+
+            string username = json.UserName;
+
+            var findUser = await _repo.findUserAsync(username);
+
+            int mti = json.Medical_TypeID;
+
+            var medical_Type = await context.Medical_Types.FindAsync(mti);
+
+            var available_doctor = context.Available_Doctors.Add(new Available_Doctor
+            {
+                Medical_TypeID = medical_Type.Medical_TypeID,
+                UserId = findUser.Id,
+
+            });
+
+            await context.SaveChangesAsync();
+
+            var returnUser = new Available_Doctor
+            {
+                Medical_TypeID = medical_Type.Medical_TypeID,
+                UserId = findUser.Id,
+                UserName = findUser.UserName
+
+            };
+
+            Hub.Clients.All.newDoctor2(returnUser);
+            return Ok(returnUser);
+            
+        }
+
+        [HttpGet]
+        [Route("doctors")]
+        public async Task<IHttpActionResult> GetDoctors()
+        {
+            var result = (from mt in context.Medical_Types.ToList()
+                         select new
+                         {
+                             Name = mt.Name,
+                             Medical_TypeID = mt.Medical_TypeID,
+                             Available_Doctors = from ad in context.Available_Doctors.Where(ad => ad.Medical_TypeID == mt.Medical_TypeID).ToList()
+                                                 select new
+                                                 {
+                                                     UserName = context.Users.Find(ad.UserId).UserName,
+                                                     Medical_TypeID = ad.Medical_TypeID
+                                                 }
+                         }).AsEnumerable();
+
+            return Ok(result);
+            
         }
 
 

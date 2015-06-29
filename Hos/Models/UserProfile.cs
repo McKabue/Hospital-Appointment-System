@@ -15,4 +15,6 @@ namespace Hos.Models
 
         public string SurName { get; set; }
     }
+
+
 }

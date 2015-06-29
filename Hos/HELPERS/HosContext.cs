@@ -19,7 +19,7 @@ namespace Hos.HELPERS
 
 
 
-        public DbSet<OptionsData> OptionsDatas { get; set; }
+        //public DbSet<OptionsData> OptionsDatas { get; set; }
         public DbSet<Faculty> Faculties { get; set; }
         public DbSet<Program> Programs { get; set; }
         public DbSet<Year> Years { get; set; }

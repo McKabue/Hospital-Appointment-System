@@ -1,0 +1,65 @@
+﻿
+
+
+<section class="tab-pane fade" id="courses" data-bind="visible: role() == 'ADMIN'">
+    <input class="btn btn-primary" style="" value="Add New Course" type="button" data-bind="click: newFalcultyClick" />
+    <div class="clearfix"></div>
+    <form style="margin-top: 10px;" class="form-horizontal col-md-8" data-bind="submit: addFalculty, visible: newFalculty">
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">Course Name</span>
+                <input placeholder="course" class="form-control" name="course" data-bind="value: f">
+            </div>
+
+            <input type="submit" value="Submit" class="btn btn-primary btn-block" />
+        </div>
+    </form>
+
+    <article class="row-fluid">
+
+        <section class="col-md-10">
+            <div data-bind="foreach: courses">
+
+                <div style="border-bottom: 2px solid #000;">
+
+                    <span style="font-weight: 500;" data-bind="text: Name"></span>
+                    <span class="btn btn-info pull-right" data-bind="click: $root.addCourse">Add New Course</span>
+                    <span class="btn btn-danger pull-right" data-bind="">Delete</span>
+                </div>
+                <table class="table table-striped table-condensed" style="border-collapse:collapse;">
+                    <thead>
+                        <tr>
+                            <th style="width:5%;">#</th>
+                            <th style="width:50%;"> Course</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: Courses">
+                        <tr data-bind="template: { name: templateToUseC, data: $data}"></tr>
+                    </tbody>
+                </table>
+                <hr />
+            </div>
+        </section>
+
+        <script id="readTemplateC" type="text/html">
+            <td data-bind="text: $index() + 1"></td>
+            <td data-bind="text: Name"></td>
+            <td><button type="button" data-bind="click: $root.editCourse">Edit</button>   <button type="button" data-bind="click: $root.deleteCourse">Delete</button></td>
+        </script>
+
+        <script id="editTemplateC" type="text/html">
+            <td data-bind="text: $index() + 1"></td>
+            <td><input type="text" data-bind="value: Name" /></td>
+            <td><button type="button" data-bind="">Accept</button>   <button type="button" data-bind="click: $root.cancelCourseEdit">Cancel</button></td>
+        </script>
+
+        <script id="saveTemplateC" type="text/html">
+            <td data-bind="text: $index() + 1"></td>
+            <td><input type="text" data-bind="value: Name" /></td>
+            <td><button type="button" data-bind="click: $root.saveCourse">Save</button>   <button type="button" data-bind="click: $root.cancelCourseEdit">Cancel</button></td>
+        </script>
+
+    </article>
+
+</section>

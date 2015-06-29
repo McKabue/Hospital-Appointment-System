@@ -3,6 +3,7 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -28,6 +29,10 @@ namespace Hos.Models
         [JsonConverter(typeof(StringEnumConverter))]
         public Status? Status { get; set; }
 
+
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual UserProfile UserProfile { get; set; }
         public virtual IList<Feeling> Feelings { get; set; }
         public virtual IList<Possible_Cause> Possible_Causes { get; set; }
     }
@@ -59,11 +64,10 @@ namespace Hos.Models
 
     public class OptionsData
     {
-        public int OptionsDataID { get; set; }
-        public virtual IList<UserProfile> User { get; set; }
-        public virtual IList<Faculty> Faculties { get; set; }
-        public virtual IList<Program> Programs { get; set; }
-        public virtual IList<Medical_Type> Medical_Types { get; set; }
+        public UserModel User { get; set; }
+        public IList<Faculty> Faculties { get; set; }
+        public IList<Program> Programs { get; set; }
+        public IList<Medical_Type> Medical_Types { get; set; }
     }
    
 
@@ -103,6 +107,7 @@ namespace Hos.Models
     {
         public int FacultyID { get; set; }
         public string Name { get; set; }
+        
         public virtual IList<Course> Courses { get; set; }
     }
 
@@ -110,7 +115,11 @@ namespace Hos.Models
     {
         public int CourseID { get; set; }
         public string Name { get; set; }
+        
         public int FacultyID { get; set; }
+        [JsonIgnore]
+        [ForeignKey("FacultyID")]
+        public virtual Faculty Faculty { get; set; }
     }
 
     public class Medical_Type
@@ -123,8 +132,11 @@ namespace Hos.Models
     public class Available_Doctor
     {
         public int Available_DoctorID { get; set; }
-        public string Name { get; set; }
-        public string Doctor_UserName { get; set; }
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual UserProfile UserProfile { get; set; }
+        [NotMapped]
+        public string UserName { get; set; }
         public int Medical_TypeID { get; set; }
     }
 }
