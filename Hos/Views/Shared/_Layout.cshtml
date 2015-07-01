@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cindy Sandra Muga Fina Year Project</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/formValidator.css" rel="stylesheet" />
+
+</head>
+<body class="container-fluid" data-bind="style: { background: role() == 'DOCTOR' ? 'rgba(140, 91, 91, 1)' : '' }">
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div style="font-size: 1.3em;  margin: 0 30px 0 30px;">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!--a style="font-size: 1.6em;" class="navbar-brand" href="">Hospital System</a -->
+                @Html.ActionLink("Hospital System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @Style = "font-size: 1.6em;" })
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul id="myTab2" class="nav navbar-nav">
+                    <li class="active"><a data-toggle="tab" href="#home" tabindex="-1">Home</a></li>
+                    <li data-bind="visible: role() == 'STUDENT'"><a data-toggle="tab" href="#book" tabindex="-1" data-bind="click: loadOptionsData">Book Appointment</a></li>
+                    <li><a data-toggle="tab" href="#reschedule" tabindex="-1" data-bind="click: loadEditData">Details</a></li>
+                    <li data-bind="visible: role() == 'ADMIN'"><a data-toggle="tab" href="#users" tabindex="-1" data-bind="click: loadUsers">Users</a></li>
+                    <li data-bind="visible: role() == 'ADMIN'"><a data-toggle="tab" href="#courses" tabindex="-1" data-bind="click: loadCourses">Courses</a></li>
+                    <li data-bind="visible: role() == 'ADMIN'"><a data-toggle="tab" href="#doctors" tabindex="-1" data-bind="click: loadDoctors">Doctors</a></li>
+                </ul>
+                <ul id="login" class="nav navbar-nav navbar-right">
+                    <li><a title="" data-toggle="modal" style="" href="#loginModal" data-bind="html: user"></a></li>
+                    <li><a style="" href="" data-bind="visible: u() != null, click: logout">logout</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+    <!-- END Fixed navbar -->
+    <!-- PROGRESS BAR -->
+    <div class="modal" role="dialog" aria-hidden="true" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+        <div style="width: 800px; margin-top: 20% !important;" class="modal-dialog">
+            <h1 style="color: #fff; font-weight: 800;">Accessing Database...Please Wait...</h1>
+            <div style="" class="progress progress-striped active"><div class="progress-bar progress-bar-success animate" style="width: 0%;"></div></div>
+        </div>
+    </div>
+    <!-- END OF ROGRESS BAR -->
+    <!--login modal-->
+    <div id="loginModal" class="modal" role="dialog" aria-hidden="true">
+        <div style="width:500px;" class="modal-dialog">
+            <div id="" class="modal-content">
+                <div class="modal-header" style="padding-bottom:0px;">
+                    <button type="button" class="close mustLogin" data-dismiss="modal" aria-hidden="true"><i class="glyphicon glyphicon-remove-circle"></i></button>
+                    <br /><span id="mustLogin" style="font-size:1.5em;" class="text-danger mustLogin"></span>
+                    <ul id="myLoginTab" class="nav nav-tabs" style="margin-top:30px;">
+                        <li class="active"><a data-target="#login2" data-parent="myTabContentLogin" data-toggle="tab">Login</a></li>
+                        
+                    </ul>
+                </div>
+                <div style="padding-left:5px;padding-right:5px;" class="modal-body">
+                    <div id="myTabContentLogin" class="tab-content">
+                        <div class="tab-pane fade in active" id="login2">
+                            <form class="navbar-form form" role="form" data-bind="submit: GetToken">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span style="width:200px;" class="input-group-addon">Role</span>
+                                        <select style="width: 300px;" class="form-control" name="loginRole">
+                                            <option>STUDENT</option>
+                                            <option>DOCTOR</option>
+                                            <option>ADMIN</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span id="rolespan" style="width:200px;" class="input-group-addon">Reg. Number</span>
+                                        <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="loginRegistrationNumber" pattern="(?:[A-Za-z]{2}[0-9]{2}|[A-Za-z]{2}[Pp]{1}[0-9]{2})\/[0-9]{5}\/([1-2]{1}[90]{1}[0-9]{2}|[901]{1}[0-9]{1})" oninvalid="setCustomValidity('Please enter a valid Registration Number!')" onchange="try{setCustomValidity('')}catch(e){}" required />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span style="width:200px;" class="input-group-addon">Password</span>
+                                        <input style="width: 300px;" ffpdm="4j1x06h10f6jxmd6j6urs" placeholder="Password" class="form-control" type="password" name="loginPassword">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success form-control">Login</button>
+                                </div>
+                            </form>
+                        </div>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--END login modal-->
+
+    <!--login modal-->
+    <div id="register" class="modal" role="dialog" aria-hidden="true">
+        <div style="width:500px;" class="modal-dialog">
+            <div id="" class="modal-content">
+                <div class="modal-header" style="padding-bottom:10px;">
+                    <button type="button" class="close mustLogin" data-dismiss="modal" aria-hidden="true"><i class="glyphicon glyphicon-remove-circle"></i></button>
+                    <b class="text-info" style="font-size:16px;">Add New User</b>
+
+                </div>
+                <div style="padding-left:5px;padding-right:5px;" class="modal-body">
+                    <form style="" id="signupForm" class="navbar-form form" role="form" data-bind="submit: SignUp">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span style="width:200px;" class="input-group-addon">SurName</span>
+                                <input style="width: 300px;" placeholder="SurName" class="form-control" name="surname" required pattern="[a-zA-Z]{3,10}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span style="width:200px;" class="input-group-addon">First Name</span>
+                                <input style="width: 300px;" placeholder="First name" class="form-control" name="firstname" required pattern="[a-zA-Z]{3,10}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span style="width:200px;" class="input-group-addon">Last Name</span>
+                                <input style="width: 300px;" placeholder="Last name" class="form-control" name="lastname" required pattern="[a-zA-Z]{3,10}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span style="width:200px;" class="input-group-addon">Role</span>
+                                <select style="width: 300px;" class="form-control" name="registerRole">
+                                    <option>STUDENT</option>
+                                    <option>DOCTOR</option>
+                                    <option>ADMIN</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span id="rolespan2" style="width:200px;" class="input-group-addon">Reg. Number</span>
+                                <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="registration_number" pattern="(?:[A-Za-z]{2}[0-9]{2}|[A-Za-z]{2}[Pp]{1}[0-9]{2})\/[0-9]{5}\/([1-2]{1}[90]{1}[0-9]{2}|[901]{1}[0-9]{1})" oninvalid="setCustomValidity('Please enter a valid Registration Number!')" onchange="try{setCustomValidity('')}catch(e){}" required>
+                            </div>
+                        </div>
+
+                        @*/////////////////////////////////////////////////*@
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span style="width:200px;" class="input-group-addon">NationaL ID</span>
+                                <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="national_id_number" required pattern="[0-9]{8}">
+                            </div>
+                        </div>
+
+                        @*/////////////////////////////////////////////////*@
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span style="width:200px;" class="input-group-addon">Password</span>
+                                <input style="width: 300px;" ffpdm="4j1x06h10f6jxmd6j6urs" id="passwordInput" placeholder="password" class="form-control" type="password" name="password" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span style="width:200px;" class="input-group-addon">Confirm Password</span>
+                                <input style="width:300px;" ffpdm="4j1x06h10f6jxmd6j6urs" id="passwordInput" placeholder="confirm password" class="form-control" type="password" name="confirmpassword" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success form-control">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--END login modal-->
+
+    <div class="clear"></div>
+
+    <div class="row mainBody" style="background-color:#E0EAF1; padding:20px; margin-top: 95px; border:4px solid #AAA;">
+        <article class="tab-content">
+            @RenderBody()
+            
+        </article>
+    </div>
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/otherScripts")
+        @RenderSection("scripts", required: false)
+
+        <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/bootstrapValidator.js"></script>
+    <script src="~/Scripts/validate.js"></script>
+</body>
+</html>

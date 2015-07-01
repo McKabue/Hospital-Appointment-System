@@ -1,0 +1,210 @@
+﻿
+
+
+  <section class="tab-pane fade" id="book" data-bind="visible: role() == 'STUDENT'">
+
+      <!--
+      <form>
+          <input placeholder="DD/MM/YYYY" type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" name="date" value="" required />
+          <input placeholder="DD/MM/YYYY" type="text" pattern="[0123]{1}[0-9]{1}\/[01]{1}[0-9]{1}\/[1-2]{1}[90]{1}[0-9]{2}" oninvalid="setCustomValidity('Please enter a valid date!')" onchange="try{setCustomValidity('')}catch(e){}" name="date" value="" required />
+          <input type="submit" title="Submit" />
+      </form>
+          -->
+
+    <form id="bookform" class="form-horizontal" role="form" style="" data-bind="submit:sendAppointmentData">
+        <div class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">Your Official Name</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="col-md-4 col-sm-4 col-xs-4" style="padding:0;">
+                        <input id="surName" placeholder="SurName" class="form-control" name="username">
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4" style="padding:0;">
+                        <input id="firstName" placeholder="First Name" class="form-control" name="username">
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4" style="padding:0;">
+                        <input id="lastName" placeholder="Last Name" class="form-control" name="username">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">Registration Number</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="" style="padding:0px;">
+                        <input id="Registration_Number" placeholder="Registration Number" class="form-control" name="username">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">National ID Number</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="" style="padding:0px;">
+                        <input id="National_ID_Number" placeholder="National_ID_Number" class="form-control" name="username" required pattern="[0-9]{8}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">Birth Date</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="" style="padding:0px;">
+                       <!-- <input pattern="[0123]{1}[0-9]{1}\/[01]{1}[0-9]{1}\/[1-2]{1}[90]{1}[0-9]{2}" oninvalid="setCustomValidity('Please enter a valid Admission Number!')" onchange="try{setCustomValidity('')}catch(e){}" id="Birth_Date" placeholder="When where you born?" class="form-control" name="birthdate"> -->
+                        <input class="form-control" name="birthdate" id="Birth_Date">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">Program</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="" style="padding:0px;">
+                        <select id="Program" data-bind='options: program, optionsText: "name", optionsCaption: "", value: year ' class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-bind="with: year" class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">Year</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="" style="padding:0;">
+                        <select id="Year" data-bind='options: years, optionsText: "Name", optionsCaption: "", value: $parent.semesters ' class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-bind="with: semesters" class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">Semester</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="" style="padding:0;">
+                        <select data-bind='options: Semesters, optionsText: "Name", optionsCaption: "" ' class="form-control" id="Semester"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">Faculty</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="" style="padding:0px;">
+                        <select id="Faculty" data-bind='options: falcuty, optionsText: "name", optionsCaption: "", value: course ' class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-bind="with: course" class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">Course</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="" style="padding:0px;">
+                        <select data-bind='options: courses, optionsText: "Name", optionsCaption: ""' id="Course" class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">How Are You Feeling?</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="" style="padding:0px;">
+                        <input class="select2-form-control" placeholder="Write very short explanations" id="tags1" style="width: 100%;">
+                    </div>
+                </div>
+                <a style="font-size:18px;" data-toggle="collapse" data-parent="" href="#collapseOne">More Explanation</a>
+                <div id="collapseOne" class="collapse">
+                    <p style="color:#999999; font-size:18px;">Please put a space, comma or press Enter after every ..... Write very short explanations of how you are feeling. include everything you are feeling...</p>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">Possible Causes</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="" style="padding:0px;">
+                        <input class="select2-form-control" placeholder="Write very short explanations" id="tags2" style="width: 100%;">
+                    </div>
+                </div>
+                <a style="font-size:18px;" data-toggle="collapse" data-parent="" href="#collapseTwo">More Explanation</a>
+                <div id="collapseTwo" class="collapse">
+                    <p style="color:#999999; font-size:18px;">Please put a space, comma or press Enter after every ..... Write very short explanations of how you are feeling. include everything you are feeling...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">Medical Type</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="" style="padding:0px;">
+                        <select id="Medical_Type" data-bind='options: medical_Type, optionsText: "name", optionsCaption: "", value: available_Doctor ' class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-bind="with: available_Doctor" class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <label style="font-size:1.5em;" class="pull-right">Available Doctors</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="">
+                    <div class="" style="padding:0px;">
+                        <select id="Doctor" data-bind='options: available_Doctors, optionsText: "UserName", optionsCaption: ""' class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="" style="padding-top:20px;">
+                    <button id="submit" type="submit" style="color:#000; font-size:1.5em;" class="btn btn-success">Send Appointment!</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+
+
+
+        
+
+
+   
+
