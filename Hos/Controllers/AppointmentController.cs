@@ -31,6 +31,13 @@ namespace Hos.Controllers
             _repo = new AuthRepo();
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("validToken")]
+        public IHttpActionResult validToken()
+        {
+            return Ok();
+        }
 
         [AllowAnonymous]
         //[OverrideAuthorization]
@@ -265,7 +272,7 @@ namespace Hos.Controllers
         [Authorize]
         [HttpGet]
         [Route("download/{appointmentid}")]
-        public async void Get(string appointmentid)
+        public async void Get(int appointmentid)
         {
             var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
             var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
@@ -281,13 +288,12 @@ namespace Hos.Controllers
 
                 BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
                 iTextSharp.text.Font times = new Font(bfTimes, 12, Font.ITALIC, BaseColor.RED);
-                iTextSharp.text.Font bolder = new Font(bfTimes, 50, Font.BOLD, BaseColor.BLACK);
+                iTextSharp.text.Font bolder = new Font(bfTimes, 40, Font.BOLD, BaseColor.BLACK);
 
 
                 doc.Open();
 
-                var phrase = new Phrase();
-                phrase.Add(new Chunk(user.UserName + "made an appointment " + appointment.Id));
+                
 
                 
 
@@ -298,18 +304,39 @@ namespace Hos.Controllers
                 
                 float[] widths = new float[] { 2f, 3f };
                 table.SetWidths(widths);
-
-                PdfPCell cell = new PdfPCell(new Phrase("Kisii University Annex", bolder));
+                var header = new Phrase("Kisii University Annex", bolder);
+                PdfPCell cell = new PdfPCell(header);
                 //cell.Width = doc.PageSize.Width;
                 cell.Border = 0;
                 cell.Colspan = 2;
-                cell.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+                cell.PaddingBottom = 50;
+                cell.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
 
                 table.AddCell(cell);
 
                 table.AddCell("Registration Number"); table.AddCell(user.UserName);
-
                 table.AddCell("Full Name"); table.AddCell(user.FirstName + " " + user.LastName + " " + user.SurName);
+                table.AddCell("Sickness");
+                var sickness = new List(List.ORDERED, 20f);
+                foreach (var item in appointment.Result.Feelings.ToArray())
+	            {
+                    sickness.Add(new ListItem(item.FeelingBody));
+	            }
+                var sicknessList = new PdfPCell();
+                sicknessList.AddElement(sickness);
+                table.AddCell(sicknessList);
+
+                table.AddCell("Possible Causes");
+                var causes = new List(List.ORDERED, 20f);
+                foreach (var item in appointment.Result.Possible_Causes.ToArray())
+                {
+                    causes.Add(new ListItem(item.Possible_CauseBody));
+                }
+                var causesList = new PdfPCell();
+                causesList.AddElement(causes);
+                table.AddCell(causesList);
+
+
 
                 doc.Add(table);
 

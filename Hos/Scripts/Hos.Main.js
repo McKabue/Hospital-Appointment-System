@@ -192,7 +192,28 @@
 
 
 
+        self.isTokenValid = function () {
+            var self = this;
 
+            $.ajax({
+                url: "/api/Appointment/validToken",
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'GET',
+                success: function () { },
+                error: function (err) { },
+                statusCode: {
+                    200: function () {
+
+                    },
+                    401: function () {
+                        self.logout();
+                    }
+                }
+            });
+        };
+
+        self.isTokenValid();
 
 
 
@@ -355,7 +376,7 @@
                         $.each(edits, function (index, edit) {
                             if (edit.RoleName == "STUDENT") {
                                 $.each(edit.User, function (index, user) {
-                                    alert(ko.toJSON(user));
+                                    
                                     self.ViewDataArray.push(new ViewData(edit.AppointmentID, user.SurName, user.FirstName, user.LastName, user.Registration_Number, edit.Birth_Date, user.National_ID_Number, edit.RoleName, edit.Feelings, edit.Causes, edit.Medical_Type, edit.Doctor, edit.DateTime, edit.Status, edit.Year, edit.Semester, edit.Faculty, edit.Course, edit.Program));
 
                                     //$('#surNameEdit').val(user.SurName).attr('disabled', true);
@@ -371,7 +392,7 @@
                                
                                 //alert("good");
                                 $.each(edit.User, function (index, user) {
-                                    self.ViewDataArray.push(new ViewData(edit.AppointmentID, user.SurName, user.FirstName, user.LastName, user.Registration_Number, user.National_ID_Number, edit.RoleName, edit.Feelings, edit.Causes, edit.Medical_Type, edit.Doctor, edit.DateTime, edit.Status, edit.Year, edit.Semester, edit.Faculty, edit.Course, edit.Program));
+                                    self.ViewDataArray.push(new ViewData(edit.AppointmentID, user.SurName, user.FirstName, user.LastName, user.Registration_Number, edit.Birth_Date, user.National_ID_Number, edit.RoleName, edit.Feelings, edit.Causes, edit.Medical_Type, edit.Doctor, edit.DateTime, edit.Status, edit.Year, edit.Semester, edit.Faculty, edit.Course, edit.Program));
 
                                     
                                 });
@@ -381,7 +402,7 @@
 
                                 //alert("good");
                                 $.each(edit.User, function (index, user) {
-                                    self.ViewDataArray.push(new ViewData(edit.AppointmentID, user.SurName, user.FirstName, user.LastName, user.Registration_Number, user.National_ID_Number, edit.RoleName, edit.Feelings, edit.Causes, edit.Medical_Type, edit.Doctor, edit.DateTime, edit.Status, edit.Year, edit.Semester, edit.Faculty, edit.Course, edit.Program));
+                                    self.ViewDataArray.push(new ViewData(edit.AppointmentID, user.SurName, user.FirstName, user.LastName, user.Registration_Number, edit.Birth_Date, user.National_ID_Number, edit.RoleName, edit.Feelings, edit.Causes, edit.Medical_Type, edit.Doctor, edit.DateTime, edit.Status, edit.Year, edit.Semester, edit.Faculty, edit.Course, edit.Program));
 
 
                                 });
