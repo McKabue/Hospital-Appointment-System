@@ -120,21 +120,21 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <span style="width:200px;" class="input-group-addon">SurName</span>
-                                <input style="width: 300px;" placeholder="SurName" class="form-control" name="surname" required pattern="[a-zA-Z]{3,10}">
+                                <input style="width: 300px;" placeholder="SurName" class="form-control" name="surname" required pattern="[a-zA-Z]{3,10}" oninvalid="setCustomValidity('Name must be 3 to 10 Characters')" onchange="try{setCustomValidity('')}catch(e){}">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="input-group">
                                 <span style="width:200px;" class="input-group-addon">First Name</span>
-                                <input style="width: 300px;" placeholder="First name" class="form-control" name="firstname" required pattern="[a-zA-Z]{3,10}">
+                                <input style="width: 300px;" placeholder="First name" class="form-control" name="firstname" required pattern="[a-zA-Z]{3,10}" oninvalid="setCustomValidity('Name must be 3 to 10 Characters')" onchange="try{setCustomValidity('')}catch(e){}">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="input-group">
                                 <span style="width:200px;" class="input-group-addon">Last Name</span>
-                                <input style="width: 300px;" placeholder="Last name" class="form-control" name="lastname" required pattern="[a-zA-Z]{3,10}">
+                                <input style="width: 300px;" placeholder="Last name" class="form-control" name="lastname" required pattern="[a-zA-Z]{3,10}" oninvalid="setCustomValidity('Name must be 3 to 10 Characters')" onchange="try{setCustomValidity('')}catch(e){}">
                             </div>
                         </div>
 
@@ -160,7 +160,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <span style="width:200px;" class="input-group-addon">NationaL ID</span>
-                                <input style="width: 300px;" placeholder="Registration Number" class="form-control" name="national_id_number" required pattern="[0-9]{8}">
+                                <input style="width: 300px;" placeholder="National Id" class="form-control" name="national_id_number" required pattern="[0-9]{8}">
                             </div>
                         </div>
 

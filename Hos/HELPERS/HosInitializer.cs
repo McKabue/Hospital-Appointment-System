@@ -19,74 +19,8 @@ namespace Hos.HELPERS
 
             user.Create(new UserProfile() { FirstName = "makori", LastName = "m", SurName="mokaya", UserName = "Admin", RoleName = "ADMIN", PasswordHash = hasher.HashPassword("Admin") });
 
-            user.Create(new UserProfile() { FirstName = "kamaa", LastName = "john", UserName = "IN16/20034/13", RoleName = "STUDENT", PasswordHash = hasher.HashPassword("1234567890") });
 
-            user.Create(new UserProfile() { FirstName = "cindy", LastName = "muga", UserName = "IN14/20049/11", RoleName = "STUDENT", PasswordHash = hasher.HashPassword("cat") });
 
-            user.Create(new UserProfile() { FirstName = "Dr. Kamau", LastName = "john2", UserName = "Dr.Kamau", RoleName = "DOCTOR", PasswordHash = hasher.HashPassword("1234567890") });
-            user.Create(new UserProfile() { FirstName = "Dr. Nancy", LastName = "john2", UserName = "Dr.Nancy", RoleName = "DOCTOR", PasswordHash = hasher.HashPassword("1234567890") });
-            user.Create(new UserProfile() { FirstName = "Miss Rebecca", LastName = "john2", UserName = "MissRebecca", RoleName = "DOCTOR", PasswordHash = hasher.HashPassword("1234567890") });
-            user.Create(new UserProfile() { FirstName = "sister Moraa", LastName = "john2", UserName = "sisterMoraa", RoleName = "DOCTOR", PasswordHash = hasher.HashPassword("1234567890") });
-            user.Create(new UserProfile() { FirstName = "kamaa Again", LastName = "john2", UserName = "kamaaAgain", RoleName = "DOCTOR", PasswordHash = hasher.HashPassword("1234567890") });
-            
-            /////////////////////////////////////////////////////////////////////////////
-            var appointments = new List<Appointment> 
-            { 
-                new Appointment {
-                    AppointmentID = 1,
-                    Registration_Number = "IN17/2004/37",
-                    Birth_Date = DateTime.Parse("1992-09-03"),
-                    Faculty = "FIST",
-                    Course = "Applied Computer Science",
-                    Medical_Type = "General",
-                    Available_Doctor = "Dr. Kamau"
-                }
-            };
-            appointments.ForEach(s => context.Appointments.Add(s));
-            context.SaveChanges();
-
-            //////////////////////////////////////////////////////////////////////////////
-            var feelings = new List<Feeling> 
-            { 
-                new Feeling {
-                    FeelingBody = "dizzy",
-                    AppointmentID = 1
-                },
-                new Feeling {
-                    FeelingBody = "tired",
-                    AppointmentID = 1
-                },
-                new Feeling {
-                    FeelingBody = "sleepy",
-                    AppointmentID = 1
-                }
-            };
-            feelings.ForEach(s => context.Feelings.Add(s));
-            context.SaveChanges();
-
-            /////////////////////////////////////////////////////////////////////////////////
-            var possible_Causes = new List<Possible_Cause> 
-            { 
-                new Possible_Cause {
-                    Possible_CauseBody = "cold",
-                    AppointmentID = 1
-                },
-                new Possible_Cause {
-                    Possible_CauseBody = "maralia",
-                    AppointmentID = 1
-                },
-                new Possible_Cause {
-                    Possible_CauseBody = "flu",
-                    AppointmentID = 1
-                }
-            };
-            possible_Causes.ForEach(s => context.Possible_Causes.Add(s));
-            context.SaveChanges();
-
-            ////////////////////////////////////////////////////////////////////////////////
-            ///////////////////////////////////////////////////////////////////////////////
-
-            
 
             ////////////////////////////////////////////////////////////////////////////1
             var programs = new List<Program> 
@@ -161,6 +95,8 @@ namespace Hos.HELPERS
             };
             years.ForEach(s => context.Years.Add(s));
             context.SaveChanges();
+
+            ////////////////////////////////////////////////////////////////////////////3
 
             ////////////////////////////////////////////////////////////////////////////3
             var semesters = new List<Semester> 
@@ -253,100 +189,6 @@ namespace Hos.HELPERS
             context.SaveChanges();
 
             ///////////////////////////////////////////////////////////////////////////////////
-            var faculty = new List<Faculty> 
-            { 
-                new Faculty {
-                    Name = "FIST"
-                },
-                new Faculty {
-                    Name = "SPAS"
-                },
-                new Faculty {
-                    Name = "Commerce"
-                },
-                new Faculty {
-                    Name = "Education"
-                },
-                new Faculty {
-                    Name = "Agriculture"
-                }
-            };
-            faculty.ForEach(s => context.Faculties.Add(s));
-            context.SaveChanges();
-
-            ////////////////////////////////////////////////////////////////////////////////
-            
-
-            ///////////////////////////////////////////////////////////////////////////////////////////
-            var course = new List<Course> 
-            { 
-                new Course {
-                    Name = "Applied Computer Science",
-                    FacultyID = 1
-                },
-                new Course {
-                    Name = "Computer Science",
-                    FacultyID = 3
-                },
-                new Course {
-                    Name = "Softwre Engineering",
-                    FacultyID = 3
-                },
-                new Course {
-                    Name = "Bachelor of Commerce",
-                    FacultyID = 2
-                },
-                new Course {
-                    Name = "Bachelor of Education",
-                    FacultyID = 4
-                }
-            };
-            course.ForEach(s => context.Courses.Add(s));
-            context.SaveChanges();
-
-            ///////////////////////////////////////////////////////////////////////////////////////////
-            var medical_Type = new List<Medical_Type> 
-            { 
-                new Medical_Type {
-                    Name = "Surgery"
-                },
-                new Medical_Type {
-                    Name = "Immergency"
-                },
-                new Medical_Type {
-                    Name = "Gynechology"
-                },
-                new Medical_Type {
-                    Name = "E.N.T"
-                },
-                new Medical_Type {
-                    Name = "Pharmacy"
-                }
-            };
-            medical_Type.ForEach(s => context.Medical_Types.Add(s));
-            context.SaveChanges();
-
-            ////////////////////////////////////////////////////////////////////////////////////////////
-            var available_Doctor = new List<Available_Doctor> 
-            { 
-                new Available_Doctor {
-                    Medical_TypeID = 1
-                },
-                new Available_Doctor {
-                    Medical_TypeID = 1
-                },
-                new Available_Doctor {
-                    Medical_TypeID = 3
-                },
-                new Available_Doctor {
-                    Medical_TypeID = 3
-                },
-                new Available_Doctor {
-                    Medical_TypeID = 4
-                }
-            };
-            available_Doctor.ForEach(s => context.Available_Doctors.Add(s));
-            context.SaveChanges();
         }
     }
 }

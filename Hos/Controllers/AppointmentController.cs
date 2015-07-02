@@ -54,7 +54,8 @@ namespace Hos.Controllers
                                                  UserName = user.UserName,
                                                  FirstName = user.FirstName,
                                                  LastName = user.LastName,
-                                                 SurName = user.SurName
+                                                 SurName = user.SurName,
+                                                 National_ID_Number = user.National_ID_Number
                                              }).FirstOrDefault(),
                                       Faculties = context.Faculties.ToList(),
                                       Programs = context.Programs.Include(y => y.Years).ToList(),
@@ -62,10 +63,10 @@ namespace Hos.Controllers
                                                       select new Medical_Type()
                                                       {
                                                           Name = mt.Name,
-                                                          Available_Doctors = (from ad in context.Available_Doctors.ToList()
+                                                          Available_Doctors = (from ad in context.Available_Doctors.Where(adid => adid.Medical_TypeID == mt.Medical_TypeID).ToList()
                                                                               select new Available_Doctor()
                                                                               {
-                                                                                  UserName =  context.Users.Find(ad.UserId).UserName // "No Name"
+                                                                                  UserName =  context.Users.Where(id => id.Id == ad.UserId).SingleOrDefault().UserName  // "No Name"
                                                                               }).ToList()
                                                       }).ToList()
                                   };
@@ -102,12 +103,13 @@ namespace Hos.Controllers
 
 
                 dynamic json = data;
+                DateTime date = json.Birth_Date;
 
                 var appointment = new Appointment
                 {
                     AppointmentDate = DateTime.UtcNow,
                     Registration_Number = json.Registration_Number,
-                    Birth_Date = DateTime.Parse("1992-09-03"),
+                    Birth_Date = date,
                     Program = json.Program,
                     Year = json.Year,
                     Semester = json.Semester,
@@ -353,7 +355,6 @@ namespace Hos.Controllers
                                              LastName = user.LastName,
                                              National_ID_Number = user.National_ID_Number,
                                              Registration_Number = user.UserName
-                                             //RoleName = user.RoleName
                                          },
                                   RoleName = roleName,
                                   AppointmentID = appointment.AppointmentID,
@@ -524,20 +525,157 @@ namespace Hos.Controllers
             return Content(HttpStatusCode.NoContent, "Deleted");
         }
 
+        [HttpDelete]
+        [Authorize]
+        [Route("deleteFalculty")]
+        public async Task<IHttpActionResult> deleteFalculty(int id)
+        {
+            var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+            var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
+            if (roleName == "ADMIN")
+            {
+                var f = context.Faculties.Find(id);
+
+                if (f == null)
+                {
+                    return NotFound();
+                }
+                context.Faculties.Remove(f);
+
+                await context.SaveChangesAsync();
+
+                Hub.Clients.All.deleteFalculty(id);
+                return Ok();
+            }
+            return BadRequest();
+        }
 
 
+        [HttpPut]
+        [Authorize]
+        [Route("acceptCourseEdit")]
+        public async Task<IHttpActionResult> acceptCourseEdit(JObject data)
+        {
+            var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+            var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
+            if (roleName == "ADMIN")
+            {
+                dynamic json = data;
+
+                int id = json.id;
+
+                var c = context.Courses.Find(id);
+
+                if (c == null)
+                {
+                    return NotFound();
+                }
+                c.Name = json.Name;
+
+                await context.SaveChangesAsync();
+
+                Hub.Clients.All.acceptCourseEdit(c.FacultyID, json.id, json.Name);
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpDelete]
+        [Authorize]
+        [Route("deleteCourse")]
+        public async Task<IHttpActionResult> deleteCourse(int id)
+        {
+            var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+            var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
+            if (roleName == "ADMIN")
+            {
+                var c = context.Courses.Find(id);
+
+                if (c == null)
+                {
+                    return NotFound();
+                }
+                context.Courses.Remove(c);
+
+                await context.SaveChangesAsync();
 
 
+                Hub.Clients.All.deleteCourse(c.FacultyID, id);
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("chooseDoctor")]
+        public async Task<IHttpActionResult> chooseDoctor()
+        {
+            var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+            var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
+            if (roleName == "ADMIN")
+            {
+                var d = from u in context.Users.Where(u => u.RoleName == "DOCTOR").ToList()
+                        select new
+                        {
+                            UserName = u.UserName
+                        };
+
+                return Ok(d);
+            }
+            return BadRequest();
+        }
+
+        [HttpDelete]
+        [Authorize]
+        [Route("deleteDoctor")]
+        public async Task<IHttpActionResult> deleteDoctor(int id)
+        {
+            var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+            var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
+            if (roleName == "ADMIN")
+            {
+                var ad = context.Available_Doctors.Find(id);
+
+                if (ad == null)
+                {
+                    return NotFound();
+                }
+                context.Available_Doctors.Remove(ad);
+
+                await context.SaveChangesAsync();
 
 
+                Hub.Clients.All.deleteDoctor(ad.Medical_TypeID, id);
+                return Ok();
+            }
+            return BadRequest();
+        }
 
+        [HttpDelete]
+        [Authorize]
+        [Route("deleteMedical_Type")]
+        public async Task<IHttpActionResult> deleteMedical_Type(int id)
+        {
+            var cp = (ClaimsPrincipal)User; //var cp = User as ClaimsPrincipal;
+            var roleName = ((Claim)cp.Claims.SingleOrDefault(x => x.Type == "RoleName")).Value.ToString();
+            if (roleName == "ADMIN")
+            {
+                var mt = context.Medical_Types.Find(id);
 
+                if (mt == null)
+                {
+                    return NotFound();
+                }
+                context.Medical_Types.Remove(mt);
 
+                await context.SaveChangesAsync();
 
-
-
-
-
+                Hub.Clients.All.deleteMedical_Type(id);
+                return Ok();
+            }
+            return BadRequest();
+        }
 
 
 

@@ -42,7 +42,7 @@
     }
 
 
-    function ViewData(AppointmentID, SurName, FirstName, LastName, Registration_Number, National_ID_Number, RoleName, Feelings, Causes, Medical_Type, Doctor, DateTime, Status, Year, Semester, Faculty, Course, Program) {
+    function ViewData(AppointmentID, SurName, FirstName, LastName, Registration_Number, Birth_Date, National_ID_Number, RoleName, Feelings, Causes, Medical_Type, Doctor, DateTime, Status, Year, Semester, Faculty, Course, Program) {
         var self = this;
 
         self.appointmentID = ko.observable(AppointmentID);
@@ -52,7 +52,7 @@
         self.registration_Number = ko.observable(Registration_Number);
         self.national_ID_Number = ko.observable(National_ID_Number);
         self.roleName = ko.observable(RoleName);
-        
+        self.Birth_Date = ko.observable(Birth_Date);
 
         self.feelings = ko.observableArray(Feelings);
         self.causes = ko.observableArray(Causes);
@@ -110,15 +110,17 @@
 
         if (data.Courses != null) {
             data.Courses.forEach(function (item) {
-                self.Courses.push(new Course(item.Name, "read", item.FacultyID));
+                self.Courses.push(new Course(item.CourseID, item.Name, "read", item.FacultyID));
             });
         }
         
     }
 
-    function Course(Name, readWriteC, FacultyID) {
+    function Course(CourseID, Name, readWriteC, FacultyID) {
         var self = this;
 
+        
+        self.CourseID = ko.observable(CourseID);
         self.Name = ko.observable(Name);
         self.FacultyID = ko.observable(FacultyID);
         
@@ -134,6 +136,7 @@
     function Medical_Type2(data){
         var self = this;
 
+        
         self.Name = ko.observable(data.Name);
         self.Medical_TypeID = ko.observable(data.Medical_TypeID);
         self.Available_Doctors = ko.observableArray([]);
@@ -141,16 +144,17 @@
 
         if (data.Available_Doctors != null) {
             data.Available_Doctors.forEach(function (item) {
-                self.Available_Doctors.push(new Doctor2(item.UserName, "read", item.Medical_TypeID));
+                self.Available_Doctors.push(new Doctor2(item.Available_DoctorID, item.UserName, "read", item.Medical_TypeID));
             });
         }
     }
 
 
 
-    function Doctor2(UserName, readWriteD, Medical_TypeID) {
+    function Doctor2(Available_DoctorID, UserName, readWriteD, Medical_TypeID) {
         var self = this;
 
+        self.Available_DoctorID = ko.observable(Available_DoctorID)
         self.Medical_TypeID = ko.observable(Medical_TypeID);
         self.UserName = ko.observable(UserName);
 
@@ -158,7 +162,7 @@
         self.readWriteD = ko.observable(readWriteD);
 
         self.templateToUseD = ko.computed(function () {
-            return self.readWriteD() == "read" ? 'readTemplateD' : self.readWriteD() == "write" ? 'editTemplateD' : self.readWriteD() == "save" ? 'saveTemplateD' : null;
+            return self.readWriteD() == "read" ? 'readTemplateD' : self.readWriteD() == "save" ? 'saveTemplateD' : null;
         });
     }
 
@@ -167,6 +171,8 @@
 
     var courses = ko.observableArray([]);
     var doctors = ko.observableArray([]);
+    var chooseDoctor = ko.observableArray([]);
+    var choosenDoctor = ko.observable();
 
     var viewModel = function () {
         var self = this;
@@ -243,12 +249,12 @@
                 type: 'GET',
                 success: function () { },
                 error: function (err) {
-                    alert(ko.toJSON(err));
+                    //alert(ko.toJSON(err));
                 },
                 statusCode: {
                     200: function (data) {
 
-                        alert(ko.toJSON(data.Medical_Types));
+                        //alert(ko.toJSON(data));
 
                         $('#surName').val(data.User.SurName).attr('disabled', true);
                         $('#firstName').val(data.User.FirstName).attr('disabled', true);
@@ -256,6 +262,9 @@
                         $('#National_ID_Number').val(data.User.National_ID_Number).attr('disabled', true);
                         $('#Registration_Number').val(data.User.UserName).attr('disabled', true);
 
+                        self.program([]);
+                        self.falcuty([]);
+                        self.medical_Type([]);
 
                         $.each(data.Programs, function (index, program) {
                             self.program.push(new Program(program.Name, program.Years));
@@ -271,7 +280,9 @@
                             
                         
                     },
-                    400: function () { alert("400:"); },
+                    400: function () {
+                        //alert("400:");
+                    },
                     401: function () {
                        // clearInterval(progress);
                         //$('#pleaseWaitDialog').modal('hide');
@@ -344,8 +355,8 @@
                         $.each(edits, function (index, edit) {
                             if (edit.RoleName == "STUDENT") {
                                 $.each(edit.User, function (index, user) {
-
-                                    self.ViewDataArray.push(new ViewData(edit.AppointmentID, user.SurName, user.FirstName, user.LastName, user.Registration_Number, user.National_ID_Number, edit.RoleName, edit.Feelings, edit.Causes, edit.Medical_Type, edit.Doctor, edit.DateTime, edit.Status, edit.Year, edit.Semester, edit.Faculty, edit.Course, edit.Program));
+                                    alert(ko.toJSON(user));
+                                    self.ViewDataArray.push(new ViewData(edit.AppointmentID, user.SurName, user.FirstName, user.LastName, user.Registration_Number, edit.Birth_Date, user.National_ID_Number, edit.RoleName, edit.Feelings, edit.Causes, edit.Medical_Type, edit.Doctor, edit.DateTime, edit.Status, edit.Year, edit.Semester, edit.Faculty, edit.Course, edit.Program));
 
                                     //$('#surNameEdit').val(user.SurName).attr('disabled', true);
                                     //$('#firstNameEdit').val(user.FirstName).attr('disabled', true);
@@ -377,7 +388,9 @@
                             }
                         });
                     },
-                    400: function () { alert("400:"); },
+                    400: function () {
+                        //alert("400:");
+                    },
                     401: function () {
                         $('#loginModal').modal('show');
                         $('#mustLogin').text('You need to First Login / Register');
@@ -573,7 +586,7 @@
             var arrayFilter = ko.utils.arrayFirst(courses(), function (item) {
                 return item.FacultyID() == course.FacultyID;
             });
-            arrayFilter.Courses.unshift(new Course(course.Name, "read", course.FacultyID));
+            arrayFilter.Courses.unshift(new Course(course.CourseID, course.Name, "read", course.FacultyID));
 
         }
         
@@ -582,17 +595,69 @@
                 return item.Medical_TypeID() == doc.Medical_TypeID;
             });
 
-            arrayFilter.Available_Doctors.unshift(new Doctor2(doc.UserName, "read", doc.Medical_TypeID));
+            arrayFilter.Available_Doctors.unshift(new Doctor2(doc.Available_DoctorID, doc.UserName, "read", doc.Medical_TypeID));
 
         }
         
+        hub.client.deleteFalculty = function (id) {
+            var arrayFilter = ko.utils.arrayFirst(courses(), function (item) {
+                return item.FacultyID() == id;
+            });
+
+            courses.remove(arrayFilter);
+        }
+
+        hub.client.acceptCourseEdit = function (FacultyID, CourseID, name) {
+            var arrayFilter = ko.utils.arrayFirst(courses(), function (item) {
+                    return item.FacultyID() == FacultyID;
+                });
 
 
+                var arrayFilter2 = ko.utils.arrayFirst(arrayFilter.Courses(), function (item) {
+                    return item.CourseID() == CourseID;
+                });
+                arrayFilter2.CourseID(CourseID);
+                arrayFilter2.FacultyID(FacultyID);
+                arrayFilter2.Name(name);
+                arrayFilter2.readWriteC("read");
+        }
+
+        hub.client.deleteCourse = function (FacultyID, CourseID) {
+            var arrayFilter = ko.utils.arrayFirst(courses(), function (item) {
+
+                return item.FacultyID() == FacultyID;
+            });
 
 
+            var arrayFilter2 = ko.utils.arrayFirst(arrayFilter.Courses(), function (item) {
+                return item.CourseID() == CourseID;
+            });
+
+            arrayFilter.Courses.remove(arrayFilter2);
+
+        }
+
+        hub.client.deleteDoctor = function (Medical_TypeID, Available_DoctorID) {
+            var arrayFilter = ko.utils.arrayFirst(doctors(), function (item) {
+                return item.Medical_TypeID() == Medical_TypeID;
+            });
 
 
+            var arrayFilter2 = ko.utils.arrayFirst(arrayFilter.Available_Doctors(), function (item) {
+                return item.Available_DoctorID() == Available_DoctorID;
+            });
 
+            arrayFilter.Available_Doctors.remove(arrayFilter2);
+
+        }
+
+        hub.client.deleteMedical_Type = function (id) {
+            var arrayFilter = ko.utils.arrayFirst(doctors(), function (item) {
+                return item.Medical_TypeID() == id;
+            });
+
+            doctors.remove(arrayFilter);
+        }
 
 
 
@@ -630,7 +695,7 @@
                         //alert($.cookie('role'));
                     },
                     error: function (e) {
-                        alert(ko.toJSON(e));
+                        //alert(ko.toJSON(e));
                     },
                     statusCode: {
                         200: function () {
@@ -638,7 +703,9 @@
                             self.loadOptionsData();
                             self.loadEditData();
                         },
-                        400: function () { alert("400: Bad request"); }
+                        400: function () {
+                            //alert("400: Bad request");
+                        }
                         
                     }
                 });
@@ -685,7 +752,7 @@
         };
 
         self.deleteUser = function () {
-            alert(ko.toJSON(this));
+            //alert(ko.toJSON(this));
             var id = this.id();
             $.ajax({
                 url: "api/account/delete?id=" + id,
@@ -784,6 +851,26 @@
                 }
             }
         });
+
+        self.deleteFalculty = function () {
+            var id = this.FacultyID();
+            $.ajax({
+                url: "api/appointment/deleteFalculty?id=" + id,
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'DELETE',
+                success: function () {
+                    // alert("Update Successful");
+                },
+                error: function (err) {
+
+                    alert("Update NOT Successful" + ko.toJSON(err));
+                },
+                statusCode: {
+
+                }
+            });
+        };
         
         self.saveCourse = function () {
             var self = this;
@@ -813,10 +900,10 @@
         };
 
         self.deleteCourse = function () {
-            self.courses.remove(this);
+            //self.courses.remove(this);
             
             $.ajax({
-                url: "api/account/delete?id=" + id,
+                url: "api/appointment/deleteCourse?id=" + this.CourseID(),
                 cache: false,
                 headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
                 type: 'DELETE',
@@ -839,14 +926,31 @@
             }
         };
 
+        self.acceptCourseEdit = function () {
+
+            $.ajax({
+                url: "api/appointment/acceptCourseEdit",
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'PUT',
+                data: { id: this.CourseID(), Name: this.Name() },
+                success: function () {
+                    // alert("Update Successful");
+                },
+                error: function (err) {
+                    // alert("Update NOT Successful" + ko.toJSON(err));
+                },
+                statusCode: {
+
+                }
+            });
+        }
+
         self.editCourse = function () {
             this.readWriteC("write");
         };
         self.addCourse = function () {
-            alert(ko.toJSON(this));
-
-            this.Courses.unshift(new Course("", "save", this.FacultyID()));
-
+            this.Courses.unshift(new Course("", "", "save", this.FacultyID()));
         }
         self.f = ko.observable();
         self.addFalculty = function () {
@@ -870,6 +974,8 @@
         
         self.courses = courses;
         self.selectedcourse = ko.observable();
+
+        
         self.loadCourses = function () {
             self.courses([]);
             $.ajax({
@@ -927,23 +1033,90 @@
                 }
             });
         };
+        self.deleteMedical_Type = function () {
+            alert(ko.toJSON(this));
+
+            $.ajax({
+                url: "api/appointment/deleteMedical_Type?id=" + this.Medical_TypeID(),
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'DELETE',
+                success: function () {
+                    // alert("Update Successful");
+                },
+                error: function (err) {
+
+                    alert("Update NOT Successful" + ko.toJSON(err));
+                },
+                statusCode: {
+
+                }
+            });
+        };
         self.d = ko.observable();
+        self.chooseDoctor = chooseDoctor;
+        self.choosenDoctor = choosenDoctor;
         self.addDoctor = function () {
-            this.Available_Doctors.unshift(new Doctor2("", "save", this.Medical_TypeID()));
+
+            $.ajax({
+                url: "api/appointment/chooseDoctor",
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'GET',
+                success: function (data) {
+                    self.chooseDoctor(data);
+                },
+                error: function (err) {
+                    alert(ko.toJSON(err));
+                },
+                statusCode: {
+
+                }
+            });
+
+            this.Available_Doctors.unshift(new Doctor2("", "", "save", this.Medical_TypeID()));
 
         }
-        self.deleteDoctor = ko.observable();
+        self.cancelDoctorSave = function () {
+            var self = this;
+
+            var arrayFilter = ko.utils.arrayFirst(doctors(), function (item) {
+                return item.Medical_TypeID() == self.Medical_TypeID();
+            });
+
+            arrayFilter.Available_Doctors.remove(this);
+        }
+        self.deleteDoctor = function () {
+            
+            $.ajax({
+                url: "api/appointment/deleteDoctor?id=" + this.Available_DoctorID(),
+                cache: false,
+                headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
+                type: 'DELETE',
+                success: function () {
+                    // alert("Update Successful");
+                },
+                error: function (err) {
+
+                    alert("Update NOT Successful" + ko.toJSON(err));
+                },
+                statusCode: {
+
+                }
+            });
+        };
         self.cancelDoctorEdit = function () {
             this.readWriteD("read");
         };
         self.saveDoctor = function () {
             var self = this;
-            if (this.UserName() != "") {
+
+            if (choosenDoctor().UserName != "") {
                 
                 $.ajax({
                     url: "api/account/doctor",
                     cache: false,
-                    data: { Medical_TypeID: this.Medical_TypeID(), UserName: this.UserName() },
+                    data: { Medical_TypeID: this.Medical_TypeID(), UserName: choosenDoctor().UserName },
                     headers: { authorization: "Bearer   " + $.cookie('cookieToken') },
                     type: 'POST',
                     success: function (doctor) {
@@ -964,9 +1137,7 @@
                 });
             }
         };
-        self.editDoctor = function () {
-            this.readWriteD("write");
-        };
+        
 
 
         self.doctors = doctors;

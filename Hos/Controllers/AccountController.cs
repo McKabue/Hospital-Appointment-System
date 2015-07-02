@@ -140,11 +140,6 @@ namespace Hos.Controllers
         {
             dynamic json = data;
 
-            var user = await _repo.CreateAsync(new UserProfile
-            {
-                UserName = json.UserName,
-                RoleName = "DOCTOR"
-            });
 
             string username = json.UserName;
 
@@ -165,6 +160,7 @@ namespace Hos.Controllers
 
             var returnUser = new Available_Doctor
             {
+                Available_DoctorID = available_doctor.Available_DoctorID,
                 Medical_TypeID = medical_Type.Medical_TypeID,
                 UserId = findUser.Id,
                 UserName = findUser.UserName
@@ -188,6 +184,7 @@ namespace Hos.Controllers
                              Available_Doctors = from ad in context.Available_Doctors.Where(ad => ad.Medical_TypeID == mt.Medical_TypeID).ToList()
                                                  select new
                                                  {
+                                                     Available_DoctorID = ad.Available_DoctorID,
                                                      UserName = context.Users.Find(ad.UserId).UserName,
                                                      Medical_TypeID = ad.Medical_TypeID
                                                  }

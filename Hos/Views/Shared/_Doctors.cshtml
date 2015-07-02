@@ -1,7 +1,7 @@
 ﻿
 
 
-<section class="tab-pane fade" id="doctors" data-bind="visible: role() == 'ADMIN'">
+<section class="tab-pane fade" id="doctors" data-bind="visible: role() == 'ADMIN'"> 
     <input class="btn btn-primary" style="" value="Add New Medical Type" type="button" data-bind="click: newMedical_TypeClick" />
     <div class="clearfix"></div>
     <form style="margin-top: 10px;" class="form-horizontal col-md-8" data-bind="submit: addMedical_Type, visible: newMedical_Type">
@@ -23,8 +23,8 @@
                 <div style="border-bottom: 2px solid #000;">
 
                     <span style="font-weight: 500;" data-bind="text: Name"></span>
-                    <span class="btn btn-info pull-right" data-bind="click: $root.addDoctor">Add New Course</span>
-                    <span class="btn btn-danger pull-right" data-bind="">Delete</span>
+                    <span class="btn btn-info pull-right" data-bind="click: $root.addDoctor">Add Doctor</span>
+                    <span class="btn btn-danger pull-right" data-bind="click: $root.deleteMedical_Type">Delete</span>
                 </div>
                 <table class="table table-striped table-condensed" style="border-collapse:collapse;">
                     <thead>
@@ -45,19 +45,15 @@
         <script id="readTemplateD" type="text/html">
             <td data-bind="text: $index() + 1"></td>
             <td data-bind="text: UserName"></td>
-            <td><button type="button" data-bind="click: $root.editDoctor">Edit</button>   <button type="button" data-bind="click: $root.deleteDoctor">Delete</button></td>
+            <td> <button type="button" data-bind="click: $root.deleteDoctor">Delete</button></td>
         </script>
 
-        <script id="editTemplateD" type="text/html">
-            <td data-bind="text: $index() + 1"></td>
-            <td><input type="text" data-bind="value: UserName" /></td>
-            <td><button type="button" data-bind="">Accept</button>   <button type="button" data-bind="click: $root.cancelDoctorEdit">Cancel</button></td>
-        </script>
+        
 
         <script id="saveTemplateD" type="text/html">
             <td data-bind="text: $index() + 1"></td>
-            <td><input type="text" data-bind="value: UserName" /></td>
-            <td><button type="button" data-bind="click: $root.saveDoctor">Save</button>   <button type="button" data-bind="click: $root.cancelDoctorEdit">Cancel</button></td>
+            <td><select id="Program" data-bind='options: $root.chooseDoctor, optionsText: "UserName", optionsCaption: "", value: $root.choosenDoctor ' class="form-control"></select></td>
+            <td><button type="button" data-bind="click: $root.saveDoctor">Save</button>   <button type="button" data-bind="click: $root.cancelDoctorSave">Cancel</button></td>
         </script>
 
     </article>

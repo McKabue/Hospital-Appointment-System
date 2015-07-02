@@ -65,7 +65,7 @@
                                         <li data-bind="visible: roleName() == 'STUDENT', click: $root.postpone, css: { disabled: status().toLowerCase() == 'postponed' }"><a href="#">PostPone</a></li>
                                         <li data-bind="visible: roleName() == 'DOCTOR', css: { disabled: status().toLowerCase() == 'treated'}, attr: {'data-target': '#report' + $index()}" data-toggle="tab" data-parent="#detailsTabContent"><a href="#">Report</a></li>
                                         <li data-bind="css: {disabled: status().toLowerCase() == 'treated'}"><a href="#" data-bind="click: $root.deleteData">Delete</a></li>
-                                        <li data-bind="visible: roleName() == 'STUDENT', css: {disabled: status() == 'Not_Confirmed'}, click: $root.reciept"><a href="#">Receipt</a></li>
+                                        <li data-bind="visible: roleName() == 'STUDENT', visible: status() != 'Not_Confirmed', click: $root.reciept"><a href="#">Receipt</a></li>
                                     </ul>
                                 </div>
                                 <span style="padding-left:5px; font-size:1.5em;"> <input class="largerCheckbox" style="font-size:1.5em;" type="checkbox"> </span>
@@ -128,7 +128,7 @@
                                                     <div class="col-md-9">
                                                         <div class="">
                                                             <ul class="list-inline">
-                                                                <li>12/2/1995</li>
+                                                                <li data-bind="text: Birth_Date"></li>
                                                             </ul>
                                                         </div>
                                                     </div>
