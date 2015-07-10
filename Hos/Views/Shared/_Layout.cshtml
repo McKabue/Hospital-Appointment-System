@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cindy Sandra Muga Fina Year Project</title>
+    <title>Cindy Achieng Muga Final Year Project</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/formValidator.css" rel="stylesheet" />
+    <link href="~/Content/moment-datepicker/datepicker2.css" rel="stylesheet" />
 
 </head>
 <body class="container-fluid" data-bind="style: { background: role() == 'DOCTOR' ? 'rgba(140, 91, 91, 1)' : '' }">
@@ -59,7 +60,7 @@
                     <br /><span id="mustLogin" style="font-size:1.5em;" class="text-danger mustLogin"></span>
                     <ul id="myLoginTab" class="nav nav-tabs" style="margin-top:30px;">
                         <li class="active"><a data-target="#login2" data-parent="myTabContentLogin" data-toggle="tab">Login</a></li>
-                        
+
                     </ul>
                 </div>
                 <div style="padding-left:5px;padding-right:5px;" class="modal-body">
@@ -98,14 +99,13 @@
                         </div>
 
 
-                        
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!--END login modal-->
-
     <!--login modal-->
     <div id="register" class="modal" role="dialog" aria-hidden="true">
         <div style="width:500px;" class="modal-dialog">
@@ -195,22 +195,30 @@
     <div class="row mainBody" style="background-color:#E0EAF1; padding:20px; margin-top: 95px; border:4px solid #AAA;">
         <article class="tab-content">
             @RenderBody()
-            
+
         </article>
     </div>
 
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+    <hr />
+    <footer class ="footer">
+        
+            <p style="padding-top: 5px; font-size: 13px; font-weight: 500;">&copy; Kisii University (Kenya - 254) First Degree Final Project [Hospital Appointments System]</p>
+            <p><a class="btn btn-info" href="mailto:cindysandra14@gmail.com">Contact Cindy Muga Achieng</a></p>
+        
+    </footer>
 
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @Scripts.Render("~/bundles/otherScripts")
-        @RenderSection("scripts", required: false)
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/bootstrap")
+            @Scripts.Render("~/bundles/otherScripts")
+            @RenderSection("scripts", required: false)
 
-        <script src="~/signalr/hubs"></script>
-    <script src="~/Scripts/bootstrapValidator.js"></script>
-    <script src="~/Scripts/validate.js"></script>
+            <script src="~/signalr/hubs"></script>
+            <script src="~/Scripts/bootstrapValidator.js"></script>
+            <script src="~/Scripts/validate.js"></script>
+            <script src="~/Scripts/moment.min.js"></script>
+            <script src="~/Scripts/moment-with-locales.min.js"></script>
+            <script src="~/Content/moment-datepicker/moment-datepicker.js"></script>
+            <script src="~/Content/moment-datepicker/moment-datepicker-ko.js"></script>
+
 </body>
 </html>

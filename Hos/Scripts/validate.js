@@ -20,8 +20,8 @@
                     message: 'The username is not available'
                     },*/
                     regexp: {
-                        regexp: /[01]{1}[0-9]{1}\/[0123]{1}[0-9]{1}\/[1-2]{1}[90]{1}[0-9]{2}/,
-                        message: '...month/data/year, like this 07/23/1993 '
+                        regexp: /[0123]{1}[0-9]{1}\/[01]{1}[0-9]{1}\/[1-2]{1}[90]{1}[0-9]{2}/,
+                        message: '...date/month/year, like this 23/03/1993 '
                     }
                 }
             }

@@ -65,7 +65,8 @@
                 <div class="">
                     <div class="" style="padding:0px;">
                        <!-- <input pattern="[0123]{1}[0-9]{1}\/[01]{1}[0-9]{1}\/[1-2]{1}[90]{1}[0-9]{2}" oninvalid="setCustomValidity('Please enter a valid Admission Number!')" onchange="try{setCustomValidity('')}catch(e){}" id="Birth_Date" placeholder="When where you born?" class="form-control" name="birthdate"> -->
-                        <input class="form-control" name="birthdate" id="Birth_Date">
+                        <!--  <input class="form-control" name="birthdate" id="Birth_Date"> -->
+                        <input data-datepicker-viewmode="years" class="form-control" name="birthdate" type="text" data-bind="datepicker: birthdate, datepickerOptions: { format: 'DD/MM/YYYY', startView: 'years', minViewMode: 'days'} ">
                     </div>
                 </div>
             </div>

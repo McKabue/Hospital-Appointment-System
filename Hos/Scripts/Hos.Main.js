@@ -1,4 +1,7 @@
 ﻿jQuery(document).ready(function ($) {
+
+    moment.lang('en');
+
     var progress;
     $(document).ajaxStart(function () {
         progress = setInterval(function () {
@@ -93,7 +96,7 @@
         self.readWrite = ko.observable("read");
 
         self.templateToUse = ko.computed(function () {
-            return self.readWrite() == "read" ? 'readTemplate' : self.readWrite() == "write" ? 'writeTemplate' : null;
+            return self.readWrite() == "read" ? 'readTemplate' : self.readWrite() == "write" ? 'editTemplate' : null;
         });
     }
 
@@ -252,6 +255,7 @@
         self.medical_Type = ko.observableArray();
         self.available_Doctor = ko.observable();
         self.ViewDataArray = ko.observableArray();
+        self.birthdate = ko.observable();
 
         self.loadOptionsData = function () {
             //alert('hi');
@@ -324,7 +328,7 @@
         }
 
         self.sendAppointmentData = function (context) {
-
+            var self = this;
 
 
             var feelings = ko.toJSON($('#tags1', context).select2("val"));
@@ -332,7 +336,7 @@
         
             if ( $('#Birth_Date', context).val() != ""  != "" && feelings !== "[]" && causes !== "[]") {
                 var JSONAppointmentData = "\"Surname\":\"" + $('#surName', context).val() + "\", \"FirstName\":\"" + $('#firstName', context).val() + "\", \"LastName\":\"" + $('#lastName', context).val() + "\", \"National_ID_Number\":\"" + $('#National_ID_Number', context).val() + "\", \"Registration_Number\":\"" + $('#Registration_Number', context).val() + "\", \"Birth_Date\":\"" + $('#Birth_Date', context).val() + "\", \"Program\":\"" + $('#Program option:selected', context).text() + "\", \"Year\":\"" + $('#Year option:selected', context).text() + "\", \"Semester\":\"" + $('#Semester option:selected', context).text() + "\", \"Faculty\":\"" + $('#Faculty option:selected', context).text() + "\", \"Course\":\"" + $('#Course option:selected', context).text() + "\", \"Medical_Type\":\"" + $('#Medical_Type option:selected', context).text() + "\", \"Doctor\":\"" + $('#Doctor option:selected', context).text() + "\", \"Feelings\":" + feelings + "\, \"Causes\":" + causes;
-                var JSONAppointmentData2 = { "Surname": $('#surName', context).val(), "FirstName": $('#firstName', context).val(), "LastName": $('#lastName', context).val(), "National_ID_Number": $('#National_ID_Number', context).val(), "Registration_Number": $('#Registration_Number', context).val(), "Birth_Date": $('#Birth_Date', context).val(), "Program": $('#Program option:selected', context).text(), "Year": $('#Year option:selected', context).text(), "Semester": $('#Semester option:selected', context).text(), "Faculty": $('#Faculty option:selected', context).text(), "Course": $('#Course option:selected', context).text(), "Medical_Type": $('#Medical_Type option:selected', context).text(), "Doctor": $('#Doctor option:selected', context).text(), "Feelings": $('#tags1', context).select2("val"), "Possible_Causes": $('#tags2', context).select2("val") };
+                var JSONAppointmentData2 = { "Surname": $('#surName', context).val(), "FirstName": $('#firstName', context).val(), "LastName": $('#lastName', context).val(), "National_ID_Number": $('#National_ID_Number', context).val(), "Registration_Number": $('#Registration_Number', context).val(), "Birth_Date": self.birthdate(), "Program": $('#Program option:selected', context).text(), "Year": $('#Year option:selected', context).text(), "Semester": $('#Semester option:selected', context).text(), "Faculty": $('#Faculty option:selected', context).text(), "Course": $('#Course option:selected', context).text(), "Medical_Type": $('#Medical_Type option:selected', context).text(), "Doctor": $('#Doctor option:selected', context).text(), "Feelings": $('#tags1', context).select2("val"), "Possible_Causes": $('#tags2', context).select2("val") };
             // alert(JSONAppointmentData);
                 $.ajax({
                     url: "/api/Appointment/AppointmentData/Save",

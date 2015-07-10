@@ -110,7 +110,23 @@ namespace Hos.HELPERS
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            var updatedUser = await _userManager.DeleteAsync(user1);
+            if (user1.RoleName == "DOCTOR")
+            {
+                var ad = _ctx.Available_Doctors.Where(ava => ava.UserId == user1.Id);
+
+                if (ad.Any() != null)
+                {
+                    _ctx.Available_Doctors.RemoveRange(ad);
+                }
+                
+
+                await _userManager.DeleteAsync(user1);
+                await _ctx.SaveChangesAsync();
+
+                return id;
+            }
+
+            await _userManager.DeleteAsync(user1);
             _ctx.SaveChanges();
 
             return id;

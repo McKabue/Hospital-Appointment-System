@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -19,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -205,7 +207,14 @@
     <Content Include="Content\image-slider-3.jpg" />
     <Content Include="Content\image-slider-4.jpg" />
     <Content Include="Content\image-slider-5.jpg" />
+    <Content Include="Content\moment-datepicker\datepicker.css" />
+    <Content Include="Content\moment-datepicker\datepicker2.css" />
+    <Content Include="Content\moment-datepicker\moment-datepicker-ko.js" />
+    <Content Include="Content\moment-datepicker\moment-datepicker.js" />
+    <Content Include="Content\moment-datepicker\moment-datepicker.min.js" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\smalot-datetimepicker\bootstrap-datetimepicker.css" />
+    <Content Include="Content\smalot-datetimepicker\bootstrap-datetimepicker.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="HELPERS\HtmlPage1.html" />
@@ -215,6 +224,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bootstrapValidator.js" />
+    <Content Include="Scripts\cb-ko-binding-datetimepicker.js" />
     <Content Include="Scripts\Hos.Main.js" />
     <Content Include="Scripts\Hos.UX.js" />
     <Content Include="ClassDiagram1.cd" />
@@ -226,6 +236,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Scripts\bootstrap-select.js.map" />
     <Content Include="Content\bootstrap-select.css.map" />
+    <Content Include="Content\moment-datepicker\moment-datepicker.min.js.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\defaults-bg_BG.js" />
     <Content Include="Scripts\i18n\defaults-bg_BG.min.js" />
@@ -294,6 +305,10 @@
     <Content Include="Scripts\knockout-select2.js" />
     <Content Include="Scripts\knockout.simpleGrid.3.0.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\Select2-locales\select2_locale_ar.js" />
     <Content Include="Scripts\Select2-locales\select2_locale_az.js" />
@@ -343,6 +358,50 @@
     <Content Include="Scripts\Select2-locales\select2_locale_zh-TW.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\smalot-datetimepicker\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\smalot-datetimepicker\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.ar.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.bg.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.ca.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.cs.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.da.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.de.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.ee.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.el.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.es.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.fi.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.fr.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.he.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.hr.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.hu.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.id.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.is.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.it.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.ja.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.ko.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.lt.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.lv.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.ms.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.nb.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.nl.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.no.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.pl.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.pt-BR.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.pt.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.ro.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.rs-latin.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.rs.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.ru.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.sk.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.sl.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.sv.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.sw.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.th.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.tr.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.ua.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.uk.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.zh-CN.js" />
+    <Content Include="Scripts\smalot-datetimepicker\locales\bootstrap-datetimepicker.zh-TW.js" />
     <Content Include="Scripts\validate.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -400,11 +459,15 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Content\moment-datepicker\moment-datepicker.d.ts" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>
