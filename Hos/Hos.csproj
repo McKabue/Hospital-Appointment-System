@@ -217,6 +217,7 @@
     <Content Include="Content\smalot-datetimepicker\bootstrap-datetimepicker.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="headshot.PNG" />
     <Content Include="HELPERS\HtmlPage1.html" />
     <Content Include="Icon.png" />
     <Content Include="Scripts\bootstrap-select.js" />
