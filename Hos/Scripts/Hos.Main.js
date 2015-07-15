@@ -721,6 +721,11 @@
                     },
                     error: function (e) {
                         //alert(ko.toJSON(e));
+                        if (e.responseJSON && e.responseJSON.error_description) {
+                            alert(e.responseJSON.error_description);
+                        } else {
+                            alert("Something Unexpected Happened");
+                        }
                     },
                     statusCode: {
                         200: function () {
