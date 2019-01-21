@@ -1,7 +1,7 @@
 # Hospital-Appointment-System
 https://achieng.apphb.com/
 
-+created using ASP.NET WEBAPI, Bootstrap, Knockoutjs, jQuery, And Sammyjs...This is the Home Page
+Created using ASP.NET WEBAPI, Bootstrap, Knockoutjs, jQuery, And Sammyjs...This is the Home Page
 ![Home](https://github.com/McKabue/Hospital-Appointment-System/blob/master/Documentation%20Files/Home.PNG)
 
 ![UX-Loading-Database](https://github.com/McKabue/Hospital-Appointment-System/blob/master/Documentation%20Files/UX-Loading-Database.PNG)
